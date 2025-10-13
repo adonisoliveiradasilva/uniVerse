@@ -1,0 +1,21 @@
+@use '../../../styles/mixins' as *;
+
+.page-login-background {
+    width: 100vw;
+    height: 100vh;
+    background-image: var(--image-background-login);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    .page-login-content{
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--color-surface-overlay);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        @include flex-column-center-top;
+        @include gap-3;
+    }
+}

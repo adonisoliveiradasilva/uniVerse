@@ -1,0 +1,27 @@
+
+:root {
+    --color-text-primary: #081616;
+    --color-surface-light: #FFFFFF;
+    --color-surface-overlay: rgba(8, 59, 60, .45);
+    --color-surface-destak: #673AB7;
+    --color-background-default: #EDE7F6;
+    --color-background-light: rgba(86, 95, 96, .08);
+    --image-background-login: url("./assets/background-login.jpeg");
+}
+
+.dark-theme {
+    --image-background-login: url("./assets/background-login.jpeg");
+}
+
+body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 800;
+}
+
+:root, .dark-theme {
+    transition: all 0.3s ease;
+}
