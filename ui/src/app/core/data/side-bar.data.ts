@@ -8,18 +8,21 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
             {
                 slug: 'dashboard',
                 title: 'Dashboard',
+                subtitle: 'Acompanhe sua jornada acadêmica! ',
                 icon: 'fas fa-table-cells-large',
                 route: '/dashboard'
             },
             {
                 slug: 'periods',
                 title: 'Períodos',
+                subtitle: 'Acompanhe a sua evolução por período', 
                 icon: 'fas fa-list-check',
                 route: '/periods'
             },
             {
                 slug: 'diary',
                 title: 'Agenda',
+                subtitle: 'Acompanhe sua agenda acadêmica',
                 icon: 'fas fa-calendar-week',
                 route: '/diary'
             }
@@ -31,13 +34,15 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
         items: [
             {
                 slug: 'courses',
-                title: 'Dashboard',
+                title: 'Cursos',
+                subtitle: 'Faça gestão dos cursos',
                 icon: 'fas fa-graduation-cap',
                 route: '/courses'
             },
             {
                 slug: 'subjects',
-                title: 'Subject',
+                title: 'Disciplinas',
+                subtitle: 'Faça gestão das disciplinas',
                 icon: 'fas fa-book',
                 route: '/subjects'
             }
@@ -49,13 +54,15 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
         items: [
             {
                 slug: 'institutions',
-                title: 'Institutions',
+                title: 'Instituições',
+                subtitle: 'Faça gestão das instituições parceiras',
                 icon: 'fas fa-building-columns',
                 route: '/institutions'
             },
             {
                 slug: 'students',
                 title: 'Alunos',
+                subtitle: 'Faça gestão dos alunos cadastrados',
                 icon: 'fas fa-people-group',
                 route: '/students'
             }

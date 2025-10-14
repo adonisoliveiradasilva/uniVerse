@@ -12,7 +12,7 @@
     h5{
         color: var(--color-text-secondary);
         text-align: left;
-                width: 100%;
+        width: 100%;
 
     }
 
@@ -30,14 +30,20 @@
         @include padding-2;
         @include border-radius-1;
         width: 100%;
+        background-color: transparent;
+        border: none;
 
-        &:hover{
+        &:hover, &.active{
             cursor: pointer;
             background-color: var(--color-text-destak); 
             
             * {
                 color: var(--color-text-light)!important;  
             } 
+        }
+
+        &.active{
+            cursor: default;
         }
     }
 }

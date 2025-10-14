@@ -1,6 +1,7 @@
 export interface SideBarItem {
     slug: string;
     title: string;
+    subtitle: string;
     icon: string;
     route: string;
 }
