@@ -1,0 +1,24 @@
+@use '../../../../../styles/mixins' as *;
+
+.sidebar-content{
+    width: clamp(300px, 30vh, 30vw);
+    @include flex-column-center-top;
+
+    .side-bar-content-logo{
+        width: 80%;
+        height: 5rem;
+        background-image: url('../../../../../assets/image-logo.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+    }
+
+    .sidebar-content-section{
+        @include flex-column-left-top;
+        @include gap-3;
+        width: 100%;
+
+        @include padding-2;
+    }   
+}
+

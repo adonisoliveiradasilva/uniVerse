@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { PageLogin } from './pages/page-login/page-login';
-import { App } from './app';
+import { Shell } from './pages/shell/shell';
 
 export const routes: Routes = [
     {
@@ -9,7 +9,7 @@ export const routes: Routes = [
     },
     {
         path: '',
-        component: App
+        component: Shell
     },
     {
         path: '**',
