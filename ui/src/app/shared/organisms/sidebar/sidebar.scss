@@ -1,4 +1,8 @@
-@use '../../../../../styles/mixins' as *;
+@use '../../../../styles/mixins' as *;
+
+:host{
+    height: 100%;
+}
 
 .sidebar-content{
     width: clamp(300px, 30vh, 30vw);
@@ -7,7 +11,7 @@
     .side-bar-content-logo{
         width: 80%;
         height: 5rem;
-        background-image: url('../../../../../assets/image-logo.png');
+        background-image: url('../../../../assets/image-logo.png');
         background-repeat: no-repeat;
         background-position: center;
         background-size: 100%;

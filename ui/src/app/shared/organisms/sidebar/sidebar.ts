@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { SIDE_BAR_DATA } from '../../../../core/data/side-bar.data';
-import { SideBarSection } from '../../../../core/models/side-bar-item.model';
+import { SIDE_BAR_DATA } from '../../../core/data/side-bar.data';
+import { SideBarSection } from '../../../core/models/side-bar-item.model';
 import { CommonModule } from '@angular/common';
-import { SidebarItem } from '../../sidebar/sidebar-item/sidebar-item';
+import { SidebarItem } from '../../atoms/sidebar/sidebar-item/sidebar-item';
 
 @Component({
   selector: 'app-sidebar',

@@ -4,16 +4,17 @@
     width: 100vw;
     height: 100vh;
     background-color: var(--color-background-secondary);
-    display: flex;
-    justify-content: flex-end;
+    @include flex-row-center-left;
 
     .shell-content-display{
         height: 100%;
         width: 100%;
         overflow: auto;
         background-color: var(--color-surface-light);
-        border-top-left-radius: 4rem;
-        border-bottom-left-radius: 4rem;
+        border-top-left-radius: 3rem;
+        border-bottom-left-radius: 3rem;
+        @include gap-3;
+        @include flex-column-left-top;
     }
 
     .sidebar{

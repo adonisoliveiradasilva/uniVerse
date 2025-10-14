@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Sidebar } from '../../shared/atoms/organisms/sidebar/sidebar';
+import { Sidebar } from '../../shared/organisms/sidebar/sidebar';
 import { ShellHeader } from '../../shared/atoms/shell/shell-header/shell-header';
 
 @Component({

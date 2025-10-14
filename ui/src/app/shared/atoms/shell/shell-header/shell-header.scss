@@ -1,0 +1,33 @@
+@use '../../../../../styles/mixins' as *;
+
+:host{
+    width: 100%;
+}
+
+.shell-header-content{
+    width: auto;
+    max-width: 40%;
+    @include flex-column-left-top;
+    padding: 3rem 0  0 2rem;
+    height: auto;
+    position: relative;
+
+    h2{
+        color: var(--color-text-destak);
+    }
+
+    h5{
+        color: var(--color-text-secondary);
+    }
+
+    &:before{
+        content: '';
+        width: .5rem;
+        height: 4rem;
+        background-color: var(--color-text-destak);
+        position: absolute;
+        border-radius: .5rem;
+        left: 0;
+        top: 2.5rem;
+    }
+}
