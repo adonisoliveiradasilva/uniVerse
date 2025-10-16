@@ -1,12 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ITableColumn, ITableRow } from '../../../core/models/table.model';
 import { CommonModule } from '@angular/common';
 import { TableRow } from '../../molecules/table-row/table-row';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { TableContextType } from '../../../core/types/table-context.type';
+import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
+import { NoData } from '../../atoms/no-data/no-data';
 
 @Component({
   selector: 'app-table',
-  imports: [CommonModule, TableRow],
+  imports: [CommonModule, TableRow, NoData],
   templateUrl: './table.html',
   styleUrl: './table.scss'
 })
@@ -14,19 +17,24 @@ export class Table {
   @Input() rows!: ITableRow[];
   @Input() columns!: ITableColumn[];
   @Input() headers?: string[];
-  @Input() context!: 'institution' | 'courses' | 'subjects' | 'user';
+  @Input() context!: TableContextType;
+
+  @Input() enableSearch: boolean = true;
+  @Input() enablePagination: boolean = true;
+  @Input() enableCreate: boolean = true;
+
+  private _formModalService = inject(FormModal)
 
   currentPage = 1;
   itemsPerPage = 5;
   totalPages = 0;
   private _filteredRows: ITableRow[] = [];
-  private _paginatedRows: ITableRow[] = [];
   visiblePages: (number | string)[] = [];
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._filteredRows = [...this.rows]; // começa com todos
     this.totalPages = Math.ceil(this._filteredRows.length / this.itemsPerPage);
     this.updatePage();
@@ -40,17 +48,36 @@ export class Table {
       .subscribe(term => this.filterRows(term));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  onSearch(event: Event) {
+  get getPaginatedRows(): ITableRow[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this._filteredRows.slice(start, end);
+  }
+
+  get getCreateButtonLabel(): string {
+    switch (this.context) {
+      case 'institution':
+        return 'Criar Instituição';
+      case 'courses':
+        return 'Criar Curso';
+      case 'subjects':
+        return 'Criar Disciplina';
+      default:
+        return '';
+    }
+  }
+
+  onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.searchSubject.next(value);
   }
 
-  private filterRows(term: string) {
+  private filterRows(term: string): void {
     if (!term) {
       this._filteredRows = [...this.rows];
     } else {
@@ -66,17 +93,15 @@ export class Table {
     this.updatePage();
   }
 
-  get getPaginatedRows(): ITableRow[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    return this._filteredRows.slice(start, end);
+  openCreateModal(): void {
+    this._formModalService.openModal(this.context);
   }
 
-  updatePage() {
+  updatePage(): void{
     this.updateVisiblePages();
   }
 
-  updateVisiblePages() {
+  updateVisiblePages(): void {
     const pages: (number | string)[] = [];
     if (this.totalPages <= 10) {
       for (let i = 1; i <= this.totalPages; i++) pages.push(i);
@@ -93,24 +118,25 @@ export class Table {
     this.visiblePages = pages;
   }
 
-  goToPage(page: number | string) {
+  goToPage(page: number | string): void {
     if (typeof page === 'number' && page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.updatePage();
     }
   }
 
-  nextPage() {
+  nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.updatePage();
     }
   }
 
-  previousPage() {
+  previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updatePage();
     }
   }
+
 }

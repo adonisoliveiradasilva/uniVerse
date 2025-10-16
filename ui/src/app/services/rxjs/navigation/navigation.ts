@@ -2,8 +2,8 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, filter, map, Observable } from 'rxjs';
-import { SIDE_BAR_DATA } from '../../core/data/side-bar.data';
-import { SideBarItem } from '../../core/models/side-bar-item.model';
+import { SIDE_BAR_DATA } from '../../../core/data/side-bar.data';
+import { SideBarItem } from '../../../core/models/side-bar-item.model';
 
 interface ActiveNavigationItem {
     title: string;

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { NavigationService } from '../../../../services/navigation/navigation';
+import { NavigationService } from '../../../../services/rxjs/navigation/navigation';
 import { Subscription } from 'rxjs';
 
 @Component({

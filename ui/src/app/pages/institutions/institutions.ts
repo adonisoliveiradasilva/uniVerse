@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Table } from '../../shared/organisms/table/table';
-import { TableTdType } from '../../core/models/table-td.type';
+import { TableTdType } from '../../core/types/table-td.type';
+import { FormModal } from '../../services/rxjs/form-modal/form-modal';
+import { Subscription } from 'rxjs';
+import { TableContextEnum } from '../../core/types/table-context.type';
 
 @Component({
   selector: 'app-institutions',
@@ -10,6 +13,10 @@ import { TableTdType } from '../../core/models/table-td.type';
 })
 export class Institutions {
   TableTdType = TableTdType;
+  TableContextEnum = TableContextEnum;
+
+  private _formModalService = inject(FormModal)
+  private _formModalSub!: Subscription;
 
   _rows = [
     {
@@ -85,6 +92,20 @@ export class Institutions {
       type: TableTdType.Text
     },
   ]
+
+  ngOnInit(): void {
+    this._formModalSub = this._formModalService.onContext(TableContextEnum.Institution).subscribe(() => {
+      this.openInstitutionModal();
+    });
+  }
+
+  ngOnDestroy(): void{
+    this._formModalSub.unsubscribe();
+  }
+
+  openInstitutionModal() {
+
+  }
 
 
 

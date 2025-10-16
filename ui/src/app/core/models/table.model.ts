@@ -1,4 +1,4 @@
-import { TableTdType } from "./table-td.type";
+import { TableTdType } from "../types/table-td.type";
 
 export interface ITableRow {
     id: number;

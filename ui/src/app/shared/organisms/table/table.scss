@@ -17,7 +17,7 @@
             @include flex-row-center;
             border-radius: .4rem;
             color: var(--color-text-primary);
-            
+            height: 2rem;
             input{
                 background-color: transparent;
                 border: none;
@@ -27,6 +27,28 @@
 
             i{
                 font-size: .9rem;
+            }
+        }
+
+        .table-section-header-button{
+            background-color: var(--color-text-destak);
+            border: none;
+            color: var(--color-text-light);
+            padding: .5rem;
+            @include flex-row-center;
+            gap: .5rem;
+            height: 2rem;
+            border-radius: .4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            i{
+                font-size: 1rem;
+            }
+
+            &:hover{
+                transform: scale(1.1);
+                transition: all 0.3s ease;
             }
         }
     }
