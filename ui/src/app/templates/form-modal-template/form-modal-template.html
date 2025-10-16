@@ -1,0 +1,15 @@
+<div class="form-modal-template-overlay" *ngIf="isOpen" (click)="close()">
+    <div class="form-modal-template-content" (click)="$event.stopPropagation()">
+        <div class="form-modal-template-content-header">
+            <app-shell-header></app-shell-header>
+            <i class="fas fa-xmark" (click)="close()"></i>
+        </div>
+        
+        <!-- <ng-container [ngSwitch]="context">
+            <app-institution-form *ngSwitchCase="'institution'"></app-institution-form>
+            <app-user-form *ngSwitchCase="'user'"></app-user-form>
+            <app-course-form *ngSwitchCase="'courses'"></app-course-form>
+            <app-subject-form *ngSwitchCase="'subjects'"></app-subject-form>
+        </ng-container> -->
+    </div>
+</div>

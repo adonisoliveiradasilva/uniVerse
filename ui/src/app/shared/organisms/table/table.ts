@@ -35,7 +35,7 @@ export class Table {
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    this._filteredRows = [...this.rows]; // começa com todos
+    this._filteredRows = [...this.rows];
     this.totalPages = Math.ceil(this._filteredRows.length / this.itemsPerPage);
     this.updatePage();
 

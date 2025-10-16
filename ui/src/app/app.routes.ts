@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { PageLogin } from './pages/page-login/page-login';
-import { Shell } from './pages/shell/shell';
+import { Shell } from './templates/shell/shell';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Institutions } from './pages/institutions/institutions';
 
