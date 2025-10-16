@@ -1,0 +1,10 @@
+@use '../../../../styles/mixins' as *;
+
+:host {
+    width: 100%;
+
+    &:hover{
+        background-color: var(--color-background-default);
+        cursor: pointer;
+    }
+}

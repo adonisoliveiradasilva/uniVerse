@@ -16,7 +16,7 @@
     justify-content: flex-end;
 }
 
-@mixin flex-space-between{
+@mixin flex-row-center-space-between {
     display: flex;
     align-items: stretch;
     justify-content: space-between;
@@ -36,6 +36,14 @@
     flex-direction: column;
 }
 
+@mixin flex-column-center-space-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
 @mixin flex-right-top {
     display: flex;
     align-items: flex-end;
@@ -53,6 +61,10 @@
 
 @mixin font-size-larger {
     font-size: clamp(18px, 1.7vh, 20px)!important;
+}
+
+@mixin shadow {
+    box-shadow: 4px 4px 10px 0 var(--color-shadow);
 }
 
 @mixin shadow-bottom {

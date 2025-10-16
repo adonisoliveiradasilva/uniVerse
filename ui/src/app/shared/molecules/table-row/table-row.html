@@ -1,0 +1,11 @@
+<td 
+  *ngFor="let col of columns; let i = index" 
+  app-table-td
+  [value]="getTdValue(col.key)" 
+  [type]="col.type"
+  [context]="context" 
+  [isLastRow]="isLastRow"
+  [objectId]="(row!.id) || 0" 
+  >
+</td>
+  

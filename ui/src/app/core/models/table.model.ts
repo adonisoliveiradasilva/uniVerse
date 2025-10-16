@@ -1,0 +1,12 @@
+import { TableTdType } from "./table-td.type";
+
+export interface ITableRow {
+    id: number;
+    name: string;
+}
+
+export interface ITableColumn {
+  key: keyof ITableRow | string; 
+  header: string;            
+  type: TableTdType;     
+}

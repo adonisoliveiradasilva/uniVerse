@@ -1,0 +1,77 @@
+@use '../../../../styles/mixins' as *;
+
+.table-content {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    @include flex-column-center-space-between;
+
+    .table {
+        width: 100%;
+        border-spacing: 0;
+        @include shadow;
+        gap: 0;
+
+        th {
+            background-color: var(--color-background-default);
+            font-weight: bolder;
+            @include font-size-medium;
+            padding: 1rem 2rem;
+            text-align: left;
+
+            &:first-child {
+                border-top-left-radius: 1rem;
+            }
+
+            &:last-child {
+                border-top-right-radius: 1rem;
+            }
+        }
+    }
+
+    .paginator {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+        border-top: .15rem solid var(--color-background-default);
+        @include flex-row-center-space-between;
+
+        .paginator-pages *,
+        .paginator-navigation * {
+            cursor: pointer;
+            transition: all .2s ease;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+
+        .paginator-pages {
+            @include flex-row-center-space-between;
+            gap: .5rem;
+            font-size: .7rem;
+            color: var(--color-text-secondary);
+
+
+            i.active {
+                color: var(--color-text-destak);
+            }
+        }
+
+        .paginator-navigation {
+            @include flex-row-center-space-between;
+            gap: .5rem;
+            font-size: 1.2rem;
+            color: var(--color-background-tertiary);
+
+            i.disabled {
+                opacity: 0.4;
+                cursor: not-allowed;
+
+                &:hover {
+                    transform: scale(1); // impede animação
+                }
+            }
+        }
+    }
+}
