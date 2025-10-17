@@ -5,10 +5,12 @@
       <i class="fas fa-magnifying-glass"></i>
     </div>
 
-    <button class="table-section-header-button" *ngIf="enableCreate" (click)="openCreateModal()">
+    <app-button [label]="getCreateButtonLabel" [icon]="'fa-circle-plus'" (buttonClick)="openCreateModal()" *ngIf="enableCreate"></app-button>
+
+    <!-- <button class="table-section-header-button" *ngIf="enableCreate" (click)="openCreateModal()">
       <span> {{ getCreateButtonLabel }} </span>
       <i class="fas fa-circle-plus"></i>
-    </button>
+    </button> -->
   </div>
 
 

@@ -6,10 +6,11 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TableContextType } from '../../../core/types/table-context.type';
 import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
 import { NoData } from '../../atoms/no-data/no-data';
+import { Button } from '../../atoms/buttons/button/button';
 
 @Component({
   selector: 'app-table',
-  imports: [CommonModule, TableRow, NoData],
+  imports: [CommonModule, TableRow, NoData, Button],
   templateUrl: './table.html',
   styleUrl: './table.scss'
 })
