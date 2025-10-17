@@ -4,6 +4,14 @@
     width: 100%;
 }
 
+.closed-h5{
+    display: none!important;
+}
+
+.closed-subitem{
+    width: auto!important;
+}
+
 .sidebar-item-content{
     @include flex-column-center-top;
     @include gap-1;
@@ -13,7 +21,7 @@
         color: var(--color-text-secondary);
         text-align: left;
         width: 100%;
-
+        display: block;
     }
 
     .sidebar-item-content-subitem{

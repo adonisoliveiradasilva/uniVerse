@@ -1,5 +1,8 @@
-<div class="sidebar-content">
+<div class="sidebar-content" [class.closed]="!isOpen">
     <div class="side-bar-content-logo"></div>
+    <div class="side-bar-content-subitem-toggle" (click)="toggleSidebar()" [class.closed-subitem]="!isOpen">
+        <i class="fas fa-bars"></i>
+    </div>
     <div class="sidebar-content-section">
         <app-sidebar-item *ngFor="let item of getItems" [item]="item"></app-sidebar-item>
     </div>
