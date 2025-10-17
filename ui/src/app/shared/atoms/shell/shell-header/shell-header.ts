@@ -1,14 +1,18 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { NavigationService } from '../../../../services/rxjs/navigation/navigation';
 import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-shell-header',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './shell-header.html',
   styleUrl: './shell-header.scss'
 })
 export class ShellHeader {
+  @Input() title: string = '';
+  @Input() subtitle: string = '';
+
   private _navigationService = inject(NavigationService)
   private _activeItemSubscription: Subscription | undefined;
 
@@ -22,6 +26,14 @@ export class ShellHeader {
         this.pageSubtitle = info.subtitle;
       }
     });
+  }
+
+  get getTitle(): string{
+    return this.title || this.pageTitle;
+  }
+
+  get getSubtitle(): string{
+    return this.subtitle || this.pageSubtitle;
   }
 
   ngOnDestroy(): void {

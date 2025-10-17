@@ -115,7 +115,7 @@
             .paginator-navigation {
                 @include flex-row-center-space-between;
                 gap: .5rem;
-                font-size: 1.2rem;
+                font-size: 1.5rem;
                 color: var(--color-background-tertiary);
 
                 i.disabled {
@@ -123,7 +123,7 @@
                     cursor: not-allowed;
 
                     &:hover {
-                        transform: scale(1); // impede animação
+                        transform: scale(1);
                     }
                 }
             }

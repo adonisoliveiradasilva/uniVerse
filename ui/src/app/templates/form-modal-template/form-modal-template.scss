@@ -16,7 +16,7 @@
         @include flex-column-center-top;
         @include border-radius-2;
         @include shadow;
-        width: clamp(500px, 50vh, 70vw);
+        width: clamp(500px, 90vh, 70vw);
         height: 10rem;
         margin-top: clamp(50px, 5vh, 7vw);
         background-color: var(--color-surface-light);

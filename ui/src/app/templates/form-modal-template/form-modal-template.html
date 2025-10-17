@@ -1,7 +1,7 @@
 <div class="form-modal-template-overlay" *ngIf="isOpen" (click)="close()">
     <div class="form-modal-template-content" (click)="$event.stopPropagation()">
         <div class="form-modal-template-content-header">
-            <app-shell-header></app-shell-header>
+            <app-shell-header [title]="getTitle" [subtitle]="getSubtitle"></app-shell-header>
             <i class="fas fa-xmark" (click)="close()"></i>
         </div>
         
