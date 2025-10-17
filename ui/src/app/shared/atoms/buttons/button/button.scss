@@ -4,7 +4,7 @@ button{
     background-color: var(--color-text-destak);
     border: none;
     color: var(--color-text-light);
-    padding: .5rem;
+    padding: .8rem;
     @include flex-row-center;
     gap: .5rem;
     height: 2rem;
@@ -20,4 +20,9 @@ button{
         transform: scale(1.1);
         transition: all 0.3s ease;
     }
+}
+
+.seccondary-button{
+    background-color: var(--color-text-light);  
+    color: var(--color-text-destak);
 }

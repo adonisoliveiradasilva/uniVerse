@@ -3,10 +3,13 @@ import { TableContextEnum, TableContextType } from '../../core/types/table-conte
 import { FormModal } from '../../services/rxjs/form-modal/form-modal';
 import { CommonModule } from '@angular/common';
 import { ShellHeader } from '../../shared/atoms/shell/shell-header/shell-header';
+import { FormInstitution } from '../../shared/organisms/form-institution/form-institution';
+import { FormDepartment } from '../../shared/organisms/form-department/form-department';
+import { Button } from '../../shared/atoms/buttons/button/button';
 
 @Component({
   selector: 'app-form-modal-template',
-  imports: [CommonModule, ShellHeader],
+  imports: [CommonModule, ShellHeader, FormInstitution, FormDepartment, Button],
   templateUrl: './form-modal-template.html',
   styleUrl: './form-modal-template.scss'
 })
@@ -26,6 +29,8 @@ export class FormModalTemplate {
         return "Criar nova Disciplina"
       case TableContextEnum.User:
         return "Criar novo Usuário"
+      case TableContextEnum.Department:
+        return "Criar novo Departamento"
       default:
         return ''
     }
@@ -41,20 +46,27 @@ export class FormModalTemplate {
         return "Preencha as informações da nova Disciplina"
       case TableContextEnum.User:
         return "Preencha as informações do novo Usuário"
+      case TableContextEnum.Department:
+        return "Preencha as informações do novo Departamento"
       default:
         return ''
     }
   }
 
+  get getTableContextEnum(): typeof TableContextEnum{
+    return TableContextEnum
+  }
+
   ngOnInit() {
-    this._formModalService.openModal$.subscribe(context => {
-      this.context = context;
-      this.isOpen = true;
+    this._formModalService.modalStack$.subscribe(stack => {
+      this.isOpen = stack.length > 0;
+      this.context = stack.at(-1) ?? null;
     });
   }
 
   close() {
-    this.isOpen = false;
-    this.context = null;
+    this._formModalService.closeModal();
   }
+
+
 }

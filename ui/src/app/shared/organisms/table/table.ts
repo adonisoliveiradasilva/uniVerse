@@ -3,7 +3,7 @@ import { ITableColumn, ITableRow } from '../../../core/models/table.model';
 import { CommonModule } from '@angular/common';
 import { TableRow } from '../../molecules/table-row/table-row';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { TableContextType } from '../../../core/types/table-context.type';
+import { TableContextEnum, TableContextType } from '../../../core/types/table-context.type';
 import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
 import { NoData } from '../../atoms/no-data/no-data';
 import { Button } from '../../atoms/buttons/button/button';
@@ -25,7 +25,8 @@ export class Table {
   @Input() enableCreate: boolean = true;
 
   private _formModalService = inject(FormModal)
-
+  private _TableContextEnum = TableContextEnum
+  
   currentPage = 1;
   itemsPerPage = 5;
   totalPages = 0;
@@ -62,12 +63,14 @@ export class Table {
 
   get getCreateButtonLabel(): string {
     switch (this.context) {
-      case 'institution':
+      case this._TableContextEnum.Institution:
         return 'Criar Instituição';
-      case 'courses':
+      case this._TableContextEnum.Courses:
         return 'Criar Curso';
-      case 'subjects':
+      case this._TableContextEnum.Subjects:
         return 'Criar Disciplina';
+      case this._TableContextEnum.Department:
+        return 'Criar Departamento';
       default:
         return '';
     }

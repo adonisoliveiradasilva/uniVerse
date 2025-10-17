@@ -1,4 +1,4 @@
-<button (click)="onClick()">
+<button (click)="onClick()" [ngClass]="type == 'seccondary' ? 'seccondary-button' : ''">
     <span>{{ label }}</span>
     <i class="fas" [ngClass]="icon"></i>
 </button>

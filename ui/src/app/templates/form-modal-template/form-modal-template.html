@@ -1,15 +1,24 @@
-<div class="form-modal-template-overlay" *ngIf="isOpen" (click)="close()">
-    <div class="form-modal-template-content" (click)="$event.stopPropagation()">
-        <div class="form-modal-template-content-header">
-            <app-shell-header [title]="getTitle" [subtitle]="getSubtitle"></app-shell-header>
-            <i class="fas fa-xmark" (click)="close()"></i>
-        </div>
-        
-        <!-- <ng-container [ngSwitch]="context">
-            <app-institution-form *ngSwitchCase="'institution'"></app-institution-form>
-            <app-user-form *ngSwitchCase="'user'"></app-user-form>
-            <app-course-form *ngSwitchCase="'courses'"></app-course-form>
-            <app-subject-form *ngSwitchCase="'subjects'"></app-subject-form>
-        </ng-container> -->
+<div 
+  class="form-modal-template-overlay" 
+  *ngIf="isOpen" 
+  (click)="close()">
+
+  <div class="form-modal-template-content" (click)="$event.stopPropagation()">
+    <div class="form-modal-template-content-header">
+      <app-shell-header [title]="getTitle" [subtitle]="getSubtitle"></app-shell-header>
+      <i class="fas fa-xmark" (click)="close()"></i>
     </div>
+
+    <div class="form-modal-template-content-display">
+      <ng-container [ngSwitch]="context">
+        <app-form-institution *ngSwitchCase="getTableContextEnum.Institution"></app-form-institution>
+        <app-form-department *ngSwitchCase="getTableContextEnum.Department"></app-form-department>
+      </ng-container>
+    </div>
+
+    <div class="form-modal-template-buttons">
+      <app-button label="Cancelar" icon="fa-ban" type="seccondary" (click)="close()"></app-button>
+      <app-button label="Salvar" icon="fa-floppy-disk"></app-button>
+    </div>
+  </div>
 </div>

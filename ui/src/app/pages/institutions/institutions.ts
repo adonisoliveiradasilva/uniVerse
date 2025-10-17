@@ -15,9 +15,6 @@ export class Institutions {
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
-  private _formModalService = inject(FormModal)
-  private _formModalSub!: Subscription;
-
   _rows = [
     {
       id: 1,
@@ -88,25 +85,8 @@ export class Institutions {
   _columns = [ 
     {
       key: 'name',
-      header: 'Nome da Insituioção',
+      header: 'Nome da Instituição',
       type: TableTdType.Text
     },
   ]
-
-  ngOnInit(): void {
-    this._formModalSub = this._formModalService.onContext(TableContextEnum.Institution).subscribe(() => {
-      this.openInstitutionModal();
-    });
-  }
-
-  ngOnDestroy(): void{
-    this._formModalSub.unsubscribe();
-  }
-
-  openInstitutionModal() {
-
-  }
-
-
-
 }

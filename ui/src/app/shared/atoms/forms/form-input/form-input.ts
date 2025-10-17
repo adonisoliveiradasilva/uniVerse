@@ -14,6 +14,7 @@ export class FormInput implements OnInit {
   @Input() value: string = '';
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
+  @Input() width: string = '100%';
 
   private _showPassword: boolean = false;
   private _type: string = '';

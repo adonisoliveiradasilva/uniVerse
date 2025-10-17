@@ -18,7 +18,6 @@ export class NavigationService {
     public activeItem$: Observable<ActiveNavigationItem | null> = this._activeItem.asObservable();
 
     constructor(private router: Router) {
-    // Escuta mudanças de rota
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => this.updateActiveItem());
@@ -31,8 +30,7 @@ export class NavigationService {
         .find(item => item.route === currentRoute);
 
         if (foundItem) {
-        // Só atualiza se ainda não tiver um clique definido
-        if (!this._activeItem.value) {
+            if (!this._activeItem.value) {
             this._activeItem.next({
             title: foundItem.title,
             subtitle: foundItem.subtitle

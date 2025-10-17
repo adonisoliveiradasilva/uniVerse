@@ -10,6 +10,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class Button {
   @Input() label: string = '';
   @Input() icon: string = '';
+  @Input() type: 'primary' | 'seccondary' = 'primary'
   @Output() buttonClick = new EventEmitter<void>();
 
   onClick(): void {

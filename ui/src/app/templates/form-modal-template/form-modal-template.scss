@@ -16,8 +16,11 @@
         @include flex-column-center-top;
         @include border-radius-2;
         @include shadow;
+        @include gap-2;
         width: clamp(500px, 90vh, 70vw);
-        height: 10rem;
+        height: auto;
+        max-height: 90vh;
+        overflow: auto;
         margin-top: clamp(50px, 5vh, 7vw);
         background-color: var(--color-surface-light);
         animation: slideIn 0.3s ease;
@@ -45,6 +48,20 @@
                 }
             }
         }
+
+        .form-modal-template-content-display{
+            @include flex-column-center-top;
+            padding: 1rem;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .form-modal-template-buttons{
+        @include flex-row-center-right;
+        @include gap-1;
+        padding: 1rem;
+        width: 100%;
     }
 }
 
