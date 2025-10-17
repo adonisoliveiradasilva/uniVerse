@@ -6,6 +6,7 @@ import { ShellHeader } from '../../shared/atoms/shell/shell-header/shell-header'
 import { FormInstitution } from '../../shared/organisms/form-institution/form-institution';
 import { FormDepartment } from '../../shared/organisms/form-department/form-department';
 import { Button } from '../../shared/atoms/buttons/button/button';
+import { FormBus } from '../../services/rxjs/form-bus/form-bus';
 
 @Component({
   selector: 'app-form-modal-template',
@@ -18,6 +19,7 @@ export class FormModalTemplate {
   isOpen = false;
 
   private _formModalService = inject(FormModal)
+  private _formBusService = inject(FormBus);
 
   get getTitle(): string{
     switch (this.context){
@@ -62,10 +64,18 @@ export class FormModalTemplate {
       this.isOpen = stack.length > 0;
       this.context = stack.at(-1) ?? null;
     });
+
+    this._formBusService.formPayload$.subscribe(payload => {
+      console.log('📦 Payload recebido do formulário:', payload);
+    })
   }
 
   close() {
     this._formModalService.closeModal();
+  }
+
+  save() {
+    this._formBusService.triggerSubmit();
   }
 
 

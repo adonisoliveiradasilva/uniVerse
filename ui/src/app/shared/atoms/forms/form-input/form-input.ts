@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-form-input',
   imports: [ CommonModule],
   templateUrl: './form-input.html',
-  styleUrl: './form-input.scss'
+  styleUrl: './form-input.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FormInput),
+      multi: true
+    }
+  ]
 })
 export class FormInput implements OnInit {
   @Input() label!: string;
@@ -23,9 +31,18 @@ export class FormInput implements OnInit {
     this._type = this.type;
   }
 
+  get showPassword(): boolean {
+    return this._showPassword;
+  }
+
+  get inputType(): string {
+    return this._type;
+  }
+
   onInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
+      const inputElement = event.target as HTMLInputElement;
     this.value = inputElement.value;
+    this.onChange(this.value);
   }
 
   onToggleEye(): void{
@@ -37,11 +54,22 @@ export class FormInput implements OnInit {
     this._showPassword = !this._showPassword;
   }
 
-  get showPassword(): boolean {
-    return this._showPassword;
+  onChange = (value: string) => {};
+  onTouched = () => {};
+
+  writeValue(value: any): void {
+    this.value = value || '';
   }
 
-  get inputType(): string {
-    return this._type;
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 }

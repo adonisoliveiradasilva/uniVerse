@@ -1,8 +1,7 @@
-<div class="form-entity-content">
+<form [formGroup]="form" class="form-entity-content">
     <div class="form-entity-row">
-        <app-form-input [label]="'Nome da Instituição'" ></app-form-input>
+        <app-form-input [label]="'Nome da Instituição'" formControlName="name"></app-form-input>
     </div>
     <app-divider [label]="'Departamentos'"></app-divider>
     <app-table [context]="TableContextEnum.Department" [rows]="_rows" [columns]="_columns" [headers]="['Nome']"> </app-table>
-
-</div>
+</form >
