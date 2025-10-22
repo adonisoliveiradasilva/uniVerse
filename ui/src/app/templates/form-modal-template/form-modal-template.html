@@ -10,10 +10,13 @@
     </div>
 
     <div class="form-modal-template-content-display">
-      <ng-container [ngSwitch]="context">
+      <!-- <ng-container [ngSwitch]="context">
         <app-form-institution *ngSwitchCase="getTableContextEnum.Institution"></app-form-institution>
         <app-form-department *ngSwitchCase="getTableContextEnum.Department"></app-form-department>
-      </ng-container>
+      </ng-container> -->
+        <app-form-institution [hidden]="context !== getTableContextEnum.Institution">></app-form-institution>
+        <app-form-department [hidden]="context !== getTableContextEnum.Department"></app-form-department>
+
     </div>
 
     <div class="form-modal-template-buttons">

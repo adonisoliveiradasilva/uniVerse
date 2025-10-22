@@ -1,3 +1,3 @@
- <div class="form-entity-row">
-    <app-form-input [label]="'Nome do Departamento'" ></app-form-input>
-</div>
+<form [formGroup]="form" class="form-entity-row">
+    <app-form-input [label]="'Nome do Departamento'" formControlName="nameDepartment"></app-form-input>
+</form>

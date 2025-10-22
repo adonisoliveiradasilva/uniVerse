@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, SimpleChanges } from '@angular/core';
 import { ITableColumn, ITableRow } from '../../../core/models/table.model';
 import { CommonModule } from '@angular/common';
 import { TableRow } from '../../molecules/table-row/table-row';
@@ -37,9 +37,9 @@ export class Table {
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    this._filteredRows = [...this.rows];
-    this.totalPages = Math.ceil(this._filteredRows.length / this.itemsPerPage);
-    this.updatePage();
+    // this._filteredRows = [...this.rows];
+    // this.totalPages = Math.ceil(this._filteredRows.length / this.itemsPerPage);
+    // this.updatePage();
 
     this.searchSubject
       .pipe(
@@ -48,6 +48,15 @@ export class Table {
         takeUntil(this.destroy$)
       )
       .subscribe(term => this.filterRows(term));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['rows']) {
+      this._filteredRows = [...this.rows];
+      this.totalPages = Math.ceil(this._filteredRows.length / this.itemsPerPage);
+      this.currentPage = 1;
+      this.updatePage();
+    }
   }
 
   ngOnDestroy(): void {

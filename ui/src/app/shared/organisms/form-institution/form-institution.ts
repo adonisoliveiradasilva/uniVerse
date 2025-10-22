@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormInput } from '../../atoms/forms/form-input/form-input';
 import { Divider } from '../../atoms/divider/divider';
 import { TableTdType } from '../../../core/types/table-td.type';
@@ -7,6 +7,7 @@ import { Table } from '../table/table';
 import { Subscription } from 'rxjs';
 import { FormBus } from '../../../services/rxjs/form-bus/form-bus';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IDepartment } from '../../../core/models/entitys/IDepartment.model';
 
 @Component({
   selector: 'app-form-institution',
@@ -15,16 +16,17 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './form-institution.scss'
 })
 export class FormInstitution {
-  private _formBus = inject(FormBus);
+  private _formBusService = inject(FormBus);
   private _formBuilder = inject(FormBuilder);
   private _subscription = new Subscription();
+  private _cdr = inject(ChangeDetectorRef);
 
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
   form!: FormGroup;
 
-  _rows = [
+  _rows: IDepartment[] = [
     {
       id: 1,
       name: 'DECEA'
@@ -39,6 +41,7 @@ export class FormInstitution {
     }
   ]
 
+
   _columns = [ 
     {
       key: 'name',
@@ -49,14 +52,27 @@ export class FormInstitution {
 
   ngOnInit() {
     this.form = this._formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
+      nameInstitution: ['', [Validators.required, Validators.minLength(3)]],
     });
 
     this._subscription.add(
-      this._formBus.submitForm$.subscribe(() => {
+      this._formBusService.submitForm$.subscribe(() => {
         this._handleSubmit();
       })
     );
+
+    this._formBusService.formPayload$.subscribe(payload => {
+      if (payload && payload.source === TableContextEnum.Department) {
+        this._rows = [
+          ...this._rows,
+          {
+            id: this._rows.length + 1,
+            name: payload.data.nameDepartment // Agora podemos ter certeza que é nameDepartment
+          }
+        ];
+        this._cdr.detectChanges();
+      }
+    })
   }
 
   private _handleSubmit() {
@@ -65,7 +81,12 @@ export class FormInstitution {
       return;
     }
 
-    this._formBus.sendPayload(this.form.value);
+    const payload = {
+      source: TableContextEnum.Institution,
+      data: this.form.value
+    }
+
+    this._formBusService.sendPayload(payload);
   }
 
   ngOnDestroy() {

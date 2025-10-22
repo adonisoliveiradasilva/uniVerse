@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start UI (Angular)",
+      "command": "npm start",
+      "type": "shell",
+      "presentation": {
+        "group": "servers",
+        "panel": "new",
+        "reveal": "always"
+      },
+      "options": {
+        "cwd": "C:/dev/projetos/uniVerse/ui"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start API (Spring Boot)",
+      "command": "mvn spring-boot:run",
+      "type": "shell",
+      "presentation": {
+        "group": "servers",
+        "panel": "new",
+        "reveal": "always"
+      },
+      "options": {
+        "cwd": "C:/dev/projetos/uniVerse/api"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[my_unverse] Start All Services",
+      "dependsOn": [
+        "Start UI (Angular)",
+        "Start API (Spring Boot)"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
