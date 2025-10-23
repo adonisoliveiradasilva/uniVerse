@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Sidebar } from '../../shared/organisms/sidebar/sidebar';
 import { ShellHeader } from '../../shared/atoms/shell/shell-header/shell-header';
 import { FormModalTemplate } from '../form-modal-template/form-modal-template';
+import { Loading } from '../../shared/atoms/loading/loading';
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, Sidebar, ShellHeader, FormModalTemplate],
+  imports: [RouterOutlet, Sidebar, ShellHeader, FormModalTemplate, Loading],
   templateUrl: './shell.html',
   styleUrl: './shell.scss'
 })
