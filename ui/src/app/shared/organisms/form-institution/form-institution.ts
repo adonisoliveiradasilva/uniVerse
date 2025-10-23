@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { FormBus } from '../../../services/rxjs/form-bus/form-bus';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IDepartment } from '../../../core/models/entitys/IDepartment.model';
+import { ITableRow } from '../../../core/models/table.model';
 
 @Component({
   selector: 'app-form-institution',
@@ -26,17 +27,17 @@ export class FormInstitution {
 
   form!: FormGroup;
 
-  _rows: IDepartment[] = [
+  _rows: ITableRow[] = [
     {
-      id: 1,
+      id: 'DECEA',
       name: 'DECEA'
     },
     {
-      id: 2,
+      id: 'DECSI',
       name: 'DECSI'
     },
     {
-      id: 3,
+      id: 'DEELT',
       name: 'DEELT'
     }
   ]
@@ -66,8 +67,8 @@ export class FormInstitution {
         this._rows = [
           ...this._rows,
           {
-            id: this._rows.length + 1,
-            name: payload.data.nameDepartment // Agora podemos ter certeza que é nameDepartment
+            id: payload.data.acronymDepartment,
+            name: payload.data.nameDepartment
           }
         ];
         this._cdr.detectChanges();

@@ -20,7 +20,7 @@ export class TableTd {
   @Input() isLast: boolean = false;
   @Input() context!: TableContextType;
   @Input() isLastRow: boolean = false;
-  @Input() objectId!: number;
+  @Input() objectId!: string;
 
   TableTdType = TableTdType;
 

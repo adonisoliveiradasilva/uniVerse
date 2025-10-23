@@ -23,6 +23,7 @@ export class FormDepartment {
   ngOnInit() {
     this.form = this._formBuilder.group({
       nameDepartment: ['', [Validators.required, Validators.minLength(3)]],
+      acronymDepartment: ['', [Validators.required, Validators.minLength(3)]],
     });
 
     this._subscription.add(

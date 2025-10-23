@@ -1,7 +1,7 @@
 import { TableTdType } from "../types/table-td.type";
 
 export interface ITableRow {
-    id: number;
+    id: string;
     name: string;
 }
 

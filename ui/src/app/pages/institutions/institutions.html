@@ -1,3 +1,5 @@
 <div class="institutions-content">
-    <app-table [context]="TableContextEnum.Institution" [rows]="_rows" [columns]="_columns" [headers]="['Nome']"> </app-table>
+    <ng-container *ngIf="_rows$ | async as _rows;">
+        <app-table [context]="TableContextEnum.Institution" [rows]="_rows" [columns]="_columns" [headers]="['Nome']"> </app-table>
+    </ng-container>
 </div>
