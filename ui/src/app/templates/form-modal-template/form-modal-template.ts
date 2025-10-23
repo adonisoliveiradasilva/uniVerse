@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { TableContextEnum, TableContextType } from '../../core/types/table-context.type';
+import { TableAction, TableContextEnum, TableContextType } from '../../core/types/table-context.type';
 import { FormModal } from '../../services/rxjs/form-modal/form-modal';
 import { CommonModule } from '@angular/common';
 import { ShellHeader } from '../../shared/atoms/shell/shell-header/shell-header';
@@ -16,6 +16,7 @@ import { FormBus } from '../../services/rxjs/form-bus/form-bus';
 })
 export class FormModalTemplate {
   context: TableContextType | null = null;
+  action: TableAction | null = null;
   isOpen = false;
 
   private _formModalService = inject(FormModal)
@@ -62,7 +63,7 @@ export class FormModalTemplate {
   ngOnInit() {
     this._formModalService.modalStack$.subscribe(stack => {
       this.isOpen = stack.length > 0;
-      this.context = stack.at(-1) ?? null;
+      this.context = stack.at(-1)?.context ?? null;
     });
 
     this._formBusService.formPayload$.subscribe(payload => {

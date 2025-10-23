@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -22,7 +22,7 @@ export class FormInput implements OnInit {
   @Input() value: string = '';
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
-  @Input() width: string = '100%';
+  @Input() @HostBinding('style.width') width: string = '100%';
 
   private _showPassword: boolean = false;
   private _type: string = '';

@@ -1,24 +1,27 @@
 @use '../../../../../styles/mixins' as *;
 
-:host {
-    width: 100%;
-}
+// :host {
+//     background-color: yellow;
+// }
 
 .form-input-content{
     @include flex-column-left-top;
     @include gap-0_5;
     position: relative;
     color: var(--color-text-primary);
-
+    // background-color: blue;
+    width: 100%;
+    
     input {
         width: 100%;
         height: 2.5rem;
         box-sizing: border-box;
         border: none;
         background-color: var(--color-background-light);
+        // background-color: red;
         @include padding-1_5;
         @include border-radius-1;
-        padding-right: 5rem;
+        padding-right: 2rem;
         outline: none;
         transition: box-shadow 0.2s ease, border 0.2s ease;
         box-shadow: 0 0 0 2px transparent;

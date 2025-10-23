@@ -107,7 +107,7 @@ export class Table {
   }
 
   openCreateModal(): void {
-    this._formModalService.openModal(this.context);
+    this._formModalService.openModal(this.context, 'create');
   }
 
   updatePage(): void{

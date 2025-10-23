@@ -26,6 +26,7 @@ public class JdbcInstitutionRepository implements InstitutionRepository {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, institution.getName());
+            ps.setString(2, institution.getAcronym());
             return ps;
         });
         return institution;

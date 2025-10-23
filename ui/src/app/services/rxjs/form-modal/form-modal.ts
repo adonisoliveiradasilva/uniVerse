@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { TableContextType } from '../../../core/types/table-context.type';
+import { TableAction, TableContextType } from '../../../core/types/table-context.type';
+import { ITableContext } from '../../../core/models/table.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormModal {
-  private _modalStack = new BehaviorSubject<TableContextType[]>([]);
+  private _modalStack = new BehaviorSubject<ITableContext[]>([]);
   readonly modalStack$ = this._modalStack.asObservable();
 
-  openModal(context: TableContextType) {
+  openModal(context: TableContextType, action: TableAction) {
     const currentStack = this._modalStack.value;
-    this._modalStack.next([...currentStack, context]);
+    this._modalStack.next([...currentStack, { context, action }]);
   }
 
   closeModal() {
@@ -25,7 +26,7 @@ export class FormModal {
   //   this._modalStack.next([]);
   // }
 
-  get currentContext(): TableContextType | null {
+  get currentModal(): ITableContext | null {
     const stack = this._modalStack.value;
     return stack.length ? stack[stack.length - 1] : null;
   }
