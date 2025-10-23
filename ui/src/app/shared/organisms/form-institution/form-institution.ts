@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ITableRow } from '../../../core/models/table.model';
 import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
 import { CommonModule } from '@angular/common';
+import { AlertService } from '../../../services/rxjs/alert/alert';
 
 @Component({
   selector: 'app-form-institution',
@@ -22,7 +23,8 @@ export class FormInstitution {
   private _formBuilder = inject(FormBuilder);
   private _subscription = new Subscription();
   private _cdr = inject(ChangeDetectorRef);
-  private _formModalService = inject(FormModal)
+  private _formModalService = inject(FormModal);
+  private _alertService = inject(AlertService);
 
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
@@ -88,6 +90,8 @@ export class FormInstitution {
   private _handleSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      
+      this._alertService.warn('Por favor, preencha os campos corretamente. (Mínimo 3 caracteres)');
       return;
     }
 

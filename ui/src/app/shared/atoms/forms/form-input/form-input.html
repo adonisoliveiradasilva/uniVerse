@@ -1,6 +1,18 @@
 <div class="form-input-content">
     <span> {{ label }} </span>
-    <input [placeholder]="placeholder" [type]="inputType" [value]="value" (input)="onInput($event)" class="input-field" />
+
+    <input 
+      [placeholder]="placeholder" 
+      [type]="inputType" 
+      [value]="value" 
+      (input)="onInput($event)" 
+      (blur)="onTouched()"
+      class="input-field"
+      [class.is-invalid]="isInvalid"
+      [disabled]="disabled"
+      [required]="required"
+    />
+    
     <i class="fa-solid" 
         [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'" 
         (click)="onToggleEye()"

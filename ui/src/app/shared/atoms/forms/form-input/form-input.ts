@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, OnInit, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, HostBinding, Input, OnInit, forwardRef, inject, Injector } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 
 @Component({
   selector: 'app-form-input',
@@ -15,7 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ]
 })
-export class FormInput implements OnInit {
+export class FormInput implements OnInit, ControlValueAccessor { // Implementar ControlValueAccessor
   @Input() label!: string;
   @Input() placeholder: string = '';
   @Input() type: string = 'text';
@@ -27,8 +27,20 @@ export class FormInput implements OnInit {
   private _showPassword: boolean = false;
   private _type: string = '';
 
+  public ngControl: NgControl | null = null;
+
+  constructor(private _injector: Injector) {}
+
   ngOnInit(): void{
     this._type = this.type;
+    this.ngControl = this._injector.get(NgControl, null, { self: true, optional: true });
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
+
+  get isInvalid(): boolean {
+    return !!(this.ngControl?.invalid && (this.ngControl?.touched || this.ngControl?.dirty));
   }
 
   get showPassword(): boolean {
@@ -43,6 +55,7 @@ export class FormInput implements OnInit {
       const inputElement = event.target as HTMLInputElement;
     this.value = inputElement.value;
     this.onChange(this.value);
+    this.onTouched();
   }
 
   onToggleEye(): void{

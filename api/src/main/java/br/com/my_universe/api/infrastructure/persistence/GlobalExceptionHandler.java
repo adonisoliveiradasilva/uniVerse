@@ -12,8 +12,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
-        String message = "Erro de integridade de dados. Provavelmente um registro com a mesma chave já existe.";
-        // Em um cenário real, você poderia analisar a exceção para dar uma mensagem mais específica.
+        // String message = "Erro de integridade de dados. Provavelmente um registro com a mesma chave já existe.";
+        String message = ex.getMessage();
+
         ErrorResponse errorResponse = new ErrorResponse(
             HttpStatus.CONFLICT.value(),
             "Conflito de Dados",

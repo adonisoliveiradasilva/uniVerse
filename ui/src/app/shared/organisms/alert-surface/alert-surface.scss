@@ -1,0 +1,74 @@
+/* Estilização para os alertas (toasts)
+*/
+.alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000; /* Garante que fique acima de tudo */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alert-toast {
+  min-width: 280px;
+  max-width: 450px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  background-color: #333; /* Cor padrão */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out;
+  transition: opacity 0.3s ease;
+}
+
+.alert-message {
+  flex-grow: 1;
+  padding-right: 1rem;
+}
+
+.alert-dismiss {
+  background: none;
+  border: none;
+  color: inherit; /* Herda a cor do texto (branco ou preto) */
+  font-size: 1.3rem;
+  font-weight: bold;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* Cores por tipo */
+.alert-success {
+  background-color: #28a745; /* Verde */
+}
+.alert-error {
+  background-color: #dc3545; /* Vermelho */
+}
+.alert-warning {
+  background-color: #ffc107; /* Amarelo */
+  color: #333; /* Texto escuro para contraste */
+}
+.alert-info {
+  background-color: #17a2b8; /* Azul */
+}
+
+/* Animação de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

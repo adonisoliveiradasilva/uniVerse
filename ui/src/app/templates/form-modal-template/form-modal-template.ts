@@ -78,7 +78,9 @@ export class FormModalTemplate {
               name: payload.data.nameInstitution,
               acronym: payload.data.acronymInstitution
             };
-            this._institutionService.createInstitution(institutionData).subscribe();
+            this._institutionService.createInstitution(institutionData).subscribe({
+              next: () => this.close()
+            });
             break;
         }
       }
