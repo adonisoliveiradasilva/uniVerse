@@ -7,6 +7,7 @@ import { FormInstitution } from '../../shared/organisms/form-institution/form-in
 import { FormDepartment } from '../../shared/organisms/form-department/form-department';
 import { Button } from '../../shared/atoms/buttons/button/button';
 import { FormBus } from '../../services/rxjs/form-bus/form-bus';
+import { InstitutionService } from '../../services/api/institution/institution';
 
 @Component({
   selector: 'app-form-modal-template',
@@ -21,6 +22,7 @@ export class FormModalTemplate {
 
   private _formModalService = inject(FormModal)
   private _formBusService = inject(FormBus);
+  private _institutionService = inject(InstitutionService);
 
   get getTitle(): string{
     switch (this.context){
@@ -62,12 +64,24 @@ export class FormModalTemplate {
 
   ngOnInit() {
     this._formModalService.modalStack$.subscribe(stack => {
-      this.isOpen = stack.length > 0;
-      this.context = stack.at(-1)?.context ?? null;
+      const currentModal = stack.at(-1);
+      this.isOpen = !!currentModal;
+      this.context = currentModal?.context ?? null;
+      this.action = currentModal?.action ?? null;
     });
 
     this._formBusService.formPayload$.subscribe(payload => {
-      // console.log('📦 Payload recebido do formulário:', payload);
+      if (payload && this.action === 'create') {
+        switch (payload.source) {
+          case TableContextEnum.Institution:
+            const institutionData = {
+              name: payload.data.nameInstitution,
+              acronym: payload.data.acronymInstitution
+            };
+            this._institutionService.createInstitution(institutionData).subscribe();
+            break;
+        }
+      }
     })
   }
 

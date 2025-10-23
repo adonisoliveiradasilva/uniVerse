@@ -1,6 +1,7 @@
 package br.com.my_universe.api.application.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import br.com.my_universe.api.application.ports.InstitutionRepository;
 import br.com.my_universe.api.domain.Institution;
@@ -16,6 +17,11 @@ public class InstitutionServiceImpl {
     }
 
     public Institution createInstitution(Institution university) {
+        // Validação proativa para verificar se a instituição já existe
+        institutionRepository.findByAcronym(university.getAcronym()).ifPresent(i -> {
+            throw new DataIntegrityViolationException("Instituição com a sigla '" + university.getAcronym() + "' já existe.");
+        });
+
         // Aqui poderiam entrar regras de negócio, ex:
         if (university.getAcronym().isEmpty()) {
             throw new IllegalArgumentException("Acronimo não pode ser vazio");

@@ -29,7 +29,8 @@ public class JdbcInstitutionRepository implements InstitutionRepository {
             ps.setString(2, institution.getAcronym());
             return ps;
         });
-        return institution;
+        return findByAcronym(institution.getAcronym())
+                .orElseThrow(() -> new RuntimeException("Falha ao buscar instituição recém-criada com o acrônimo: " + institution.getAcronym()));
     }
 
     @Override
@@ -40,8 +41,8 @@ public class JdbcInstitutionRepository implements InstitutionRepository {
 
     @Override
     public Optional<Institution> findByAcronym(String acronym) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByAcronym'");
+        String sql = "SELECT * FROM tb_institutions WHERE acronym = ?";
+        return jdbcTemplate.query(sql, new InstitutionRowMapper(), acronym).stream().findFirst();
     }
 
     @Override
