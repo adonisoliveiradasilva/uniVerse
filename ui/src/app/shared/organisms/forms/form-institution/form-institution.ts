@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Output } from '@angular/core';
 import { FormInput } from '../../../atoms/forms/form-input/form-input';
 import { Divider } from '../../../atoms/divider/divider';
 import { TableTdType } from '../../../../core/types/table-td.type';
@@ -65,8 +65,8 @@ export class FormInstitution {
       acronymInstitution: ['', [Validators.required, Validators.minLength(3)]],
     });
 
-    this._formModalService.modalStack$.subscribe(stack => {
-      const currentModal = stack.at(-1);
+    // this._formModalService.modalStack$.subscribe(stack => {
+      const currentModal = this._formModalService.currentModal;      
       this.action = currentModal?.action ?? null;
       this.identifier = currentModal?.identifier ?? null;
 
@@ -75,12 +75,9 @@ export class FormInstitution {
         this._loadEntityData(this.identifier as string);
       } else {
         this.form.get('acronymInstitution')?.enable();
+        this._formModalService.setNameConfirm(null);
       }
-    });
-
-    this._formModalService.modalStack$.subscribe(stack => {
-      this.action = stack.at(-1)?.action ?? null;
-    });
+    // });
 
     this._subscription.add(
       this._formBusService.submitForm$.subscribe(() => {
@@ -115,6 +112,7 @@ export class FormInstitution {
           nameInstitution: institution.name,
           acronymInstitution: institution.acronym
         });
+        this._formModalService.setNameConfirm(institution.name);        
         this.form.get('acronymInstitution')?.disable();
       });
   }

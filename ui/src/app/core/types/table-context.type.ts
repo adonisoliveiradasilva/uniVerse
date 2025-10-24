@@ -2,7 +2,6 @@ export type TableContextType = 'institution' | 'courses' | 'subjects' | 'user' |
 
 export type TableAction = 'create' | 'edit' | 'delete';
 
-
 export enum TableContextEnum {
   Institution = 'institution',
   Courses = 'courses',

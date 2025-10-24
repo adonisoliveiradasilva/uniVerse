@@ -21,9 +21,10 @@ export class FormModalTemplate {
   action: TableAction | null = null;
   isOpen = false;
   title = '';
-  itemData: any = null;
   subtitle = '';
-  nameConfirm = ''
+  nameConfirm: string | null = null;
+  identifier: string | null = null;
+
   private _formModalService = inject(FormModal)
   private _formBusService = inject(FormBus);
   private _institutionService = inject(InstitutionService);
@@ -38,11 +39,12 @@ export class FormModalTemplate {
       if(currentModal){
         this.context = currentModal.context;
         this.action = currentModal?.action ?? null;
+        this.identifier = currentModal?.identifier ?? null;
+        this.nameConfirm = currentModal.nameConfirm ?? null;
       }
       this.isOpen = !!currentModal;
       this.title = this.resolveTitle(this.context, this.action);
       this.subtitle = this.resolveSubtitle(this.context, this.action);
-      this.nameConfirm = this.action === 'delete' ? this.itemData?.name : '';
     });
 
     this._formBusService.formPayload$.subscribe(payload => {
@@ -67,6 +69,16 @@ export class FormModalTemplate {
             };
             this._institutionService.updateInstitution(institutionData).subscribe({
               next: () => this.close()
+            });
+            break;
+        }
+      }else if (payload && this.action === 'delete') {
+        switch (payload.source) {
+          case TableContextEnum.Institution:
+            this._institutionService.deleteInstitution(this.identifier as string).subscribe({
+              next: () => {
+                this._formModalService.closeAll();
+              }
             });
             break;
         }
@@ -155,7 +167,11 @@ export class FormModalTemplate {
   }
 
   openDelete(){
-    this._formModalService.openModal(this.context, 'delete', this.itemData);
+    this._formModalService.openModal(this.context, 'delete', this.identifier, this.nameConfirm);
+  }
+
+  confirmDelete() {
+    this._formBusService.triggerSubmit();
   }
 
   save() {

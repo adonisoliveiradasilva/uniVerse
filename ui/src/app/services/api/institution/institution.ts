@@ -79,4 +79,19 @@ export class InstitutionService {
       })
     );
   }
+
+  public deleteInstitution(acronym: string): Observable<IInstitution> {
+    return this._http.delete<IApiSingleResponse<IInstitution>>(`${this._apiUrl}/${acronym}`).pipe(
+      map(response => response.data),
+      tap(deletedInstitution => {
+        this._alertService.success(`Instituição "${deletedInstitution.name}" deletada com sucesso!`);
+        this.fetchInstitutions().subscribe();
+      }),
+      catchError(error => {
+        const errorMessage = error?.error?.message || `Falha ao deletar instituição ${acronym}.`;
+        this._alertService.error(errorMessage);
+        return throwError(() => error);
+      })
+    );
+  }
 }

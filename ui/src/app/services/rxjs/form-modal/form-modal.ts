@@ -10,9 +10,9 @@ export class FormModal {
   private _modalStack = new BehaviorSubject<ITableContext[]>([]);
   readonly modalStack$ = this._modalStack.asObservable();
 
-  openModal(context: TableContextType, action: TableAction, identifier: string = '') {
+  openModal(context: TableContextType, action: TableAction, identifier: string | null = null, nameConfirm: string | null = null) {
     const currentStack = this._modalStack.value;
-    this._modalStack.next([...currentStack, { context, action, identifier }]);
+    this._modalStack.next([...currentStack, { context, action, identifier, nameConfirm }]);
   }
 
   closeModal() {
@@ -22,9 +22,30 @@ export class FormModal {
     }
   }
 
-  // closeAll() {
-  //   this._modalStack.next([]);
-  // }
+  closeAll() {
+    this._modalStack.next([]);
+  }
+
+  setNameConfirm(name: string | null) {
+    const currentStack = this._modalStack.value;
+    if (currentStack.length === 0) {
+      return;
+    }
+
+    const currentModal = currentStack[currentStack.length - 1];
+
+    const updatedModal: ITableContext = {
+      ...currentModal,
+      nameConfirm: name
+    };
+
+    const newStack = [
+      ...currentStack.slice(0, -1),
+      updatedModal
+    ];
+
+    this._modalStack.next(newStack);
+  }
 
   get currentModal(): ITableContext | null {
     const stack = this._modalStack.value;
