@@ -1,9 +1,5 @@
 @use '../../../../../styles/mixins' as *;
 
-// :host {
-//     background-color: yellow;
-// }
-
 .form-input-content{
     @include flex-column-left-top;
     @include gap-0_5;
@@ -48,4 +44,40 @@
         cursor: pointer;
     }
 
+    .fa-lock{
+        cursor: default;
+        color: var(--color-surface-destak)
+    }
+
+    .input-loading{
+        @include padding-1_5;
+        @include border-radius-1;
+        width: 100%;
+        height: 2.5rem;
+        background-color: var(--color-background-secondary);
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -50%;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, var(--color-background-modal), transparent);
+            animation: shimmer 1.2s infinite;
+        }
+    }
+
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(150%);
+    }
 }

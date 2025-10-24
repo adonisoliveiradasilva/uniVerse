@@ -22,6 +22,7 @@ export class FormInput implements OnInit, ControlValueAccessor { // Implementar 
   @Input() value: string = '';
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
+  @Input() loading: boolean = false;
   @Input() @HostBinding('style.width') width: string = '100%';
 
   private _showPassword: boolean = false;

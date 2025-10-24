@@ -1,7 +1,19 @@
 <form [formGroup]="form" class="form-entity-content">
     <div class="form-entity-row">
-        <app-form-input [label]="'Nome'" formControlName="nameInstitution" [width]="'80%'"></app-form-input>
-        <app-form-input [label]="'Sigla'" formControlName="acronymInstitution" [width]="'20%'"></app-form-input>
+        <app-form-input 
+            [label]="'Nome'" 
+            formControlName="nameInstitution" 
+            [width]="'80%'"
+            [loading]="isLoading"
+            >
+        </app-form-input>
+        <app-form-input 
+            [label]="'Sigla'" 
+            formControlName="acronymInstitution" 
+            [width]="'20%'"
+            [loading]="isLoading"
+            >
+        </app-form-input>
     </div>
     <ng-container *ngIf="action !== 'create'">
         <app-divider [label]="'Departamentos'"></app-divider>

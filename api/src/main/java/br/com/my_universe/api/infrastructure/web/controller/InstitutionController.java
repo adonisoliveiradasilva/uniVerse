@@ -13,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/institutions")
@@ -30,14 +31,30 @@ private final InstitutionServiceImpl institutionService;
         institution.setName(request.getName());
         institution.setAcronym(request.getAcronym());
         
-
-
         Institution createdInstitution = institutionService.createInstitution(institution);
         InstitutionResponse dto = toResponse(createdInstitution);
         
         ApiResponse<InstitutionResponse> response = new ApiResponse<>(dto);
 
         return ResponseEntity.created(URI.create("/api/institutions/" + dto.getAcronym())).body(response);
+    }
+
+    @PutMapping("/{acronym}")
+    public ResponseEntity<ApiResponse<InstitutionResponse>> updateInstitution(
+            @PathVariable String acronym, 
+            @RequestBody InstitutionRequest request) {
+
+        Institution institutionDetails = new Institution();
+        institutionDetails.setName(request.getName());
+        institutionDetails.setAcronym(request.getAcronym());
+        
+        Institution updatedInstitution = institutionService.updateInstitution(acronym, institutionDetails);
+
+        InstitutionResponse dto = toResponse(updatedInstitution);
+        
+        ApiResponse<InstitutionResponse> response = new ApiResponse<>(dto);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{acronym}")

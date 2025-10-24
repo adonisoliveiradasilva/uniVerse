@@ -6,9 +6,9 @@ import java.util.Optional;
 import br.com.my_universe.api.domain.Institution;
 
 public interface InstitutionRepository {
-    Institution save(Institution Institution);
+    Institution save(Institution institution);
     Optional<Institution> findByAcronym(String acronym);
     List<Institution> findAll();
-    Institution update(Institution university);
+    Institution update(String originalAcronym, Institution institution);
     void deleteByAcronym(String acronym);
 }

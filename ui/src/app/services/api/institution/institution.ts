@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, tap, throwError, delay } from 'rxjs';
 import { IApiResponse, IApiSingleResponse } from '../../../core/models/api-response.model';
 import { ITableRow } from '../../../core/models/table.model';
 import { IInstitution } from '../../../core/models/entitys/IInstitution.model';
@@ -22,11 +22,24 @@ export class InstitutionService {
   }
 
   public fetchInstitutions(): Observable<ITableRow[]> {
-    return this._http.get<IApiResponse<ITableRow>>(this._apiUrl).pipe(
-      map(response => response.data),
+    return this._http.get<IApiResponse<IInstitution>>(this._apiUrl).pipe(
+      map(response =>  response.data.map(item => ({
+          id: item.acronym,
+          name: item.name
+        }))),
       tap(data => {
         this._institutions$.next(data);
-        console.log('Instituições carregadas:', data);
+      })
+    );
+  }
+
+  public getInstitutionByAcronym(acronym: string): Observable<IInstitution> {
+    return this._http.get<IApiSingleResponse<IInstitution>>(`${this._apiUrl}/${acronym}`).pipe(
+      map(response => response.data),
+      catchError(error => {
+        const errorMessage = error?.error?.message || `Falha ao carregar instituição ${acronym}.`;
+        this._alertService.error(errorMessage);
+        return throwError(() => error);
       })
     );
   }
@@ -37,7 +50,7 @@ export class InstitutionService {
       
       tap(novaInstituicao => {
         this._alertService.success(`Instituição "${novaInstituicao.name}" criada com sucesso!`);
-        this.fetchInstitutions().subscribe(); // Recarrega a lista
+        this.fetchInstitutions().subscribe();
       }),
       
       catchError(error => {
@@ -45,6 +58,24 @@ export class InstitutionService {
         this._alertService.error(errorMessage);
         
         return throwError(() => error); 
+      })
+    );
+  }
+
+  public updateInstitution(institution: Pick<IInstitution, 'name' | 'acronym'>): Observable<IInstitution> {
+    return this._http.put<IApiSingleResponse<IInstitution>>(`${this._apiUrl}/${institution.acronym}`, institution).pipe(
+      map(response => response.data),
+      tap(updatedInstituicao => {
+        this._alertService.success(`Instituição "${updatedInstituicao.name}" atualizada com sucesso!`);
+        this.fetchInstitutions().subscribe();
+      }),
+      catchError(error => {
+        let errorMessage = 'Falha ao atualizar instituição.';
+        if (error.status === 400) {
+          errorMessage = error.error?.message || 'Dados inválidos.';
+        }
+        this._alertService.error(errorMessage);
+        return throwError(() => error);
       })
     );
   }

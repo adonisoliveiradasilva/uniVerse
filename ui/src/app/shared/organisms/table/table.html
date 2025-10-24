@@ -17,8 +17,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of getPaginatedRows; let isLastRow = last" app-table-row [row]="row" [columns]="columns"
-            [context]="context" [isLastRow]="isLastRow"></tr>
+          <tr *ngFor="let row of getPaginatedRows; let isLastRow = last" 
+            (click)="onRowClick(row)" 
+            app-table-row 
+            [row]="row" 
+            [columns]="columns"
+            [context]="context" 
+            [isLastRow]="isLastRow"></tr>
         </tbody>
       </table>
 

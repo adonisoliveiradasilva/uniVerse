@@ -5,18 +5,13 @@
 
   <div class="form-modal-template-content" (click)="$event.stopPropagation()">
     <div class="form-modal-template-content-header">
-      <app-shell-header [title]="getTitle" [subtitle]="getSubtitle"></app-shell-header>
+      <app-shell-header [title]="title" [subtitle]="subtitle"></app-shell-header>
       <i class="fas fa-xmark" (click)="close()"></i>
     </div>
 
     <div class="form-modal-template-content-display">
-      <!-- <ng-container [ngSwitch]="context">
-        <app-form-institution *ngSwitchCase="getTableContextEnum.Institution"></app-form-institution>
-        <app-form-department *ngSwitchCase="getTableContextEnum.Department"></app-form-department>
-      </ng-container> -->
         <app-form-institution [hidden]="context !== getTableContextEnum.Institution">></app-form-institution>
         <app-form-department [hidden]="context !== getTableContextEnum.Department"></app-form-department>
-
     </div>
 
     <div class="form-modal-template-buttons">

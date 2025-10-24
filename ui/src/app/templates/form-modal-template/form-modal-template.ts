@@ -19,46 +19,14 @@ export class FormModalTemplate {
   context: TableContextType | null = null;
   action: TableAction | null = null;
   isOpen = false;
+  title = '';
+  subtitle = '';
 
   private _formModalService = inject(FormModal)
   private _formBusService = inject(FormBus);
   private _institutionService = inject(InstitutionService);
 
-  get getTitle(): string{
-    switch (this.context){
-      case TableContextEnum.Institution:
-        return "Criar nova Instituição"
-      case TableContextEnum.Courses:
-        return "Criar novo Curso"
-      case TableContextEnum.Subjects:
-        return "Criar nova Disciplina"
-      case TableContextEnum.User:
-        return "Criar novo Usuário"
-      case TableContextEnum.Department:
-        return "Criar novo Departamento"
-      default:
-        return ''
-    }
-  }
-
-  get getSubtitle(): string{
-    switch (this.context){
-      case TableContextEnum.Institution:
-        return "Preencha as informações da nova Instituição"
-      case TableContextEnum.Courses:
-        return "Preencha as informações do novo Curso"
-      case TableContextEnum.Subjects:
-        return "Preencha as informações da nova Disciplina"
-      case TableContextEnum.User:
-        return "Preencha as informações do novo Usuário"
-      case TableContextEnum.Department:
-        return "Preencha as informações do novo Departamento"
-      default:
-        return ''
-    }
-  }
-
-  get getTableContextEnum(): typeof TableContextEnum{
+  get getTableContextEnum(): typeof TableContextEnum {
     return TableContextEnum
   }
 
@@ -68,6 +36,8 @@ export class FormModalTemplate {
       this.isOpen = !!currentModal;
       this.context = currentModal?.context ?? null;
       this.action = currentModal?.action ?? null;
+      this.title = this.resolveTitle(this.context, this.action);
+      this.subtitle = this.resolveSubtitle(this.context, this.action);
     });
 
     this._formBusService.formPayload$.subscribe(payload => {
@@ -83,8 +53,96 @@ export class FormModalTemplate {
             });
             break;
         }
+      }else if (payload && this.action === 'edit') {
+        switch (payload.source) {
+          case TableContextEnum.Institution:
+            const institutionData = {
+              name: payload.data.nameInstitution,
+              acronym: payload.data.acronymInstitution
+            };
+            this._institutionService.updateInstitution(institutionData).subscribe({
+              next: () => this.close()
+            });
+            break;
+        }
       }
     })
+  }
+
+  resolveTitle(context: TableContextType | null, action: TableAction | null): string {
+    if (!context) return '';
+    const map: Record<TableContextType, { create: string; edit: string; delete: string; default: string }> = {
+      [TableContextEnum.Institution]: {
+        create: "Criar nova Instituição",
+        edit: "Editar Instituição",
+        delete: "Deletar Instituição",
+        default: "Criar nova Instituição"
+      },
+      [TableContextEnum.Courses]: {
+        create: "Criar novo Curso",
+        edit: "Editar Curso",
+        delete: "Deletar Curso",
+        default: "Criar novo Curso"
+      },
+      [TableContextEnum.Subjects]: {
+        create: "Criar nova Disciplina",
+        edit: "Editar Disciplina",
+        delete: "Deletar Disciplina",
+        default: "Criar nova Disciplina"
+      },
+      [TableContextEnum.User]: {
+        create: "Criar novo Usuário",
+        edit: "Editar Usuário",
+        delete: "Deletar Usuário",
+        default: "Criar novo Usuário"
+      },
+      [TableContextEnum.Department]: {
+        create: "Criar novo Departamento",
+        edit: "Editar Departamento",
+        delete: "Deletar Departamento",
+        default: "Criar novo Departamento"
+      },
+    };
+    const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';
+    return map[context][key] ?? '';
+  }
+
+  resolveSubtitle(context: TableContextType | null, action: TableAction | null): string {
+    if (!context) return '';
+    const map: Record<TableContextType, { create: string; edit: string; delete: string; default: string }> = {
+      [TableContextEnum.Institution]: {
+        create: "Preencha as informações da nova Instituição",
+        edit: "Preencha as informações da Instituição",
+        delete: "Confirme a exclusão da Instituição",
+        default: "Preencha as informações da nova Instituição"
+      },
+      [TableContextEnum.Courses]: {
+        create: "Preencha as informações do novo Curso",
+        edit: "Preencha as informações do Curso",
+        delete: "Confirme a exclusão do Curso",
+        default: "Preencha as informações do novo Curso"
+      },
+      [TableContextEnum.Subjects]: {
+        create: "Preencha as informações da nova Disciplina",
+        edit: "Preencha as informações da Disciplina",
+        delete: "Confirme a exclusão da Disciplina",
+        default: "Preencha as informações da nova Disciplina"
+      },
+      [TableContextEnum.User]: {
+        create: "Preencha as informações do novo Usuário",
+        edit: "Preencha as informações do Usuário",
+        delete: "Confirme a exclusão do Usuário",
+        default: "Preencha as informações do novo Usuário"
+      },
+      [TableContextEnum.Department]: {
+        create: "Preencha as informações do novo Departamento",
+        edit: "Preencha as informações do Departamento",
+        delete: "Confirme a exclusão do Departamento",
+        default: "Prenecha as informações do novo Departamento"
+      },
+    };
+    const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';
+    return map[context][key] ?? '';
   }
 
   close() {
@@ -94,6 +152,4 @@ export class FormModalTemplate {
   save() {
     this._formBusService.triggerSubmit();
   }
-
-
 }

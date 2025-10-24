@@ -13,4 +13,5 @@ export interface ITableColumn {
 export interface ITableContext {
     context: TableContextType,
     action: TableAction,
+    identifier?: string
 }

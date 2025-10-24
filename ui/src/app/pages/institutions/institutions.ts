@@ -20,7 +20,6 @@ export class Institutions {
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
-  private _alertService = inject(AlertService)
   private _institutionService = inject(InstitutionService);
   public _rows$!: Observable<ITableRow[]>;
 
@@ -33,9 +32,6 @@ export class Institutions {
   ]
 
   ngOnInit() {
-    this._alertService.success("Instituição cadastrada com sucesso");
-    this._alertService.error("Instituição não cadastrada com sucesso");
-    this._alertService.warn("Nome da instituição precisa ter mais de 3 letras");
     this._rows$ = this._institutionService.getInstitutions();
   }
 }

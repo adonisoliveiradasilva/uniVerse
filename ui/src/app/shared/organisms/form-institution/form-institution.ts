@@ -4,14 +4,14 @@ import { Divider } from '../../atoms/divider/divider';
 import { TableTdType } from '../../../core/types/table-td.type';
 import { TableAction, TableContextEnum } from '../../../core/types/table-context.type';
 import { Table } from '../table/table';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize, take } from 'rxjs';
 import { FormBus } from '../../../services/rxjs/form-bus/form-bus';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ITableRow } from '../../../core/models/table.model';
 import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../services/rxjs/alert/alert';
-
+import { InstitutionService } from '../../../services/api/institution/institution'
 @Component({
   selector: 'app-form-institution',
   imports: [FormInput, Divider, Table, ReactiveFormsModule, CommonModule],
@@ -25,11 +25,14 @@ export class FormInstitution {
   private _cdr = inject(ChangeDetectorRef);
   private _formModalService = inject(FormModal);
   private _alertService = inject(AlertService);
+  private _institutionService = inject(InstitutionService);
 
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
   action: TableAction | null = null;
+  identifier: string | null = null;
+  isLoading: boolean = false;
 
   form!: FormGroup;
 
@@ -48,7 +51,6 @@ export class FormInstitution {
     }
   ]
 
-
   _columns = [ 
     {
       key: 'name',
@@ -61,6 +63,19 @@ export class FormInstitution {
     this.form = this._formBuilder.group({
       nameInstitution: ['', [Validators.required, Validators.minLength(3)]],
       acronymInstitution: ['', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this._formModalService.modalStack$.subscribe(stack => {
+      const currentModal = stack.at(-1);
+      this.action = currentModal?.action ?? null;
+      this.identifier = currentModal?.identifier ?? null;
+
+      this.form.reset();
+      if (this.action === 'edit' && this.identifier) {
+        this._loadEntityData(this.identifier as string);
+      } else {
+        this.form.get('acronymInstitution')?.enable();
+      }
     });
 
     this._formModalService.modalStack$.subscribe(stack => {
@@ -87,6 +102,23 @@ export class FormInstitution {
     })
   }
 
+  private _loadEntityData(acronym: string) {
+    this.isLoading = true;
+    this._institutionService.getInstitutionByAcronym(acronym).pipe(
+      take(1),
+      finalize(() => {
+        this.isLoading = false;
+        this._cdr.detectChanges();
+      })
+    ).subscribe(institution => {
+        this.form.patchValue({
+          nameInstitution: institution.name,
+          acronymInstitution: institution.acronym
+        });
+        this.form.get('acronymInstitution')?.disable();
+      });
+  }
+
   private _handleSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -95,9 +127,18 @@ export class FormInstitution {
       return;
     }
 
+    const acronymControl = this.form.get('acronymInstitution');
+    if (acronymControl?.disabled) {
+      acronymControl.enable();
+    }
+
     const payload = {
       source: TableContextEnum.Institution,
       data: this.form.value
+    }
+
+    if (this.action === 'edit') {
+       acronymControl?.disable();
     }
 
     this._formBusService.sendPayload(payload);

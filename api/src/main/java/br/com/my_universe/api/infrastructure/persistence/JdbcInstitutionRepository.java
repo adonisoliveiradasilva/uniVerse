@@ -35,7 +35,7 @@ public class JdbcInstitutionRepository implements InstitutionRepository {
 
     @Override
     public List<Institution> findAll() {
-        String sql = "SELECT * FROM tb_institutions";
+        String sql = "SELECT * FROM tb_institutions ORDER BY name ASC";
         return jdbcTemplate.query(sql, new InstitutionRowMapper());
     }
 
@@ -46,9 +46,17 @@ public class JdbcInstitutionRepository implements InstitutionRepository {
     }
 
     @Override
-    public Institution update(Institution university) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public Institution update(String originalAcronym, Institution university) {
+        String sql = "UPDATE tb_institutions SET name = ?, acronym = ? WHERE acronym = ?";
+        int updatedRows = jdbcTemplate.update(sql,
+                university.getName(),
+                university.getAcronym(),
+                originalAcronym);
+
+        if (updatedRows > 0) {
+            return university;
+        }
+        throw new RuntimeException("Falha ao atualizar a instituição com acrônimo: " + originalAcronym);
     }
 
     @Override

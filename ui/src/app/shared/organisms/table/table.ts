@@ -37,10 +37,6 @@ export class Table {
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    // this._filteredRows = [...this.rows];
-    // this.totalPages = Math.ceil(this._filteredRows.length / this.itemsPerPage);
-    // this.updatePage();
-
     this.searchSubject
       .pipe(
         debounceTime(300),
@@ -88,6 +84,10 @@ export class Table {
   onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.searchSubject.next(value);
+  }
+
+  onRowClick(row: ITableRow){
+    this._formModalService.openModal(this.context, 'edit', row.id);
   }
 
   private filterRows(term: string): void {
