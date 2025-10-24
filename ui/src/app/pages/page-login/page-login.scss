@@ -9,13 +9,13 @@
     background-repeat: no-repeat;
 
     .page-login-content{
+        @include flex-column-center-top;
+        @include gap-3;
         width: 100vw;
         height: 100vh;
         background-color: var(--color-surface-overlay);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        @include flex-column-center-top;
-        @include gap-3;
     }
 }

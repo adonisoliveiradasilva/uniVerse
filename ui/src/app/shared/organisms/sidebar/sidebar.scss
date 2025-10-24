@@ -20,19 +20,11 @@
 }
 
 .sidebar-content{
-    width: clamp(300px, 30vh, 30vw);
     @include flex-column-center-top;
+    width: clamp(300px, 30vh, 30vw);
     transition: all 0.3s ease;
 
     .side-bar-content-subitem-toggle{
-        * {
-            color: var(--color-text-destak);  
-        }
-
-        i{
-            width: 1rem;
-        }
-        
         @include flex-row-center-left;
         @include padding-2;
         @include border-radius-3;
@@ -40,6 +32,14 @@
         align-self: flex-start;
         margin-left: 1rem;
 
+        * {
+            color: var(--color-text-destak);  
+        }
+
+        i{
+            width: 1rem;
+        }
+    
         &:hover{
             cursor: pointer;
             background-color: var(--color-text-destak); 
@@ -61,11 +61,11 @@
     }
 
     .sidebar-content-section{
+        @include padding-2;
         @include flex-column-left-top;
         @include gap-3;
         width: 100%;
 
-        @include padding-2;
     }   
 }
 

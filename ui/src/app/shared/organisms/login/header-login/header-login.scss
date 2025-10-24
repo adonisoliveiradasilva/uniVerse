@@ -1,8 +1,8 @@
 @use '../../../../../styles/mixins' as *;
 
 .header-login-content{
-    width: 12rem;
     @include flex-row-center;
+    width: 12rem;
     height: 3rem;
     background-color: var(--color-background-default);
 }

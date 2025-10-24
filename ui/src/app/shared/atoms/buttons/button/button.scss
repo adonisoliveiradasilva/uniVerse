@@ -1,11 +1,11 @@
 @use '../../../../../styles/mixins' as *;
 
 button{
+    @include flex-row-center;
     background-color: var(--color-text-destak);
     border: none;
     color: var(--color-text-light);
     padding: .8rem;
-    @include flex-row-center;
     gap: .5rem;
     height: 2rem;
     border-radius: .4rem;

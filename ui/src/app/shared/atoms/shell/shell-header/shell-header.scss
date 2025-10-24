@@ -5,9 +5,9 @@
 }
 
 .shell-header-content{
+    @include flex-column-left-top;
     width: auto;
     max-width: 70%;
-    @include flex-column-left-top;
     padding: 3rem 0  0 2rem;
     height: auto;
     position: relative;

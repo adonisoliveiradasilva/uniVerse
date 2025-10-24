@@ -25,14 +25,6 @@
     }
 
     .sidebar-item-content-subitem{
-        * {
-            color: var(--color-text-destak);  
-        }
-
-        i{
-            width: 1rem;
-        }
-        
         @include flex-row-center-left;
         @include gap-2;
         @include padding-2;
@@ -40,6 +32,14 @@
         width: 100%;
         background-color: transparent;
         border: none;
+        
+        * {
+            color: var(--color-text-destak);  
+        }
+
+        i{
+            width: 1rem;
+        }
 
         &:hover, &.active{
             cursor: pointer;
