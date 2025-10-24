@@ -1,0 +1,45 @@
+@use '../../../../styles/mixins' as *;
+
+.alert-content{
+    @include flex-row-center-space-between;
+    @include padding-3;
+    @include gap-3;
+    @include border-radius-1;
+    @include shadow-dark;
+    width: clamp(320px, 20vh, 450px);
+    height: auto;
+    animation: slideIn 0.3s ease;
+
+    span, i{
+        @include font-size-small;
+    }
+
+    span{
+        width: 100%;
+    }
+
+    i{
+        cursor: pointer;
+    }
+}
+
+.alert-success {
+    background-color: var(--color-background-success);
+    color: var(--color-text-success);
+}
+.alert-error {
+    background-color: var(--color-background-error);
+    color: var(--color-text-error);}
+.alert-warning {
+    background-color: var(--color-background-warn);
+    color: var(--color-text-warn);
+}
+.alert-info {
+    background-color: var(--color-background-info);
+    color: var(--color-text-info);
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

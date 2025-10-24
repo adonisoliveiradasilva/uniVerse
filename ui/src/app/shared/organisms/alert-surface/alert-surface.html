@@ -1,5 +1,11 @@
-<div class="alert-container">
-  <div *ngFor="let alert of alerts$ | async" 
+<div class="alert-surface-content">
+  <app-alert *ngFor="let alert of alerts$ | async" 
+    [class]="getAlertClass(alert.type)"
+    [message]="alert.message"
+    [id]="alert.id"
+  >
+  </app-alert>
+  <!-- <div *ngFor="let alert of alerts$ | async" 
        class="alert-toast" 
        [ngClass]="getAlertClass(alert.type)">
     
@@ -8,5 +14,5 @@
     <button class="alert-dismiss" (click)="dismiss(alert.id)">
       &times;
     </button>
-  </div>
+  </div> -->
 </div>

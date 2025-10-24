@@ -33,12 +33,16 @@ export class AlertService {
     this.showAlert(message, 'success', duration);
   }
 
-  public error(message: string, duration: number = 0): void {
+  public error(message: string, duration?: number): void {
     this.showAlert(message, 'error', duration);
   }
 
   public warn(message: string, duration?: number): void {
     this.showAlert(message, 'warning', duration);
+  }
+
+  public info(message: string, duration?: number): void {
+    this.showAlert(message, 'info', duration);
   }
 
   public dismissAlert(id: number): void {

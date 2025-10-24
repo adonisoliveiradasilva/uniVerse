@@ -18,7 +18,7 @@
 
 @mixin flex-row-center-space-between {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: space-between;
 }   
 
@@ -65,6 +65,10 @@
 
 @mixin shadow {
     box-shadow: 4px 4px 10px 0 var(--color-shadow);
+}
+
+@mixin shadow-dark {
+    box-shadow: 4px 4px 10px 0 var(--color-shadow-dark);
 }
 
 @mixin shadow-bottom {

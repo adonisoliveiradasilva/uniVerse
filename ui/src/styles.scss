@@ -11,14 +11,25 @@
     --color-background-secondary: #EFF3FF;
     --color-background-tertiary: #BDCAFF;
     --color-shadow: #F3F2FB;
+    --color-shadow-dark: #c5c3ce;
     --color-background-light: rgba(86, 95, 96, .08);
     --color-background-modal: rgba(116, 116, 116, 0.5);
     --image-background-login: url("./assets/background-login.jpeg");
+
+    --color-text-success: #14934b;
+    --color-background-success: #E8FDEC;
+    --color-text-error: #DD4C73;
+    --color-background-error: #FBE9E7;
+    --color-text-warn: #FA9C42;
+    --color-background-warn: #FFF2EA;
+    --color-text-info: #1986CF;
+    --color-background-info: #E8EFFD;
 }
 
 .dark-theme {
     --image-background-login: url("./assets/background-login.jpeg");
 }
+
 
 body, * {
     margin: 0;
