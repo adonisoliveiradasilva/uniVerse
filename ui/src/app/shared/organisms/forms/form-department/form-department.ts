@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormInput } from '../../atoms/forms/form-input/form-input';
+import { FormInput } from '../../../atoms/forms/form-input/form-input';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormBus } from '../../../services/rxjs/form-bus/form-bus';
+import { FormBus } from '../../../../services/rxjs/form-bus/form-bus';
 import { Subscription } from 'rxjs';
-import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
-import { TableContextEnum } from '../../../core/types/table-context.type';
+import { FormModal } from '../../../../services/rxjs/form-modal/form-modal';
+import { TableContextEnum } from '../../../../core/types/table-context.type';
 
 @Component({
   selector: 'app-form-department',

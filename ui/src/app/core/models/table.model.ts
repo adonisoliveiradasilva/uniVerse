@@ -10,8 +10,8 @@ export interface ITableColumn {
   header: string;            
   type: TableTdType;     
 }
-export interface ITableContext {
+export interface ITableContext{
     context: TableContextType,
     action: TableAction,
-    identifier?: string
+    identifier: string
 }

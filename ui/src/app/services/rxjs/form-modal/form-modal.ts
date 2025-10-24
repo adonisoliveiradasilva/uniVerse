@@ -10,7 +10,7 @@ export class FormModal {
   private _modalStack = new BehaviorSubject<ITableContext[]>([]);
   readonly modalStack$ = this._modalStack.asObservable();
 
-  openModal(context: TableContextType, action: TableAction, identifier?: any) {
+  openModal(context: TableContextType, action: TableAction, identifier: string = '') {
     const currentStack = this._modalStack.value;
     this._modalStack.next([...currentStack, { context, action, identifier }]);
   }

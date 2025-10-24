@@ -1,17 +1,17 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { FormInput } from '../../atoms/forms/form-input/form-input';
-import { Divider } from '../../atoms/divider/divider';
-import { TableTdType } from '../../../core/types/table-td.type';
-import { TableAction, TableContextEnum } from '../../../core/types/table-context.type';
-import { Table } from '../table/table';
+import { FormInput } from '../../../atoms/forms/form-input/form-input';
+import { Divider } from '../../../atoms/divider/divider';
+import { TableTdType } from '../../../../core/types/table-td.type';
+import { TableAction, TableContextEnum } from '../../../../core/types/table-context.type';
+import { Table } from '../../table/table';
 import { Subscription, finalize, take } from 'rxjs';
-import { FormBus } from '../../../services/rxjs/form-bus/form-bus';
+import { FormBus } from '../../../../services/rxjs/form-bus/form-bus';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ITableRow } from '../../../core/models/table.model';
-import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
+import { ITableRow } from '../../../../core/models/table.model';
+import { FormModal } from '../../../../services/rxjs/form-modal/form-modal';
 import { CommonModule } from '@angular/common';
-import { AlertService } from '../../../services/rxjs/alert/alert';
-import { InstitutionService } from '../../../services/api/institution/institution'
+import { AlertService } from '../../../../services/rxjs/alert/alert';
+import { InstitutionService } from '../../../../services/api/institution/institution'
 @Component({
   selector: 'app-form-institution',
   imports: [FormInput, Divider, Table, ReactiveFormsModule, CommonModule],

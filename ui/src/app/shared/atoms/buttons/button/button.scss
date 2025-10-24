@@ -22,7 +22,12 @@ button{
     }
 }
 
-.seccondary-button{
+.secondary-button{
     background-color: var(--color-text-light);  
     color: var(--color-text-destak);
+}
+
+.delete-button{
+    background-color: var(--color-background-error);  
+    color: var(--color-text-error);
 }

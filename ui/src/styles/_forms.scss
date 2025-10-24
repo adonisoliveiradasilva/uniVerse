@@ -8,11 +8,12 @@
 .form-entity-content{
     @include flex-column-center-top;
     @include gap-2;
+    @include padding-2;
     width: 100%;
     height: 100%;
 
     .form-entity-row{
-        @include flex-row-center-left;
+        @include flex-row-center;
         @include gap-2;
         width: 100%;
         height: auto;

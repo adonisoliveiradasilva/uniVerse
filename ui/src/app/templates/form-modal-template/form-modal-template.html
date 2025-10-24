@@ -9,14 +9,20 @@
       <i class="fas fa-xmark" (click)="close()"></i>
     </div>
 
-    <div class="form-modal-template-content-display">
-        <app-form-institution [hidden]="context !== getTableContextEnum.Institution">></app-form-institution>
-        <app-form-department [hidden]="context !== getTableContextEnum.Department"></app-form-department>
-    </div>
+    @if(action !== 'delete'){
+      <div class="form-modal-template-content-display">
+          <app-form-institution [hidden]="context !== getTableContextEnum.Institution">></app-form-institution>
+          <app-form-department [hidden]="context !== getTableContextEnum.Department"></app-form-department>
+      </div>
+    }@else{
+      <app-form-confirm-display-delete [name]="nameConfirm"></app-form-confirm-display-delete>
+    }
 
     <div class="form-modal-template-buttons">
-      <app-button label="Cancelar" icon="fa-ban" type="seccondary" (click)="close()"></app-button>
-      <app-button label="Salvar" icon="fa-floppy-disk" (click)="save()"></app-button>
+      <app-button label="Cancelar" icon="fa-ban" type="secondary" (click)="close()"></app-button>
+      <app-button label="Excluir" *ngIf="action == 'edit'" icon="fa-trash" type="delete" (click)="openDelete()"></app-button>
+      <app-button label="Salvar" *ngIf="action !== 'delete'" icon="fa-floppy-disk" (click)="save()"></app-button>
+      <app-button label="Confirmar Exclusão" *ngIf="action == 'delete'" icon="fa-trash" type="delete" (click)="save()"></app-button>
     </div>
   </div>
 </div>

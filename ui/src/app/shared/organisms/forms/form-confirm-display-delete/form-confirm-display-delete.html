@@ -1,0 +1,16 @@
+<div class="form-confirm-display-delete-content">
+    <div class="form-confirm-display-content-display">
+        {{ name }}
+    </div>
+
+    <form [formGroup]="form" class="form-entity-content">
+        <div class="form-entity-row">
+            <app-form-input 
+                [label]="'Confirme o nome no campo abaixo:'" 
+                formControlName="name" 
+                [width]="'100%'"
+                >
+            </app-form-input>
+        </div>
+    </form>
+</div>

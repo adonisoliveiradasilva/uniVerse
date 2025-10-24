@@ -1,0 +1,18 @@
+@use '../../../../../styles/_forms.scss' as *;
+@use '../../../../../styles/mixins' as *;;
+
+.form-confirm-display-delete-content{
+    @include padding-2;
+    @include flex-column-center-top;
+    width: 100%;
+    height: auto;
+ 
+    .form-confirm-display-content-display{
+        @include font-size-medium;
+        @include border-radius-1;
+        @include padding-1_5;
+        width: auto;
+        color: var(--color-text-info);
+        background-color: var(--color-background-info);
+    }
+}

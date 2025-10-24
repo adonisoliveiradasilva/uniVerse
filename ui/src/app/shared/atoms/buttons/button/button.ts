@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ButtonType } from '../../../../core/types/button-type.type';
 
 @Component({
   selector: 'app-button',
@@ -10,7 +11,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class Button {
   @Input() label: string = '';
   @Input() icon: string = '';
-  @Input() type: 'primary' | 'seccondary' = 'primary'
+  @Input() type: ButtonType = 'primary'
   @Output() buttonClick = new EventEmitter<void>();
 
   onClick(): void {
