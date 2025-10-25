@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { LoadingService } from '../../services/rxjs/loading/loading'; // Ajuste o caminho
+import { LoadingService } from '../../services/rxjs/loading-service/loading-service'; // Ajuste o caminho
 
 export const loadingInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,

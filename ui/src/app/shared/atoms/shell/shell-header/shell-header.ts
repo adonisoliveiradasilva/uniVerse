@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { NavigationService } from '../../../../services/rxjs/navigation/navigation';
+import { NavigationService } from '../../../../services/rxjs/navigation-service/navigation-service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 

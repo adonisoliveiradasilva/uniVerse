@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class FormBus {
+export class FormBusService {
   private _submitForm$ = new Subject<void>();
   private _formPayload$ = new Subject<any>();
 

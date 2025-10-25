@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FormModal } from './form-modal';
+import { LoadingService } from './loading-service';
 
-describe('FormModal', () => {
-  let service: FormModal;
+describe('Loading', () => {
+  let service: LoadingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FormModal);
+    service = TestBed.inject(LoadingService);
   });
 
   it('should be created', () => {

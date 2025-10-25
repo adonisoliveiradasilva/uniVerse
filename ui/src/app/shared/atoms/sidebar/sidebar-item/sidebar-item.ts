@@ -2,8 +2,8 @@ import { Component, inject, Input } from '@angular/core';
 import { SideBarItem, SideBarSection } from '../../../../core/models/side-bar-item.model';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { NavigationService } from '../../../../services/rxjs/navigation/navigation';
-import { SidebarService } from '../../../../services/rxjs/sidebar-service/sidebar.service';
+import { NavigationService } from '../../../../services/rxjs/navigation-service/navigation-service';
+import { SidebarService } from '../../../../services/rxjs/sidebar-service/sidebar-service.service';
 import { Subscription } from 'rxjs';
 
 @Component({

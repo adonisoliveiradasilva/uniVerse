@@ -1,25 +1,23 @@
 import { ChangeDetectorRef, Component, inject, Output } from '@angular/core';
 import { FormInput } from '../../../atoms/forms/form-input/form-input';
-import { Divider } from '../../../atoms/divider/divider';
 import { TableTdType } from '../../../../core/types/table-td.type';
 import { TableAction, TableContextEnum } from '../../../../core/types/table-context.type';
-import { Table } from '../../table/table';
 import { Subscription, finalize, take } from 'rxjs';
-import { FormBus } from '../../../../services/rxjs/form-bus/form-bus';
+import { FormBusService } from '../../../../services/rxjs/form-bus-service/form-bus-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ITableRow } from '../../../../core/models/table.model';
-import { FormModal } from '../../../../services/rxjs/form-modal/form-modal';
+import { FormModal } from '../../../../services/rxjs/form-modal-service/form-modal-service';
 import { CommonModule } from '@angular/common';
-import { AlertService } from '../../../../services/rxjs/alert/alert';
-import { InstitutionService } from '../../../../services/api/institution/institution'
+import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
+import { InstitutionService } from '../../../../services/api/institution-service/institution-service'
 @Component({
   selector: 'app-form-institution',
-  imports: [FormInput, Divider, Table, ReactiveFormsModule, CommonModule],
+  imports: [FormInput, ReactiveFormsModule, CommonModule],
   templateUrl: './form-institution.html',
   styleUrl: './form-institution.scss'
 })
 export class FormInstitution {
-  private _formBusService = inject(FormBus);
+  private _formBusService = inject(FormBusService);
   private _formBuilder = inject(FormBuilder);
   private _subscription = new Subscription();
   private _cdr = inject(ChangeDetectorRef);

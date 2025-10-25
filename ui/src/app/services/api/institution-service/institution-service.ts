@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, catchError, map, tap, throwError, delay } 
 import { IApiResponse, IApiSingleResponse } from '../../../core/models/api-response.model';
 import { ITableRow } from '../../../core/models/table.model';
 import { IInstitution } from '../../../core/models/entitys/IInstitution.model';
-import { AlertService } from '../../rxjs/alert/alert';
+import { AlertService } from '../../rxjs/alert-service/alert-service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { TableAction, TableContextEnum, TableContextType } from '../../core/types/table-context.type';
-import { FormModal } from '../../services/rxjs/form-modal/form-modal';
+import { FormModal } from '../../services/rxjs/form-modal-service/form-modal-service';
 import { CommonModule } from '@angular/common';
 import { ShellHeader } from '../../shared/atoms/shell/shell-header/shell-header';
 import { FormInstitution } from '../../shared/organisms/forms/form-institution/form-institution';
 import { Button } from '../../shared/atoms/buttons/button/button';
-import { FormBus } from '../../services/rxjs/form-bus/form-bus';
-import { InstitutionService } from '../../services/api/institution/institution';
+import { FormBusService } from '../../services/rxjs/form-bus-service/form-bus-service';
+import { InstitutionService } from '../../services/api/institution-service/institution-service';
 import { FormConfirmDisplayDelete } from '../../shared/organisms/forms/form-confirm-display-delete/form-confirm-display-delete';
 
 @Component({
@@ -25,7 +25,7 @@ export class FormModalTemplate {
   identifier: string | null = null;
 
   private _formModalService = inject(FormModal)
-  private _formBusService = inject(FormBus);
+  private _formBusService = inject(FormBusService);
   private _institutionService = inject(InstitutionService);
 
   get getTableContextEnum(): typeof TableContextEnum {

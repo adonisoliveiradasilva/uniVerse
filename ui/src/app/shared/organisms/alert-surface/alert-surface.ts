@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IAlert } from '../../../core/models/alert.model';
-import { AlertService } from '../../../services/rxjs/alert/alert';
+import { AlertService } from '../../../services/rxjs/alert-service/alert-service';
 import { Alert } from '../../atoms/alert/alert';
 
 @Component({

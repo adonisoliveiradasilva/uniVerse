@@ -3,7 +3,7 @@ import { SIDE_BAR_DATA } from '../../../core/data/side-bar.data';
 import { SideBarSection } from '../../../core/models/side-bar-item.model';
 import { CommonModule } from '@angular/common';
 import { SidebarItem } from '../../atoms/sidebar/sidebar-item/sidebar-item';
-import { SidebarService } from '../../../services/rxjs/sidebar-service/sidebar.service';
+import { SidebarService } from '../../../services/rxjs/sidebar-service/sidebar-service.service';
 import { Subscription } from 'rxjs';
 
 @Component({

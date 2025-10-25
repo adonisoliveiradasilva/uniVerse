@@ -2,8 +2,8 @@ import { Component, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { FormInput } from '../../../atoms/forms/form-input/form-input';
 import { Subscription } from 'rxjs';
-import { FormBus } from '../../../../services/rxjs/form-bus/form-bus';
-import { AlertService } from '../../../../services/rxjs/alert/alert'; 
+import { FormBusService } from '../../../../services/rxjs/form-bus-service/form-bus-service';
+import { AlertService } from '../../../../services/rxjs/alert-service/alert-service'; 
 import { TableContextType } from '../../../../core/types/table-context.type';
 
 @Component({
@@ -17,7 +17,7 @@ export class FormConfirmDisplayDelete {
   @Input() context!: TableContextType;
   
   private _formBuilder = inject(FormBuilder);
-  private _formBusService = inject(FormBus);
+  private _formBusService = inject(FormBusService);
   private _alertService = inject(AlertService);
   private _subscription = new Subscription();
 

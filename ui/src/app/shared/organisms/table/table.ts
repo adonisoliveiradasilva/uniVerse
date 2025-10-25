@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TableRow } from '../../molecules/table-row/table-row';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TableContextEnum, TableContextType } from '../../../core/types/table-context.type';
-import { FormModal } from '../../../services/rxjs/form-modal/form-modal';
+import { FormModal } from '../../../services/rxjs/form-modal-service/form-modal-service';
 import { NoData } from '../../atoms/no-data/no-data';
 import { Button } from '../../atoms/buttons/button/button';
 

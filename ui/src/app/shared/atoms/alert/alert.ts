@@ -1,6 +1,6 @@
 import { Component, inject, Input, Output } from '@angular/core';
 import { EventEmitter } from 'stream';
-import { AlertService } from '../../../services/rxjs/alert/alert';
+import { AlertService } from '../../../services/rxjs/alert-service/alert-service';
 import { CommonModule } from '@angular/common';
 
 @Component({
