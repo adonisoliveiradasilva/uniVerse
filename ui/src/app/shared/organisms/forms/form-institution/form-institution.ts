@@ -84,19 +84,6 @@ export class FormInstitution {
         this._handleSubmit();
       })
     );
-
-    this._formBusService.formPayload$.subscribe(payload => {
-      if (payload && payload.source === TableContextEnum.Department) {
-        this._rows = [
-          ...this._rows,
-          {
-            id: payload.data.acronymDepartment,
-            name: payload.data.nameDepartment
-          }
-        ];
-        this._cdr.detectChanges();
-      }
-    })
   }
 
   private _loadEntityData(acronym: string) {

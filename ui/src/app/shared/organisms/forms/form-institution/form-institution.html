@@ -15,8 +15,4 @@
             >
         </app-form-input>
     </div>
-    <ng-container *ngIf="action !== 'create'">
-        <app-divider [label]="'Departamentos'"></app-divider>
-        <app-table [context]="TableContextEnum.Department" [rows]="_rows" [columns]="_columns" [headers]="['Nome']"> </app-table>
-    </ng-container>
 </form >

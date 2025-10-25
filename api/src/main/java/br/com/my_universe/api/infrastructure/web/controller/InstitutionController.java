@@ -73,6 +73,13 @@ private final InstitutionServiceImpl institutionService;
         ApiResponse<List<InstitutionResponse>> response = new ApiResponse<>(dtoList);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{acronym}")
+    public ResponseEntity<ApiResponse<InstitutionResponse>> deleteInstitution(@PathVariable String acronym) {
+        Institution deletedInstitution = institutionService.deleteInstitution(acronym);
+        ApiResponse<InstitutionResponse> response = new ApiResponse<>(toResponse(deletedInstitution));
+        return ResponseEntity.ok(response);
+    }
     
     private InstitutionResponse toResponse(Institution institution) {
         InstitutionResponse res = new InstitutionResponse();

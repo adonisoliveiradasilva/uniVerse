@@ -12,7 +12,6 @@
     @if(action !== 'delete'){
       <div class="form-modal-template-content-display">
           <app-form-institution [hidden]="context !== getTableContextEnum.Institution">></app-form-institution>
-          <app-form-department [hidden]="context !== getTableContextEnum.Department"></app-form-department>
       </div>
     }@else{
       <app-form-confirm-display-delete [name]="nameConfirm" [context]="context"></app-form-confirm-display-delete>

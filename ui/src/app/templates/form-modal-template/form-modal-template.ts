@@ -4,7 +4,6 @@ import { FormModal } from '../../services/rxjs/form-modal/form-modal';
 import { CommonModule } from '@angular/common';
 import { ShellHeader } from '../../shared/atoms/shell/shell-header/shell-header';
 import { FormInstitution } from '../../shared/organisms/forms/form-institution/form-institution';
-import { FormDepartment } from '../../shared/organisms/forms/form-department/form-department';
 import { Button } from '../../shared/atoms/buttons/button/button';
 import { FormBus } from '../../services/rxjs/form-bus/form-bus';
 import { InstitutionService } from '../../services/api/institution/institution';
@@ -12,7 +11,7 @@ import { FormConfirmDisplayDelete } from '../../shared/organisms/forms/form-conf
 
 @Component({
   selector: 'app-form-modal-template',
-  imports: [CommonModule, ShellHeader, FormInstitution, FormDepartment, Button, FormConfirmDisplayDelete],
+  imports: [CommonModule, ShellHeader, FormInstitution, Button, FormConfirmDisplayDelete],
   templateUrl: './form-modal-template.html',
   styleUrl: './form-modal-template.scss'
 })
@@ -112,13 +111,7 @@ export class FormModalTemplate {
         edit: "Editar Usuário",
         delete: "Deletar Usuário",
         default: "Criar novo Usuário"
-      },
-      [TableContextEnum.Department]: {
-        create: "Criar novo Departamento",
-        edit: "Editar Departamento",
-        delete: "Deletar Departamento",
-        default: "Criar novo Departamento"
-      },
+      }
     };
     const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';
     return map[context][key] ?? '';
@@ -150,13 +143,7 @@ export class FormModalTemplate {
         edit: "Preencha as informações do Usuário",
         delete: "Confirme a exclusão do Usuário",
         default: "Preencha as informações do novo Usuário"
-      },
-      [TableContextEnum.Department]: {
-        create: "Preencha as informações do novo Departamento",
-        edit: "Preencha as informações do Departamento",
-        delete: "Confirme a exclusão do Departamento",
-        default: "Prenecha as informações do novo Departamento"
-      },
+      }
     };
     const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';
     return map[context][key] ?? '';

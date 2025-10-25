@@ -59,9 +59,17 @@ public class JdbcInstitutionRepository implements InstitutionRepository {
         throw new RuntimeException("Falha ao atualizar a instituição com acrônimo: " + originalAcronym);
     }
 
+
     @Override
-    public void deleteByAcronym(String acronym) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteByAcronym'");
+    public Institution deleteByAcronym(String acronym) {
+        Institution institutionToDelete = findByAcronym(acronym)
+                .orElseThrow(() -> new RuntimeException("Instituição com acrônimo '" + acronym + "' não encontrada para exclusão."));
+
+        String sql = "DELETE FROM tb_institutions WHERE acronym = ?";
+        int updatedRows = jdbcTemplate.update(sql, acronym);
+        if (updatedRows > 0) {
+            return institutionToDelete;
+        }
+        throw new RuntimeException("Falha ao deletar a instituição com acrônimo: " + acronym);
     }
 }

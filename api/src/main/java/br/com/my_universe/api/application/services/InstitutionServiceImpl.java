@@ -54,6 +54,11 @@ public class InstitutionServiceImpl {
             .orElseThrow(() -> new RuntimeException("Universidade não encontrada"));
     }
 
+    public Institution deleteInstitution(String acronym) {
+        return institutionRepository.deleteByAcronym(acronym);
+    }
+
+
     public List<Institution> getAllInstitutions() {
         return institutionRepository.findAll();
     }

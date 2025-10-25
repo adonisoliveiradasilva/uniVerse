@@ -74,8 +74,6 @@ export class Table {
         return 'Criar Curso';
       case this._TableContextEnum.Subjects:
         return 'Criar Disciplina';
-      case this._TableContextEnum.Department:
-        return 'Criar Departamento';
       default:
         return '';
     }

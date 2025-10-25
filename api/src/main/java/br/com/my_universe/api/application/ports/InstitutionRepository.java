@@ -10,5 +10,5 @@ public interface InstitutionRepository {
     Optional<Institution> findByAcronym(String acronym);
     List<Institution> findAll();
     Institution update(String originalAcronym, Institution institution);
-    void deleteByAcronym(String acronym);
+    Institution deleteByAcronym(String acronym);
 }

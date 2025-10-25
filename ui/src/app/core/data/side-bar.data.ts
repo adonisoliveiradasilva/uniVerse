@@ -13,11 +13,11 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
                 route: '/dashboard'
             },
             {
-                slug: 'periods',
-                title: 'Períodos',
+                slug: 'your_periods',
+                title: 'Seus Períodos',
                 subtitle: 'Acompanhe a sua evolução por período', 
                 icon: 'fas fa-list-check',
-                route: '/periods'
+                route: '/yout-periods'
             },
             {
                 slug: 'diary',
@@ -45,6 +45,13 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
                 subtitle: 'Faça gestão das disciplinas',
                 icon: 'fas fa-book',
                 route: '/subjects'
+            },
+            {
+                slug: 'periods',
+                title: 'Períodos',
+                subtitle: 'Faça gestão dos períodos',
+                icon: 'fas fa-list-check',
+                route: '/periods'
             }
         ]
     },
@@ -60,11 +67,11 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
                 route: '/institutions'
             },
             {
-                slug: 'students',
-                title: 'Alunos',
+                slug: 'users',
+                title: 'Usuários',
                 subtitle: 'Faça gestão dos alunos cadastrados',
                 icon: 'fas fa-people-group',
-                route: '/students'
+                route: '/users'
             }
         ]
     }
