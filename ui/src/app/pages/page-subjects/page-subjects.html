@@ -1,1 +1,5 @@
-<p>page-subjects works!</p>
+<div class="page-content">
+    <ng-container *ngIf="_rows$ | async as _rows;">
+        <app-table [context]="TableContextEnum.Subjects" [rows]="_rows" [columns]="_columns" [headers]="['Nome da Disciplina']"> </app-table>
+    </ng-container>
+</div>

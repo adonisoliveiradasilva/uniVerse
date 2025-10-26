@@ -1,10 +1,11 @@
-package br.com.my_universe.api.infrastructure.persistence;
+package br.com.my_universe.api.infrastructure.persistence.repositorys;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.my_universe.api.application.ports.InstitutionRepository;
 import br.com.my_universe.api.domain.Institution;
+import br.com.my_universe.api.infrastructure.persistence.mappers.InstitutionRowMapper;
 
 import java.sql.PreparedStatement;
 import java.util.List;

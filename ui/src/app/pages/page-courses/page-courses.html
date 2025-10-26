@@ -1,0 +1,5 @@
+<div class="page-content">
+    <ng-container *ngIf="_rows$ | async as _rows;">
+        <app-table [context]="TableContextEnum.Courses" [rows]="_rows" [columns]="_columns" [headers]="['Nome do Curso']"> </app-table>
+    </ng-container>
+</div>

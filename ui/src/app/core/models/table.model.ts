@@ -7,7 +7,6 @@ export interface ITableRow {
 }
 export interface ITableColumn {
   key: keyof ITableRow | string; 
-  header: string;            
   type: TableTdType;     
 }
 export interface ITableContext{

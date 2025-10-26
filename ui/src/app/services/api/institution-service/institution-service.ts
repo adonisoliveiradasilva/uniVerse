@@ -5,13 +5,13 @@ import { IApiResponse, IApiSingleResponse } from '../../../core/models/api-respo
 import { ITableRow } from '../../../core/models/table.model';
 import { IInstitution } from '../../../core/models/entitys/IInstitution.model';
 import { AlertService } from '../../rxjs/alert-service/alert-service';
-
+import { environment } from '../../../environment/environment'
 @Injectable({
   providedIn: 'root'
 })
 export class InstitutionService {
   private _http = inject(HttpClient);
-  private _apiUrl = 'http://localhost:8080/api/institutions';
+  private _apiUrl = environment.apiUrl + '/institutions';
   private _alertService = inject(AlertService);
 
   private _institutions$ = new BehaviorSubject<ITableRow[]>([]);
@@ -48,8 +48,8 @@ export class InstitutionService {
     return this._http.post<IApiSingleResponse<IInstitution>>(this._apiUrl, institution).pipe(
       map(response => response.data),
       
-      tap(novaInstituicao => {
-        this._alertService.success(`Instituição "${novaInstituicao.name}" criada com sucesso!`);
+      tap(newInstitution => {
+        this._alertService.success(`Instituição "${newInstitution.name}" criada com sucesso!`);
         this.fetchInstitutions().subscribe();
       }),
       
@@ -65,8 +65,8 @@ export class InstitutionService {
   public updateInstitution(institution: Pick<IInstitution, 'name' | 'acronym'>): Observable<IInstitution> {
     return this._http.put<IApiSingleResponse<IInstitution>>(`${this._apiUrl}/${institution.acronym}`, institution).pipe(
       map(response => response.data),
-      tap(updatedInstituicao => {
-        this._alertService.success(`Instituição "${updatedInstituicao.name}" atualizada com sucesso!`);
+      tap(updatedInstitution => {
+        this._alertService.success(`Instituição "${updatedInstitution.name}" atualizada com sucesso!`);
         this.fetchInstitutions().subscribe();
       }),
       catchError(error => {

@@ -1,0 +1,27 @@
+<form [formGroup]="form" class="form-entity-content">
+    <div class="form-entity-row">
+        <app-form-input 
+            [label]="'Nome'" 
+            formControlName="nameSubject" 
+            [loading]="isLoading"
+            >
+        </app-form-input>
+    </div>
+     <div class="form-entity-row">
+        <app-form-input 
+            [label]="'Código'" 
+            formControlName="codeSubject" 
+            [width]="'50%'"
+            [loading]="isLoading"
+            >
+        </app-form-input>
+        <app-form-input 
+            [label]="'Horas'"
+            formControlName="hoursSubject" 
+            [width]="'50%'"
+            [loading]="isLoading"
+            [type]="'number'"
+            >
+        </app-form-input>
+    </div>
+</form>

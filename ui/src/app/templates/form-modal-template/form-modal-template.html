@@ -11,7 +11,9 @@
 
     @if(action !== 'delete'){
       <div class="form-modal-template-content-display">
-          <app-form-institution [hidden]="context !== getTableContextEnum.Institution">></app-form-institution>
+        <app-form-institution *ngIf="context === getTableContextEnum.Institutions"></app-form-institution>
+        <app-form-subject *ngIf="context === getTableContextEnum.Subjects"></app-form-subject>
+        <app-form-course *ngIf="context === getTableContextEnum.Courses"></app-form-course>
       </div>
     }@else{
       <app-form-confirm-display-delete [name]="nameConfirm" [context]="context"></app-form-confirm-display-delete>

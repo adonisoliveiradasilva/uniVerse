@@ -17,7 +17,6 @@ public class ErrorResponse {
         this.timestamp = OffsetDateTime.now();
     }
 
-    // Getters
     public int getStatus() { return status; }
     public String getError() { return error; }
     public String getMessage() { return message; }

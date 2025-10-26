@@ -4,13 +4,14 @@
     @if (!loading) {
       <input 
       [placeholder]="placeholder" 
-      [type]="inputType" 
+      [type]="inputType === 'float' ? 'number' : inputType" 
       [value]="value" 
       (input)="onInput($event)" 
       (blur)="onTouched()"
       class="input-field"
       [class.is-invalid]="isInvalid"
       [disabled]="disabled"
+      (keypress)="onKeyPress($event)"
       [required]="required"
       />
       

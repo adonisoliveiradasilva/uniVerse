@@ -14,7 +14,7 @@ import { ITableRow } from '../../core/models/table.model';
   templateUrl: './page-institutions.html',
   styleUrl: './page-institutions.scss'
 })
-export class Institutions {
+export class PageInstitutions {
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
@@ -24,7 +24,6 @@ export class Institutions {
   _columns = [ 
     {
       key: 'name',
-      header: 'Nome da Instituição',
       type: TableTdType.Text
     },
   ]

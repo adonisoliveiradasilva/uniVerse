@@ -17,12 +17,10 @@ public class InstitutionServiceImpl {
     }
 
     public Institution createInstitution(Institution university) {
-        // Validação proativa para verificar se a instituição já existe
         institutionRepository.findByAcronym(university.getAcronym()).ifPresent(i -> {
             throw new DataIntegrityViolationException("Instituição com a sigla '" + university.getAcronym() + "' já existe.");
         });
 
-        // Aqui poderiam entrar regras de negócio, ex:
         if (university.getAcronym().isEmpty()) {
             throw new IllegalArgumentException("Acronimo não pode ser vazio");
         }
@@ -35,13 +33,6 @@ public class InstitutionServiceImpl {
     public Institution updateInstitution(String acronym, Institution institutionDetails) {
         Institution existingInstitution = institutionRepository.findByAcronym(acronym)
             .orElseThrow(() -> new RuntimeException("Instituição com sigla '" + acronym + "' não encontrada."));
-            
-        // // 2. Validar se a nova sigla (se mudou) já existe
-        // if (institutionDetails.getAcronym() != null && !institutionDetails.getAcronym().equals(acronym)) {
-        //     institutionRepository.findByAcronym(institutionDetails.getAcronym()).ifPresent(i -> {
-        //         throw new ResourceAlreadyExistsException("Instituição com a sigla '" + institutionDetails.getAcronym() + "' já existe.");
-        //     });
-        // }
         
         existingInstitution.setName(institutionDetails.getName());
         existingInstitution.setAcronym(institutionDetails.getAcronym());

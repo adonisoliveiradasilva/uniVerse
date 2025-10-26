@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input, OnInit, forwardRef, inject, Injector } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form-input',
-  imports: [ CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form-input.html',
   styleUrl: './form-input.scss',
   providers: [
@@ -52,11 +52,32 @@ export class FormInput implements OnInit, ControlValueAccessor { // Implementar 
     return this._type;
   }
 
-  onInput(event: Event): void {
-      const inputElement = event.target as HTMLInputElement;
-    this.value = inputElement.value;
-    this.onChange(this.value);
-    this.onTouched();
+  onInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    if (this.type === 'number') {
+      value = value.replace(/[^0-9]/g, '');
+    }
+
+    if (this.type === 'float') {
+      value = value.replace(/[^0-9.,]/g, '');
+    }
+    input.value = value;
+    this.value = value;
+    this.onChange(value);
+  }
+
+  onKeyPress(event: KeyboardEvent) {
+    const char = event.key;
+
+    if (this.type === 'number' && !/[0-9]/.test(char)) {
+      event.preventDefault();
+    }
+
+    if (this.type === 'float' && !/[0-9.,]/.test(char)) {
+      event.preventDefault();
+    }
   }
 
   onToggleEye(): void{

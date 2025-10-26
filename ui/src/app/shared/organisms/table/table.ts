@@ -68,7 +68,7 @@ export class Table {
 
   get getCreateButtonLabel(): string {
     switch (this.context) {
-      case this._TableContextEnum.Institution:
+      case this._TableContextEnum.Institutions:
         return 'Criar Instituição';
       case this._TableContextEnum.Courses:
         return 'Criar Curso';

@@ -2,7 +2,9 @@ import { Routes } from '@angular/router';
 import { PageLogin } from './pages/page-login/page-login';
 import { Shell } from './templates/shell/shell';
 import { Dashboard } from './pages/dashboard/dashboard';
-import { Institutions } from './pages/page-institutions/page-institutions';
+import { PageInstitutions } from './pages/page-institutions/page-institutions';
+import { PageSubjects } from './pages/page-subjects/page-subjects';
+import { PageCourses } from './pages/page-courses/page-courses';
 
 export const routes: Routes = [
     {
@@ -18,8 +20,16 @@ export const routes: Routes = [
                 component: Dashboard
             },
             {
+                path: 'subjects',
+                component: PageSubjects
+            },
+            {
+                path: 'courses',
+                component: PageCourses
+            },
+            {
                 path: 'institutions',
-                component: Institutions
+                component: PageInstitutions
             },
         ]
     },

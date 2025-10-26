@@ -1,11 +1,10 @@
-import { ChangeDetectorRef, Component, inject, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormInput } from '../../../atoms/forms/form-input/form-input';
 import { TableTdType } from '../../../../core/types/table-td.type';
 import { TableAction, TableContextEnum } from '../../../../core/types/table-context.type';
 import { Subscription, finalize, take } from 'rxjs';
 import { FormBusService } from '../../../../services/rxjs/form-bus-service/form-bus-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ITableRow } from '../../../../core/models/table.model';
 import { FormModal } from '../../../../services/rxjs/form-modal-service/form-modal-service';
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
@@ -34,48 +33,23 @@ export class FormInstitution {
 
   form!: FormGroup;
 
-  _rows: ITableRow[] = [
-    {
-      id: 'DECEA',
-      name: 'DECEA'
-    },
-    {
-      id: 'DECSI',
-      name: 'DECSI'
-    },
-    {
-      id: 'DEELT',
-      name: 'DEELT'
-    }
-  ]
-
-  _columns = [ 
-    {
-      key: 'name',
-      header: 'Nome do departamento',
-      type: TableTdType.Text
-    },
-  ]
-
   ngOnInit() {
     this.form = this._formBuilder.group({
       nameInstitution: ['', [Validators.required, Validators.minLength(3)]],
       acronymInstitution: ['', [Validators.required, Validators.minLength(3)]],
     });
 
-    // this._formModalService.modalStack$.subscribe(stack => {
-      const currentModal = this._formModalService.currentModal;      
-      this.action = currentModal?.action ?? null;
-      this.identifier = currentModal?.identifier ?? null;
+    const currentModal = this._formModalService.currentModal;      
+    this.action = currentModal?.action ?? null;
+    this.identifier = currentModal?.identifier ?? null;
 
-      this.form.reset();
-      if (this.action === 'edit' && this.identifier) {
-        this._loadEntityData(this.identifier as string);
-      } else {
-        this.form.get('acronymInstitution')?.enable();
-        this._formModalService.setNameConfirm(null);
-      }
-    // });
+    this.form.reset();
+    if (this.action === 'edit' && this.identifier) {
+      this._loadEntityData(this.identifier as string);
+    } else {
+      this.form.get('acronymInstitution')?.enable();
+      this._formModalService.setNameConfirm(null);
+    }
 
     this._subscription.add(
       this._formBusService.submitForm$.subscribe(() => {
@@ -116,7 +90,7 @@ export class FormInstitution {
     }
 
     const payload = {
-      source: TableContextEnum.Institution,
+      source: TableContextEnum.Institutions,
       data: this.form.value
     }
 
