@@ -72,7 +72,8 @@ export class FormModalTemplate {
             const subjectData = {
               name: payload.data.nameSubject,
               code: payload.data.codeSubject,
-              hours: payload.data.hoursSubject
+              hours: payload.data.hoursSubject,
+              description: payload.data.descriptionSubject ?? ''
             };
             this._subjectService.createSubject(subjectData).subscribe({
               next: () => this.close()
@@ -109,7 +110,8 @@ export class FormModalTemplate {
             const subjectData = {
               name: payload.data.nameSubject,
               code: payload.data.codeSubject,
-              hours: payload.data.hoursSubject
+              hours: payload.data.hoursSubject,
+              description: payload.data.descriptionSubject ?? ''
             };
             this._subjectService.updateSubject(subjectData).subscribe({
               next: () => this.close()

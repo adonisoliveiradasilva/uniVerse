@@ -9,7 +9,6 @@ import { FormModal } from '../../../../services/rxjs/form-modal-service/form-mod
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
 import { CourseService } from '../../../../services/api/course-service/course-service'
-import { InstitutionService } from '../../../../services/api/institution-service/institution-service';
 
 @Component({
   selector: 'app-form-course',
@@ -25,7 +24,6 @@ private _formBusService = inject(FormBusService);
   private _formModalService = inject(FormModal);
   private _alertService = inject(AlertService);
   private _courseService = inject(CourseService);
-  private _institutionService = inject(InstitutionService);
 
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
@@ -40,6 +38,7 @@ private _formBusService = inject(FormBusService);
     this.form = this._formBuilder.group({
       nameCourse: ['', [Validators.required, Validators.minLength(3)]],
       periodsQuantityCourse: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2), this.notZeroValidator]],
+      descriptionCourse: [''],
       codeCourse: ['', [Validators.required, Validators.minLength(3)]]
     });
 
@@ -82,7 +81,8 @@ private _formBusService = inject(FormBusService);
         this.form.patchValue({
           nameCourse: course.name,
           codeCourse: course.code,
-          periodsQuantityCourse: course.periodsQuantity
+          periodsQuantityCourse: course.periodsQuantity,
+          descriptionCourse: course.description
         });
         this._formModalService.setNameConfirm(course.name);        
         this.form.get('codeCourse')?.disable();

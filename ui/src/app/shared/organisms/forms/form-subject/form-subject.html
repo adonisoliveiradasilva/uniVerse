@@ -7,7 +7,7 @@
             >
         </app-form-input>
     </div>
-     <div class="form-entity-row">
+    <div class="form-entity-row">
         <app-form-input 
             [label]="'Código'" 
             formControlName="codeSubject" 
@@ -21,6 +21,15 @@
             [width]="'50%'"
             [loading]="isLoading"
             [type]="'number'"
+            >
+        </app-form-input>
+    </div>
+    <div class="form-entity-row">
+        <app-form-input 
+            [label]="'Description'" 
+            formControlName="descriptionSubject" 
+            [type]="'textarea'"
+            [loading]="isLoading"
             >
         </app-form-input>
     </div>

@@ -18,6 +18,7 @@ public class SubjectRowMapper implements RowMapper<Subject> {
         subject.setCode(rs.getString("code"));
         subject.setName(rs.getString("name"));
         subject.setHours(rs.getInt("hours"));
+        subject.setDescription(rs.getString("description"));
         subject.setInstitutionAcronym(rs.getString("institution_acronym"));
         
         subject.setCreatedAt(rs.getObject("created_at", OffsetDateTime.class));

@@ -2,25 +2,41 @@
     <span> {{ label }}  <i class="fas fa-lock" *ngIf="disabled"></i></span>
 
     @if (!loading) {
-      <input 
-      [placeholder]="placeholder" 
-      [type]="inputType === 'float' ? 'number' : inputType" 
-      [value]="value" 
-      (input)="onInput($event)" 
-      (blur)="onTouched()"
-      class="input-field"
-      [class.is-invalid]="isInvalid"
-      [disabled]="disabled"
-      (keypress)="onKeyPress($event)"
-      [required]="required"
-      />
-      
-      <i class="fa-solid" 
-          [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'" 
-          (click)="onToggleEye()"
-          *ngIf="type === 'password'"
-          >
-      </i>
+      @if (inputType != 'textarea'){
+        <input 
+          [placeholder]="placeholder" 
+          [type]="inputType === 'float' ? 'number' : inputType" 
+          [value]="value" 
+          (input)="onInput($event)" 
+          (blur)="onTouched()"
+          [class.is-invalid]="isInvalid"
+          [disabled]="disabled"
+          (keypress)="onKeyPress($event)"
+          [required]="required"
+          />
+        
+        <i class="fa-solid" 
+            [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'" 
+            (click)="onToggleEye()"
+            *ngIf="type === 'password'"
+            >
+        </i>
+      }@else{
+        <textarea 
+          [placeholder]="placeholder" 
+          [value]="value" 
+          (input)="onInput($event)" 
+          (blur)="onTouched()"
+          [class.is-invalid]="isInvalid"
+          [disabled]="disabled"
+          (keypress)="onKeyPress($event)"
+          [required]="required"
+          maxlength="500"
+          ></textarea>
+
+      }
+        
+
     }@else{
       <div class="input-loading"></div>
     }

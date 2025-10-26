@@ -5,6 +5,7 @@ public class SubjectRequest {
     private String code;
     private String name;
     private Integer hours;
+    private String description;
 
     public String getCode() {
         return code;
@@ -25,5 +26,12 @@ public class SubjectRequest {
     }
     public void setHours(Integer hours) {
         this.hours = hours;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

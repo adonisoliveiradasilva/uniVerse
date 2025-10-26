@@ -31,6 +31,7 @@ public class SubjectController {
         subject.setCode(request.getCode());
         subject.setName(request.getName());
         subject.setHours(request.getHours());
+        subject.setDescription(request.getDescription());
         subject.setInstitutionAcronym(acronym);
 
         Subject createdSubject = subjectService.createSubject(subject);
@@ -52,6 +53,7 @@ public class SubjectController {
         subjectDetails.setCode(request.getCode());
         subjectDetails.setName(request.getName());
         subjectDetails.setHours(request.getHours());
+        subjectDetails.setDescription(request.getDescription());
         subjectDetails.setInstitutionAcronym(acronym);
 
         Subject updatedSubject = subjectService.updateSubject(code, acronym, subjectDetails);
@@ -92,6 +94,7 @@ public class SubjectController {
         res.setCode(subject.getCode());
         res.setName(subject.getName());
         res.setHours(subject.getHours());
+        res.setDescription(subject.getDescription());
         res.setInstitutionAcronym(subject.getInstitutionAcronym());
         res.setCreatedAt(subject.getCreatedAt());
         res.setUpdatedAt(subject.getUpdatedAt());

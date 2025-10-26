@@ -9,7 +9,6 @@ import { FormModal } from '../../../../services/rxjs/form-modal-service/form-mod
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
 import { SubjectService } from '../../../../services/api/subject-service/subject-service'
-import { InstitutionService } from '../../../../services/api/institution-service/institution-service';
 
 @Component({
   selector: 'app-form-subject',
@@ -25,7 +24,6 @@ export class FormSubject {
   private _formModalService = inject(FormModal);
   private _alertService = inject(AlertService);
   private _subjectService = inject(SubjectService);
-  private _institutionService = inject(InstitutionService);
 
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
@@ -40,7 +38,8 @@ export class FormSubject {
     this.form = this._formBuilder.group({
       nameSubject: ['', [Validators.required, Validators.minLength(3)]],
       hoursSubject: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]],
-      codeSubject: ['', [Validators.required, Validators.minLength(3)]]
+      codeSubject: ['', [Validators.required, Validators.minLength(3)]],
+      descriptionSubject: ['', [Validators.required, Validators.minLength(3)]]
     });
 
     const currentModal = this._formModalService.currentModal;      
@@ -76,7 +75,8 @@ export class FormSubject {
         this.form.patchValue({
           nameSubject: subject.name,
           codeSubject: subject.code,
-          hoursSubject: subject.hours
+          hoursSubject: subject.hours,
+          descriptionSubject: subject.description
         });
         this._formModalService.setNameConfirm(subject.name);        
         this.form.get('codeSubject')?.disable();

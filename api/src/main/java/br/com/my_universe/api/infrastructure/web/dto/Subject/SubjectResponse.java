@@ -7,6 +7,7 @@ public class SubjectResponse {
     private String code;
     private String name;
     private Integer hours;
+    private String description;
     private String institutionAcronym;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
@@ -30,6 +31,13 @@ public class SubjectResponse {
     }
     public void setHours(Integer hours) {
         this.hours = hours;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getInstitutionAcronym() {

@@ -11,6 +11,8 @@ public class Subject {
     
     private String institutionAcronym; 
 
+    private String description;
+
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 
@@ -34,6 +36,14 @@ public class Subject {
     public void setHours(Integer hours) {
         this.hours = hours;
     }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
     public String getInstitutionAcronym() {
         return institutionAcronym;

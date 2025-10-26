@@ -24,7 +24,7 @@ public class JdccCourseRepository implements CourseRepository {
 
     @Override
     public Course save(Course course) {
-        String sql = "INSERT INTO tb_courses (code, name, periods_quantity, description ,institution_acronym) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tb_courses (code, name, periods_quantity, description, institution_acronym) VALUES (?, ?, ?, ?, ?)";
         
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);

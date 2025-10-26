@@ -55,7 +55,7 @@ export class SubjectService {
     );
   }
 
-  public createSubject(subject: Pick<ISubject, 'code' | 'name' | 'hours'>): Observable<ISubject> {
+  public createSubject(subject: Pick<ISubject, 'code' | 'name' | 'hours' | 'description'>): Observable<ISubject> {
     const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/subjects`;
     return this._http.post<IApiSingleResponse<ISubject>>(url, subject).pipe(
       map(response => response.data),
@@ -71,7 +71,7 @@ export class SubjectService {
     );
   }
 
-  public updateSubject(subject: Pick<ISubject, 'code' | 'name' | 'hours'>): Observable<ISubject> {
+  public updateSubject(subject: Pick<ISubject, 'code' | 'name' | 'hours' | 'description'>): Observable<ISubject> {
     const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/subjects/${subject.code}`;
     return this._http.put<IApiSingleResponse<ISubject>>(url, subject).pipe(
       map(response => response.data),

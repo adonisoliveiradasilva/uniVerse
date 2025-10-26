@@ -24,14 +24,15 @@ public class JdbcSubjectRepository implements SubjectRepository {
 
     @Override
     public Subject save(Subject subject) {
-        String sql = "INSERT INTO tb_subjects (code, name, hours, institution_acronym) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO tb_subjects (code, name, hours, description, institution_acronym) VALUES (?, ?, ?, ?, ?)";
         
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql); // Sem chaves de retorno
             ps.setString(1, subject.getCode());
             ps.setString(2, subject.getName());
             ps.setInt(3, subject.getHours());
-            ps.setString(4, subject.getInstitutionAcronym());
+            ps.setString(4, subject.getDescription());
+            ps.setString(5, subject.getInstitutionAcronym());
             return ps;
         });
 
@@ -41,13 +42,14 @@ public class JdbcSubjectRepository implements SubjectRepository {
 
     @Override
     public Subject update(String originalCode, String originalAcronym, Subject subjectDetails) {
-        String sql = "UPDATE tb_subjects SET code = ?, name = ?, hours = ?, institution_acronym = ? " +
+        String sql = "UPDATE tb_subjects SET code = ?, name = ?, hours = ?, description = ?, institution_acronym = ? " +
                      "WHERE code = ? AND institution_acronym = ?";
         
         int updatedRows = jdbcTemplate.update(sql,
             subjectDetails.getCode(),
             subjectDetails.getName(),
             subjectDetails.getHours(),
+            subjectDetails.getDescription(),
             subjectDetails.getInstitutionAcronym(),
             originalCode,
             originalAcronym
