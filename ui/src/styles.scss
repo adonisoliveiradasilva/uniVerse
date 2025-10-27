@@ -1,3 +1,21 @@
+@use '@angular/material' as mat;
+
+$my-theme: mat.define-theme((
+  color: (
+    theme-type: light
+  ),
+));
+
+@include mat.all-component-themes($my-theme);
+
+.mat-mdc-checkbox .mdc-checkbox__native-control:checked + .mdc-checkbox__background {
+  background-color: #6E15EB !important;
+  border-color: #6E15EB !important;
+}
+
+.mat-mdc-checkbox .mdc-checkbox__background .mdc-checkbox__checkmark-path {
+  stroke: #fff !important;
+}
 
 :root {
     --color-text-primary: #081616;
@@ -70,3 +88,4 @@ body, * {
   width: 0;
   height: 0;
 }
+
