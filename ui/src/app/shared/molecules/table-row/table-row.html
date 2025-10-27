@@ -5,7 +5,8 @@
   [type]="col.type"
   [context]="context" 
   [isLastRow]="isLastRow"
-  [objectId]="(row!.id) || ''" 
+  [objectId]="(row!.id) || ''"
+  [class.td-checkbox]="col.type === TableTdType.Checkbox">
   >
 </td>
   

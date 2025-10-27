@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TableTdType } from '../../../core/types/table-td.type';
 import { TableContextType } from '../../../core/types/table-context.type';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'td[app-table-td]',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatCheckboxModule, FormsModule],
   templateUrl: './table-td.html',
   styleUrl: './table-td.scss',
   host: {

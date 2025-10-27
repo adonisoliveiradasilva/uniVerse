@@ -3,6 +3,7 @@ import { TableTd } from '../../atoms/table-td/table-td';
 import { CommonModule } from '@angular/common';
 import { ITableColumn, ITableRow } from '../../../core/models/table.model';
 import { TableContextType } from '../../../core/types/table-context.type';
+import { TableTdType } from '../../../core/types/table-td.type';
 
 @Component({
   selector: 'tr[app-table-row]',
@@ -16,6 +17,8 @@ export class TableRow {
   @Input() columns!: ITableColumn[];  
   @Input() context!: TableContextType;
   @Input() isLastRow: boolean = false;
+
+  TableTdType = TableTdType;
 
   getTdValue(columnKey: string | keyof ITableRow): string | number {
     if (Object.keys(this.row).includes(columnKey as string)) {

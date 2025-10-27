@@ -1,4 +1,9 @@
 <ng-container [ngSwitch]="type">
+
+    <div class="td-checkbox" *ngSwitchCase="TableTdType.Checkbox">
+        <mat-checkbox [(ngModel)]="value"></mat-checkbox>
+    </div>
+
     <span *ngSwitchDefault>
         {{ value }}
     </span>

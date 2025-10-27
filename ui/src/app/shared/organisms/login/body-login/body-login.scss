@@ -7,11 +7,10 @@
     padding-bottom: clamp(10px, 5vh, 3vw);
     background-color: var(--color-surface-light);
     box-sizing: border-box;
-
     
     .body-login-content-image{
-        width: clamp(390px, 39vh, 39vw);
-        height: clamp(278.2px, 27.82vh, 27.82vw);
+        width: clamp(390px, 39vh, 39vh);
+        height: clamp(278.2px, 27.82vh, 27.82vh);
 
         background-image: var(--image-background-login);
         background-size: cover;
@@ -36,6 +35,5 @@
         @include flex-row-center;
         @include gap-1;
         width: 100%;   
-
     }
 }

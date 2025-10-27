@@ -33,5 +33,11 @@
             >
         </app-form-input>
     </div>
-        
+
+    <app-divider [label]="'Disciplinas'"></app-divider>
+    <div class="form-entity-row">
+        <ng-container *ngIf="_rows$ | async as _rows;">
+            <app-table [context]="TableContextEnum.Subjects" [rows]="_rows" [type]="'multi-select'" [columns]="_columns" [enableCreate]="false" [headers]="['Nome da Disciplina']"> </app-table>
+        </ng-container>
+    </div>
 </form>

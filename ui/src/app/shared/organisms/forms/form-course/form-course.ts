@@ -2,17 +2,21 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormInput } from '../../../atoms/forms/form-input/form-input';
 import { TableTdType } from '../../../../core/types/table-td.type';
 import { TableAction, TableContextEnum } from '../../../../core/types/table-context.type';
-import { Subscription, finalize, take } from 'rxjs';
+import { Observable, Subscription, finalize, take } from 'rxjs';
 import { FormBusService } from '../../../../services/rxjs/form-bus-service/form-bus-service';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormModal } from '../../../../services/rxjs/form-modal-service/form-modal-service';
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
 import { CourseService } from '../../../../services/api/course-service/course-service'
+import { Divider } from '../../../atoms/divider/divider';
+import { SubjectService } from '../../../../services/api/subject-service/subject-service';
+import { ITableRow } from '../../../../core/models/table.model';
+import { Table } from '../../table/table';
 
 @Component({
   selector: 'app-form-course',
-  imports: [FormInput, ReactiveFormsModule, CommonModule],
+  imports: [FormInput, ReactiveFormsModule, CommonModule, Divider, Table],
   templateUrl: './form-course.html',
   styleUrl: './form-course.scss'
 })
@@ -24,7 +28,9 @@ private _formBusService = inject(FormBusService);
   private _formModalService = inject(FormModal);
   private _alertService = inject(AlertService);
   private _courseService = inject(CourseService);
-
+  private _subjectService = inject(SubjectService);
+  public _rows$!: Observable<ITableRow[]>;
+  
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
@@ -34,7 +40,21 @@ private _formBusService = inject(FormBusService);
 
   form!: FormGroup;
 
+  _columns = [
+    {
+      key: 'select',
+      type: TableTdType.Checkbox
+    },
+    {
+      key: 'name',
+      type: TableTdType.Text
+    },
+  ];
+
+
   ngOnInit() {
+    this._rows$ = this._subjectService.getSubjects();
+
     this.form = this._formBuilder.group({
       nameCourse: ['', [Validators.required, Validators.minLength(3)]],
       periodsQuantityCourse: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2), this.notZeroValidator]],

@@ -22,7 +22,9 @@
 .sidebar-content{
     @include flex-column-center-top;
     width: clamp(300px, 30vh, 30vw);
+    height: 100%;
     transition: all 0.3s ease;
+    overflow-y: auto;
 
     .side-bar-content-subitem-toggle{
         @include flex-row-center-left;

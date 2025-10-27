@@ -23,6 +23,7 @@ export class Table {
   @Input() enableSearch: boolean = true;
   @Input() enablePagination: boolean = true;
   @Input() enableCreate: boolean = true;
+  @Input() type: string = 'default';
 
   private _formModalService = inject(FormModal)
   private _TableContextEnum = TableContextEnum
@@ -37,6 +38,10 @@ export class Table {
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
+    if(this.type === 'multi-select'){
+      this.headers?.unshift('Selecionar');
+    }
+
     this.searchSubject
       .pipe(
         debounceTime(300),
@@ -85,6 +90,10 @@ export class Table {
   }
 
   onRowClick(row: ITableRow){
+    if(this.type === 'multi-select'){
+
+      return;
+    }
     this._formModalService.openModal(this.context, 'edit', row.id);
   }
 
