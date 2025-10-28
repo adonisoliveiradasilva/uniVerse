@@ -85,7 +85,8 @@ export class FormModalTemplate {
               name: payload.data.nameCourse,
               code: payload.data.codeCourse,
               periodsQuantity: payload.data.periodsQuantityCourse,
-              description: payload.data.descriptionCourse ?? '' // caso adicione campo depois
+              description: payload.data.descriptionCourse ?? '',
+              subjectsIds: payload.data.subjectsIds
             };
             this._courseService.createCourse(courseData).subscribe({
               next: () => this.close()
@@ -123,6 +124,7 @@ export class FormModalTemplate {
               name: payload.data.nameCourse,
               code: payload.data.codeCourse,
               periodsQuantity: payload.data.periodsQuantityCourse,
+              subjectsIds: payload.data.subjectsIds,
               description: payload.data.descriptionCourse ?? ''
             };
             this._courseService.updateCourse(courseData).subscribe({

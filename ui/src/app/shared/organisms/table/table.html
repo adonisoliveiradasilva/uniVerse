@@ -22,8 +22,10 @@
             app-table-row 
             [row]="row" 
             [columns]="columns"
-            [context]="context" 
-            [isLastRow]="isLastRow"></tr>
+            [context]="context"
+            [isSelected]="isSelected(row.id)" 
+            [isLastRow]="isLastRow">
+          </tr>
         </tbody>
       </table>
 

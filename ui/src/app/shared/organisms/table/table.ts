@@ -2,11 +2,12 @@ import { Component, inject, Input, SimpleChanges } from '@angular/core';
 import { ITableColumn, ITableRow } from '../../../core/models/table.model';
 import { CommonModule } from '@angular/common';
 import { TableRow } from '../../molecules/table-row/table-row';
-import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, Subscription, takeUntil } from 'rxjs';
 import { TableContextEnum, TableContextType } from '../../../core/types/table-context.type';
 import { FormModal } from '../../../services/rxjs/form-modal-service/form-modal-service';
 import { NoData } from '../../atoms/no-data/no-data';
 import { Button } from '../../atoms/buttons/button/button';
+import { TableSelectService } from '../../../services/rxjs/table-select-service/table-select-service';
 
 @Component({
   selector: 'app-table',
@@ -25,8 +26,11 @@ export class Table {
   @Input() enableCreate: boolean = true;
   @Input() type: string = 'default';
 
+  private _tableSelectService = inject(TableSelectService)
   private _formModalService = inject(FormModal)
   private _TableContextEnum = TableContextEnum
+  private _currentSelectedIds: string[] = [];
+  private _selectionSubscription = new Subscription();
   
   currentPage = 1;
   itemsPerPage = 5;
@@ -42,6 +46,10 @@ export class Table {
       this.headers?.unshift('Selecionar');
     }
 
+    this._selectionSubscription = this._tableSelectService.selectedIds$.subscribe(ids => {
+      this._currentSelectedIds = ids;
+    });
+
     this.searchSubject
       .pipe(
         debounceTime(300),
@@ -49,6 +57,10 @@ export class Table {
         takeUntil(this.destroy$)
       )
       .subscribe(term => this.filterRows(term));
+  }
+
+  isSelected(id: string): boolean{
+    return this._currentSelectedIds.includes(id);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -91,7 +103,7 @@ export class Table {
 
   onRowClick(row: ITableRow){
     if(this.type === 'multi-select'){
-
+      this._tableSelectService.toggleSelection(row.id);      
       return;
     }
     this._formModalService.openModal(this.context, 'edit', row.id);

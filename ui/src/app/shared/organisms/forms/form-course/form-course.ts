@@ -13,6 +13,7 @@ import { Divider } from '../../../atoms/divider/divider';
 import { SubjectService } from '../../../../services/api/subject-service/subject-service';
 import { ITableRow } from '../../../../core/models/table.model';
 import { Table } from '../../table/table';
+import { TableSelectService } from '../../../../services/rxjs/table-select-service/table-select-service';
 
 @Component({
   selector: 'app-form-course',
@@ -29,8 +30,13 @@ private _formBusService = inject(FormBusService);
   private _alertService = inject(AlertService);
   private _courseService = inject(CourseService);
   private _subjectService = inject(SubjectService);
+  private _tableSelectService = inject(TableSelectService);
+  private _currentSelectedIds: string[] = [];
+  private _selectionSubscription = new Subscription();
+
   public _rows$!: Observable<ITableRow[]>;
-  
+
+
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
@@ -55,6 +61,10 @@ private _formBusService = inject(FormBusService);
   ngOnInit() {
     this._rows$ = this._subjectService.getSubjects();
 
+    this._selectionSubscription = this._tableSelectService.selectedIds$.subscribe(ids => {
+      this._currentSelectedIds = ids;
+    });
+    
     this.form = this._formBuilder.group({
       nameCourse: ['', [Validators.required, Validators.minLength(3)]],
       periodsQuantityCourse: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2), this.notZeroValidator]],
@@ -104,12 +114,14 @@ private _formBusService = inject(FormBusService);
           periodsQuantityCourse: course.periodsQuantity,
           descriptionCourse: course.description
         });
+        this._currentSelectedIds = course.subjectsIds;
         this._formModalService.setNameConfirm(course.name);        
         this.form.get('codeCourse')?.disable();
       });
   }
 
   private _handleSubmit() {
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       
@@ -124,7 +136,10 @@ private _formBusService = inject(FormBusService);
 
     const payload = {
       source: TableContextEnum.Courses,
-      data: this.form.value
+      data: {
+        ...this.form.value,
+        'subjectsIds': this._currentSelectedIds      
+      }
     }
 
     if (this.action === 'edit') {
@@ -136,5 +151,6 @@ private _formBusService = inject(FormBusService);
 
   ngOnDestroy() {
     this._subscription.unsubscribe();
+    this._selectionSubscription.unsubscribe();
   }
 }

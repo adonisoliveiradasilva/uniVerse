@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="type">
 
     <div class="td-checkbox" *ngSwitchCase="TableTdType.Checkbox">
-        <mat-checkbox [(ngModel)]="value"></mat-checkbox>
+        <mat-checkbox [(ngModel)]="isSelected" ></mat-checkbox>
     </div>
 
     <span *ngSwitchDefault>

@@ -55,7 +55,7 @@ export class CourseService {
     );
   }
 
-  public createCourse(course: Pick<ICourse, 'code' | 'name' | 'periodsQuantity' |'description'>): Observable<ICourse> {
+  public createCourse(course: Pick<ICourse, 'code' | 'name' | 'periodsQuantity' |'description' | 'subjectsIds'>): Observable<ICourse> {
     const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/courses`;
     return this._http.post<IApiSingleResponse<ICourse>>(url, course).pipe(
       map(response => response.data),
@@ -71,7 +71,7 @@ export class CourseService {
     );
   }
 
-  public updateCourse(course: Pick<ICourse, 'code' | 'name' | 'periodsQuantity' |'description'>): Observable<ICourse> {
+  public updateCourse(course: Pick<ICourse, 'code' | 'name' | 'periodsQuantity' |'description' | 'subjectsIds'>): Observable<ICourse> {
     const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/courses/${course.code}`;
     return this._http.put<IApiSingleResponse<ICourse>>(url, course).pipe(
       map(response => response.data),

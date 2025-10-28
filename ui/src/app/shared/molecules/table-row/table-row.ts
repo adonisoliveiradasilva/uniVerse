@@ -17,6 +17,7 @@ export class TableRow {
   @Input() columns!: ITableColumn[];  
   @Input() context!: TableContextType;
   @Input() isLastRow: boolean = false;
+  @Input() isSelected: boolean = false;
 
   TableTdType = TableTdType;
 

@@ -4,6 +4,7 @@ export interface ICourse {
   periodsQuantity: number;
   description: string;
   institutionAcronym: string;
+  subjectsIds: string[];
   createdAt?: string;
   updatedAt?: string;
 }

@@ -34,7 +34,7 @@ public class CourseController {
         course.setDescription(request.getDescription());
         course.setInstitutionAcronym(acronym);
 
-        Course createdCourse = courseService.createCourse(course);
+        Course createdCourse = courseService.createCourse(course, request.getSubjectsIds());        
         CourseResponse dto = toResponse(createdCourse);
         ApiResponse<CourseResponse> response = new ApiResponse<>(dto);
 
@@ -56,8 +56,8 @@ public class CourseController {
         courseDetails.setDescription(request.getDescription());
         courseDetails.setInstitutionAcronym(acronym);
 
-        Course updatedCourse = courseService.updateCourse(code, acronym, courseDetails);
-
+        Course updatedCourse = courseService.updateCourse(code, acronym, courseDetails, request.getSubjectsIds());
+        
         CourseResponse dto = toResponse(updatedCourse);
         ApiResponse<CourseResponse> response = new ApiResponse<>(dto);
         return ResponseEntity.ok(response);
@@ -98,6 +98,7 @@ public class CourseController {
         res.setInstitutionAcronym(course.getInstitutionAcronym());
         res.setCreatedAt(course.getCreatedAt());
         res.setUpdatedAt(course.getUpdatedAt());
+        res.setSubjectsIds(course.getSubjectCodes());
         return res;
     }
 }

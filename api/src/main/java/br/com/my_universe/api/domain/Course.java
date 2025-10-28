@@ -1,18 +1,15 @@
 package br.com.my_universe.api.domain;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public class Course {
     private String code; 
-    
     private String name;
-
     private String description;
-    
-    private Integer periods_quantity; 
-    
+    private Integer periodsQuantity; 
+    private List<String> subjectCodes;
     private String institutionAcronym; 
-
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 
@@ -38,10 +35,10 @@ public class Course {
     }
 
     public Integer getPeriodsQuantity() {
-        return periods_quantity;
+        return periodsQuantity;
     }
-    public void setPeriodsQuantity(Integer periods_quantity) {
-        this.periods_quantity = periods_quantity;
+    public void setPeriodsQuantity(Integer periodsQuantity) {
+        this.periodsQuantity = periodsQuantity;
     }
 
     public String getInstitutionAcronym() {
@@ -63,5 +60,12 @@ public class Course {
     }
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<String> getSubjectCodes() {
+        return subjectCodes;
+    }
+    public void setSubjectCodes(List<String> subjectCodes) {
+        this.subjectCodes = subjectCodes;
     }
 }

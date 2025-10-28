@@ -1,16 +1,18 @@
 package br.com.my_universe.api.infrastructure.web.dto.Course;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public class CourseResponse {
 
     private String code;
     private String name;
-    private Integer periods_quantity;
+    private Integer periodsQuantity;
     private String description;
     private String institutionAcronym;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+    private List<String> subjectsIds;
 
     public String getCode() {
         return code;
@@ -27,10 +29,10 @@ public class CourseResponse {
     }
 
     public Integer getPeriodsQuantity() {
-        return periods_quantity;
+        return periodsQuantity;
     }
-    public void setPeriodsQuantity(Integer periods_quantity) {
-        this.periods_quantity = periods_quantity;
+    public void setPeriodsQuantity(Integer periodsQuantity) {
+        this.periodsQuantity = periodsQuantity;
     }
 
     public String getDescription() {
@@ -59,5 +61,12 @@ public class CourseResponse {
     }
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<String> getSubjectsIds() {
+        return subjectsIds;
+    }
+    public void setSubjectsIds(List<String> subjects) {
+        this.subjectsIds = subjects;
     }
 }

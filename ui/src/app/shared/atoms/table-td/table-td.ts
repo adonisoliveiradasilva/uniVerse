@@ -23,7 +23,8 @@ export class TableTd {
   @Input() context!: TableContextType;
   @Input() isLastRow: boolean = false;
   @Input() objectId!: string;
-
+  @Input() isSelected: boolean = false;
+  
   TableTdType = TableTdType;
 
   get getClasses(): string[] {
