@@ -47,7 +47,7 @@ export class Table {
     }
 
     this._selectionSubscription = this._tableSelectService.selectedIds$.subscribe(ids => {
-      this._currentSelectedIds = ids;
+      this._currentSelectedIds = ids; //mas o valor não reage aqui corretamente
     });
 
     this.searchSubject

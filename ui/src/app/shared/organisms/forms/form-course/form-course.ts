@@ -81,6 +81,7 @@ private _formBusService = inject(FormBusService);
       this._loadEntityData(this.identifier as string);
     } else {
       this.form.get('codeCourse')?.enable();
+      this._tableSelectService.clearSelection();
       this._formModalService.setNameConfirm(null);
     }
 
@@ -114,7 +115,7 @@ private _formBusService = inject(FormBusService);
           periodsQuantityCourse: course.periodsQuantity,
           descriptionCourse: course.description
         });
-        this._currentSelectedIds = course.subjectsIds;
+        this._tableSelectService.setSelection(course.subjectsIds || []);
         this._formModalService.setNameConfirm(course.name);        
         this.form.get('codeCourse')?.disable();
       });
@@ -152,5 +153,6 @@ private _formBusService = inject(FormBusService);
   ngOnDestroy() {
     this._subscription.unsubscribe();
     this._selectionSubscription.unsubscribe();
+    this._tableSelectService.clearSelection();
   }
 }

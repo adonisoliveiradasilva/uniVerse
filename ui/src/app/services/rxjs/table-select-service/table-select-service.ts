@@ -25,6 +25,10 @@ export class TableSelectService {
     this._selectedIdsSubject.next(updatedIds);
   }
 
+  public setSelection(ids: string[]): void {
+    this._selectedIdsSubject.next(ids);
+  }
+
   public clearSelection(): void {
     this._selectedIdsSubject.next([]);
   }
