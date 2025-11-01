@@ -31,19 +31,6 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
                 subtitle: 'Acompanhe sua agenda acadêmica',
                 icon: 'fas fa-calendar-week',
                 route: '/diary'
-            }
-        ]
-    },
-    {
-        slug: 'institutional_area',
-        title: 'Área institucional',
-        items: [
-            {
-                slug: 'courses',
-                title: 'Cursos',
-                subtitle: 'Faça gestão dos cursos',
-                icon: 'fas fa-graduation-cap',
-                route: '/courses'
             },
             {
                 slug: 'subjects',
@@ -51,26 +38,6 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
                 subtitle: 'Faça gestão das disciplinas',
                 icon: 'fas fa-book',
                 route: '/subjects'
-            }
-        ]
-    },
-    {
-        slug: 'administrative_area',
-        title: 'Área administrativa',
-        items: [
-            {
-                slug: 'institutions',
-                title: 'Instituições',
-                subtitle: 'Faça gestão das instituições parceiras',
-                icon: 'fas fa-building-columns',
-                route: '/institutions'
-            },
-            {
-                slug: 'users',
-                title: 'Usuários',
-                subtitle: 'Faça gestão dos alunos cadastrados',
-                icon: 'fas fa-people-group',
-                route: '/users'
             }
         ]
     }

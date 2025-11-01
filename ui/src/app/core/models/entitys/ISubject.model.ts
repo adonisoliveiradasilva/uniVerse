@@ -3,7 +3,7 @@ export interface ISubject {
   name: string;
   hours: number;
   description: string;
-  institutionAcronym: string;
+  studentAcronym: string;
   createdAt?: string;
   updatedAt?: string;
 }

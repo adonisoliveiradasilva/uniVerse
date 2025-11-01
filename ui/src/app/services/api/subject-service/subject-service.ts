@@ -14,7 +14,7 @@ export class SubjectService {
   private _http = inject(HttpClient);
   private _alertService = inject(AlertService);
 
-  private _institutionAcronym = 'UFOP';
+  private _studentAcronym = 'UFOP';
 
   private _subjects$ = new BehaviorSubject<ITableRow[]>([]);
 
@@ -24,7 +24,7 @@ export class SubjectService {
   }
 
   public fetchSubjects(): Observable<ITableRow[]> {
-    const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/subjects`;
+    const url = `${environment.apiUrl}/student/${this._studentAcronym}/subjects`;
     return this._http.get<IApiResponse<ISubject>>(url).pipe(
       map(response =>
         response.data.map(item => ({
@@ -43,8 +43,8 @@ export class SubjectService {
     );
   }
 
-  public getSubjectByCode(institutionAcronym: string, code: string): Observable<ISubject> {
-    const url = `${environment.apiUrl}/institutions/${institutionAcronym}/subjects/${code}`;
+  public getSubjectByCode(studentAcronym: string, code: string): Observable<ISubject> {
+    const url = `${environment.apiUrl}/student/${studentAcronym}/subjects/${code}`;
     return this._http.get<IApiSingleResponse<ISubject>>(url).pipe(
       map(response => response.data),
       catchError(error => {
@@ -56,7 +56,7 @@ export class SubjectService {
   }
 
   public createSubject(subject: Pick<ISubject, 'code' | 'name' | 'hours' | 'description'>): Observable<ISubject> {
-    const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/subjects`;
+    const url = `${environment.apiUrl}/student/${this._studentAcronym}/subjects`;
     return this._http.post<IApiSingleResponse<ISubject>>(url, subject).pipe(
       map(response => response.data),
       tap(newSubject => {
@@ -72,7 +72,7 @@ export class SubjectService {
   }
 
   public updateSubject(subject: Pick<ISubject, 'code' | 'name' | 'hours' | 'description'>): Observable<ISubject> {
-    const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/subjects/${subject.code}`;
+    const url = `${environment.apiUrl}/student/${this._studentAcronym}/subjects/${subject.code}`;
     return this._http.put<IApiSingleResponse<ISubject>>(url, subject).pipe(
       map(response => response.data),
       tap(updated => {
@@ -88,7 +88,7 @@ export class SubjectService {
   }
 
   public deleteSubject(code: string): Observable<ISubject> {
-    const url = `${environment.apiUrl}/institutions/${this._institutionAcronym}/subjects/${code}`;
+    const url = `${environment.apiUrl}/student/${this._studentAcronym}/subjects/${code}`;
     return this._http.delete<IApiSingleResponse<ISubject>>(url).pipe(
       map(response => response.data),
       tap(deleted => {

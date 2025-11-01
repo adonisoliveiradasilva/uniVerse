@@ -63,9 +63,9 @@ export class FormSubject {
 
   private _loadEntityData(acronym: string) {
     this.isLoading = true;
-    // const institutionAcronym = this._institutionService.getCurrentInstitutionAcronym(); // Criar esse método depois
-    const institutionAcronym = "UFOP"
-    this._subjectService.getSubjectByCode(institutionAcronym, acronym).pipe(
+    // const studentAcronym = this._studentService.getCurrentstudentAcronym(); // Criar esse método depois
+    const studentAcronym = "UFOP"
+    this._subjectService.getSubjectByCode(studentAcronym, acronym).pipe(
       take(1),
       finalize(() => {
         this.isLoading = false;
