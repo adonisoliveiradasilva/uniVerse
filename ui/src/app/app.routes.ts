@@ -5,6 +5,7 @@ import { Dashboard } from './pages/dashboard/dashboard';
 import { PageInstitutions } from './pages/page-institutions/page-institutions';
 import { PageSubjects } from './pages/page-subjects/page-subjects';
 import { PageCourses } from './pages/page-courses/page-courses';
+import { PageUsers } from './pages/page-users/page-users';
 
 export const routes: Routes = [
     {
@@ -31,6 +32,10 @@ export const routes: Routes = [
                 path: 'institutions',
                 component: PageInstitutions
             },
+            {
+                path: 'users',
+                component: PageUsers
+            }
         ]
     },
 
