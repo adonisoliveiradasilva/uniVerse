@@ -27,14 +27,14 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
             },
             {
                 slug: 'diary',
-                title: 'Agenda',
+                title: 'Sua Agenda',
                 subtitle: 'Acompanhe sua agenda acadêmica',
                 icon: 'fas fa-calendar-week',
                 route: '/diary'
             },
             {
                 slug: 'subjects',
-                title: 'Disciplinas',
+                title: 'Suas Disciplinas',
                 subtitle: 'Faça gestão das disciplinas',
                 icon: 'fas fa-book',
                 route: '/subjects'

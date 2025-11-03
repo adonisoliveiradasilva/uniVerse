@@ -13,8 +13,8 @@ public class Subject {
 
     private String description;
 
-    private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
+    private OffsetDateTime created_at;
+    private OffsetDateTime updated_at;
 
     public String getCode() {
         return code;
@@ -53,16 +53,16 @@ public class Subject {
     }
 
     public OffsetDateTime getCreatedAt() {
-        return createdAt;
+        return created_at;
     }
-    public void setCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(OffsetDateTime created_at) {
+        this.created_at = created_at;
     }
 
     public OffsetDateTime getUpdatedAt() {
-        return updatedAt;
+        return updated_at;
     }
-    public void setUpdatedAt(OffsetDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedAt(OffsetDateTime updated_at) {
+        this.updated_at = updated_at;
     }
 }

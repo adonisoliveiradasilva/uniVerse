@@ -1,0 +1,40 @@
+<div class="body-login-content">
+  <div class="body-login-content-image"></div>
+
+    <div class="body-login-content-form">
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()" class="set-password-form">
+            <span class="body-login-content-form-title">Definir Senha</span>
+
+            @if (!invalidToken) {
+                <app-form-input 
+                    label="Senha" 
+                    formControlName="password" 
+                    placeholder="Pelo menos 6 caracteres"
+                    type="password">
+                </app-form-input>
+
+                <app-form-input 
+                    label="Confirmar Senha" 
+                    formControlName="confirmPassword" 
+                    placeholder="Repita a senha"
+                    type="password">
+                </app-form-input>
+
+                <app-button 
+                    label="Salvar Senha">
+                </app-button>
+            } @else {
+            <h4 class="error-message">
+                Este link de definição de senha é inválido ou já expirou. 
+                Por favor, tente se cadastrar novamente.
+            </h4>
+            <app-button 
+                [label]="'Voltar para o Login'" 
+                [type]="'secondary'"
+                [icon]="'fa-arrow-left'"
+                (buttonClick)="goBackToLogin()">
+            </app-button>
+            }
+        </form>
+    </div>
+</div>

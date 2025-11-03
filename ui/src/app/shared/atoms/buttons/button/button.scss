@@ -22,7 +22,19 @@ button{
     }
 }
 
-.secondary-button{
+.login-button, .register-button{
+    width: 18rem!important;
+    padding: 1.2rem 5rem;
+}
+
+.span-button{
+    background-color: transparent;  
+    color: var(--color-text-destak);
+    padding: 0;
+    height: auto;
+}
+
+.secondary-button, .register-button{
     background-color: var(--color-text-light);  
     color: var(--color-text-destak);
 }

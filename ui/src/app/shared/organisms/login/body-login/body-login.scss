@@ -9,9 +9,8 @@
     box-sizing: border-box;
     
     .body-login-content-image{
-        width: clamp(390px, 39vh, 39vh);
-        height: clamp(278.2px, 27.82vh, 27.82vh);
-
+        width: clamp(390px, 39vh, 39vw);
+        height: clamp(278.2px, 27.82vh, 27.82vw);
         background-image: var(--image-background-login);
         background-size: cover;
         background-position: center;
@@ -24,6 +23,7 @@
         @include padding-1_5;
         width: 100%;
 
+
         .body-login-content-form-title{
             @include font-size-larger;
             color: var(--color-text-primary);
@@ -32,8 +32,19 @@
 
     .body-login-content-button{
         @include padding-1_5;
-        @include flex-row-center;
-        @include gap-1;
-        width: 100%;   
+        @include flex-column-center-top;
+        @include gap-2;
+        width: 100%;
     }
+
+    form{
+        @include gap-2;
+        @include flex-column-center-top;
+        width: 100%;
+    }
+}
+
+.error-message{
+    width: 100%;
+    text-align: center;
 }

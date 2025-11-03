@@ -3,11 +3,16 @@ import { PageLogin } from './pages/page-login/page-login';
 import { Shell } from './templates/shell/shell';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { PageSubjects } from './pages/page-subjects/page-subjects';
+import { PageSetPasswordComponent } from './pages/page-set-password/page-set-password';
 
 export const routes: Routes = [
     {
         path: 'login',
         component: PageLogin
+    },
+    { 
+        path: 'set-password', 
+        component: PageSetPasswordComponent
     },
     {
         path: '',

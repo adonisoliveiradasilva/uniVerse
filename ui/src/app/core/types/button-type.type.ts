@@ -1,1 +1,1 @@
-export type ButtonType = 'primary' | 'secondary' | 'delete';
+export type ButtonType = 'primary' | 'secondary' | 'delete' | 'login' | 'span' | 'register';

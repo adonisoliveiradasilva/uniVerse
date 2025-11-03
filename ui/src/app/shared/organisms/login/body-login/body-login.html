@@ -1,11 +1,134 @@
-<div class="body-login-content">
-    <div class="body-login-content-image"></div>
+<div class="body-login-content" [ngSwitch]="authState$ | async">
+
+  <div class="body-login-content-image"></div>
+
+  <ng-container *ngSwitchCase="'login'">
     <div class="body-login-content-form">
-        <span class="body-login-content-form-title">Login</span>
-        <app-form-input [label]="'email'" [placeholder]="'Enter your username'" [type]="'text'"></app-form-input>
-        <app-form-input [label]="'password'" [placeholder]="'Enter your password'" [type]="'password'"></app-form-input>
+      <span class="body-login-content-form-title">Login</span>
+
+      <form [formGroup]="loginForm">
+        <app-form-input
+          [label]="'Email'"
+          [placeholder]="'Enter your username'"
+          [type]="'text'"
+          formControlName="email">
+        </app-form-input>
+
+        <app-form-input
+          [label]="'Password'"
+          [placeholder]="'Enter your password'"
+          [type]="'password'"
+          formControlName="password">
+        </app-form-input>
+      </form>
     </div>
+
     <div class="body-login-content-button">
-        <app-login-button></app-login-button>
+      <app-button
+        [label]="'Login'"
+        [type]="'login'"
+        [icon]="'fa-right-to-bracket'"
+        (buttonClick)="login()">
+      </app-button>
+
+      <app-button
+        [label]="'Cadastre-se'"
+        [type]="'register'"
+        [icon]="'fa-user-plus'"
+        (buttonClick)="goToRegister()">
+      </app-button>
+
+      <app-button
+        [label]="'Esqueci a senha'"
+        [type]="'span'"
+        (buttonClick)="goToForgotPassword()">
+      </app-button>
     </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'register'">
+    <div class="body-login-content-form">
+      <span class="body-login-content-form-title">Registrar</span>
+
+      <form [formGroup]="registerForm">
+        <app-form-input
+          [label]="'Nome'"
+          [placeholder]="'Digite seu nome'"
+          [type]="'text'"
+          formControlName="name">
+        </app-form-input>
+
+        <app-form-input
+          [label]="'Email'"
+          [placeholder]="'Digite seu email'"
+          [type]="'text'"
+          formControlName="email">
+        </app-form-input>
+      </form>
+    </div>
+
+    <div class="body-login-content-button">
+      <app-button
+        [label]="'Inscrever-se'"
+        [type]="'login'"
+        [icon]="'fa-user-plus'"
+        (buttonClick)="createAccount()">
+      </app-button>
+
+      <app-button
+        [label]="'Voltar'"
+        [type]="'span'"
+        (buttonClick)="goBackToLogin()">
+      </app-button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'forgotPassword'">
+    <div class="body-login-content-form">
+      <span class="body-login-content-form-title">Esqueci a senha</span>
+
+      <form [formGroup]="forgotPasswordForm">
+        <app-form-input
+          [label]="'Email'"
+          [placeholder]="'Digite seu email'"
+          [type]="'text'"
+          formControlName="email">
+        </app-form-input>
+      </form>
+    </div>
+
+    <div class="body-login-content-button">
+      <app-button
+        [label]="'Enviar email'"
+        [type]="'login'"
+        [icon]="'fa-envelope'"
+        (buttonClick)="sendEmail()">
+      </app-button>
+
+      <app-button
+        [label]="'Voltar'"
+        [type]="'span'"
+        (buttonClick)="goBackToLogin()">
+      </app-button>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngSwitchCase="'awaitingApproval'">
+    <div class="body-login-content-form">
+      <span class="body-login-content-form-title">Verifique seu E-mail</span>
+      <h4 class="error-message">
+        Enviamos um link para o seu e-mail com as instruções para o cadastro da sua senha.
+        <br/><br/>
+        (Por favor, verifique também sua caixa de spam.)
+      </h4>
+      <app-button 
+        [label]="'Voltar para o Login'" 
+        [type]="'secondary'" 
+        [icon]="'fa-arrow-left'"
+        (buttonClick)="goBackToLogin()">
+      </app-button>
+    </div>
+  </ng-container>
 </div>
+

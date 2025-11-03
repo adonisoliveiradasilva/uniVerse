@@ -17,4 +17,15 @@ export class Button {
   onClick(): void {
     this.buttonClick.emit();
   }
+
+  getClass(): any { 
+    const type = this.type
+    return { 
+      'secondary-button': type === 'secondary', 
+      'delete-button': type === 'delete', 
+      'login-button': type === 'login', 
+      'span-button': type === 'span', 
+      'register-button': type === 'register'
+    };
+  }
 }
