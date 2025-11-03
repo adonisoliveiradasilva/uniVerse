@@ -6,7 +6,6 @@ import br.com.my_universe.api.infrastructure.persistence.mappers.StudentRowMappe
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +26,6 @@ public class JdbcStudentRepository implements StudentRepository {
         
         jdbcTemplate.update(sql, student.getEmail(), student.getName());
         
-        // Busca o objeto recém-criado para retornar com os timestamps
         return findByEmail(student.getEmail())
             .orElseThrow(() -> new RuntimeException("Falha ao buscar estudante recém-criado."));
     }
@@ -43,7 +41,6 @@ public class JdbcStudentRepository implements StudentRepository {
         );
 
         if (updatedRows > 0) {
-            // Busca o objeto atualizado para retornar com o 'updated_at'
             return findByEmail(student.getEmail())
                 .orElse(student); // Fallback
         }

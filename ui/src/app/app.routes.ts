@@ -4,6 +4,7 @@ import { Shell } from './templates/shell/shell';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { PageSubjects } from './pages/page-subjects/page-subjects';
 import { PageSetPasswordComponent } from './pages/page-set-password/page-set-password';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
     {
@@ -17,6 +18,7 @@ export const routes: Routes = [
     {
         path: '',
         component: Shell,
+        canActivate: [authGuard],
         children: [
             {
                 path: 'dashboard',

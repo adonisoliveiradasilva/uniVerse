@@ -8,7 +8,7 @@ public class SubjectResponse {
     private String name;
     private Integer hours;
     private String description;
-    private String institutionAcronym;
+    private String studentEmail;
     private OffsetDateTime created_at;
     private OffsetDateTime updated_at;
 
@@ -40,11 +40,11 @@ public class SubjectResponse {
         this.description = description;
     }
 
-    public String getInstitutionAcronym() {
-        return institutionAcronym;
+    public String getStudentEmail() {
+        return studentEmail;
     }
-    public void setInstitutionAcronym(String institutionAcronym) {
-        this.institutionAcronym = institutionAcronym;
+    public void setStudentEmail(String studentEmail) {
+        this.studentEmail = studentEmail;
     }
 
     public OffsetDateTime getCreatedAt() {

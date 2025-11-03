@@ -9,7 +9,7 @@ public class Subject {
     
     private Integer hours; 
     
-    private String institutionAcronym; 
+    private String studentEmail; 
 
     private String description;
 
@@ -45,11 +45,11 @@ public class Subject {
     }
 
 
-    public String getInstitutionAcronym() {
-        return institutionAcronym;
+    public String getStudentEmail() {
+        return studentEmail;
     }
-    public void setInstitutionAcronym(String institutionAcronym) {
-        this.institutionAcronym = institutionAcronym;
+    public void setStudentEmail(String studentEmail) {
+        this.studentEmail = studentEmail;
     }
 
     public OffsetDateTime getCreatedAt() {

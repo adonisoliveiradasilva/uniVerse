@@ -1,103 +1,109 @@
-// package br.com.my_universe.api.infrastructure.web.controller;
+package br.com.my_universe.api.infrastructure.web.controller;
 
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
-// import br.com.my_universe.api.application.services.SubjectServiceImpl;
-// import br.com.my_universe.api.domain.Subject;
-// import br.com.my_universe.api.infrastructure.web.dto.Subject.SubjectRequest;
-// import br.com.my_universe.api.infrastructure.web.dto.Subject.SubjectResponse;
-// import br.com.my_universe.api.infrastructure.web.dto.shared.ApiResponse;
-// import java.net.URI;
-// import java.util.List;
-// import java.util.stream.Collectors;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import br.com.my_universe.api.application.services.SubjectServiceImpl;
+import br.com.my_universe.api.domain.Subject;
+import br.com.my_universe.api.infrastructure.web.dto.Subject.SubjectRequest;
+import br.com.my_universe.api.infrastructure.web.dto.Subject.SubjectResponse;
+import br.com.my_universe.api.infrastructure.web.dto.shared.ApiResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-// @CrossOrigin(origins = "http://localhost:4200")
-// @RestController
-// @RequestMapping("/api/institutions/{acronym}/subjects")
-// public class SubjectController {
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
-//     private final SubjectServiceImpl subjectService;
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/api/subjects")
+public class SubjectController {
 
-//     public SubjectController(SubjectServiceImpl subjectService) {
-//         this.subjectService = subjectService;
-//     }
+    private final SubjectServiceImpl subjectService;
 
-//     @PostMapping
-//     public ResponseEntity<ApiResponse<SubjectResponse>> createSubject(
-//         @PathVariable String acronym,
-//         @RequestBody SubjectRequest request) {
+    public SubjectController(SubjectServiceImpl subjectService) {
+        this.subjectService = subjectService;
+    }
 
-//         Subject subject = new Subject();
-//         subject.setCode(request.getCode());
-//         subject.setName(request.getName());
-//         subject.setHours(request.getHours());
-//         subject.setDescription(request.getDescription());
-//         subject.setInstitutionAcronym(acronym);
+    private String getAuthenticatedUserEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Usuário não autenticado.");
+        }
+        return authentication.getName();
+    }
 
-//         Subject createdSubject = subjectService.createSubject(subject);
-//         SubjectResponse dto = toResponse(createdSubject);
-//         ApiResponse<SubjectResponse> response = new ApiResponse<>(dto);
+    @PostMapping
+    public ResponseEntity<ApiResponse<SubjectResponse>> createSubject(@RequestBody SubjectRequest request) {
+        String userEmail = getAuthenticatedUserEmail();
 
-//         return ResponseEntity.created(URI.create(
-//                 String.format("/api/institutions/%s/subjects/%s", dto.getInstitutionAcronym(), dto.getCode())))
-//                 .body(response);
-//     }
+        Subject subject = new Subject();
+        subject.setCode(request.getCode());
+        subject.setName(request.getName());
+        subject.setHours(request.getHours());
+        subject.setStudentEmail(userEmail);
+        
+        Subject createdSubject = subjectService.createSubject(subject); 
+        SubjectResponse dto = toResponse(createdSubject);
+        ApiResponse<SubjectResponse> response = new ApiResponse<>(dto);
 
-//     @PutMapping("/{code}")
-//     public ResponseEntity<ApiResponse<SubjectResponse>> updateSubject(
-//         @PathVariable String acronym,
-//         @PathVariable String code,
-//         @RequestBody SubjectRequest request) {
+        return ResponseEntity.created(URI.create(
+            String.format("/api/subjects/%s", dto.getCode())
+        )).body(response);
+    }
 
-//         Subject subjectDetails = new Subject();
-//         subjectDetails.setCode(request.getCode());
-//         subjectDetails.setName(request.getName());
-//         subjectDetails.setHours(request.getHours());
-//         subjectDetails.setDescription(request.getDescription());
-//         subjectDetails.setInstitutionAcronym(acronym);
+    @PutMapping("/{code}")
+    public ResponseEntity<ApiResponse<SubjectResponse>> updateSubject(
+            @PathVariable String code, 
+            @RequestBody SubjectRequest request) {
+        
+        String userEmail = getAuthenticatedUserEmail();
 
-//         Subject updatedSubject = subjectService.updateSubject(code, acronym, subjectDetails);
+        Subject subjectDetails = new Subject();
+        subjectDetails.setCode(request.getCode());
+        subjectDetails.setName(request.getName());
+        subjectDetails.setHours(request.getHours());
+        subjectDetails.setStudentEmail(userEmail);
+        
+        Subject updatedSubject = subjectService.updateSubject(code, userEmail, subjectDetails);
 
-//         SubjectResponse dto = toResponse(updatedSubject);
-//         ApiResponse<SubjectResponse> response = new ApiResponse<>(dto);
-//         return ResponseEntity.ok(response);
-//     }
+        SubjectResponse dto = toResponse(updatedSubject);
+        ApiResponse<SubjectResponse> response = new ApiResponse<>(dto);
+        return ResponseEntity.ok(response);
+    }
 
-//     @GetMapping("/{code}")
-//     public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectByKey(
-//         @PathVariable String acronym,
-//         @PathVariable String code) {
-//         Subject subject = subjectService.getSubjectByCodeAndAcronym(code, acronym);
-//         return ResponseEntity.ok(new ApiResponse<>(toResponse(subject)));
-//     }
+    @GetMapping("/{code}")
+    public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectByKey(@PathVariable String code) {
+        String userEmail = getAuthenticatedUserEmail(); // Pega o "dono"
+        Subject subject = subjectService.getSubjectByCodeAndStudentEmail(code, userEmail); // 5. Usa o e-mail
+        return ResponseEntity.ok(new ApiResponse<>(toResponse(subject)));
+    }
+    
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
+        String userEmail = getAuthenticatedUserEmail(); // Pega o "dono"
+        List<Subject> subjects = subjectService.getAllSubjectsByStudentEmail(userEmail); // 5. Usa o e-mail
+        
+        List<SubjectResponse> dtoList = subjects.stream().map(this::toResponse).collect(Collectors.toList());
+        return ResponseEntity.ok(new ApiResponse<>(dtoList));
+    }
 
-//     @GetMapping
-//     public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjectsByInstitution(
-//         @PathVariable String acronym) {
+    @DeleteMapping("/{code}")
+    public ResponseEntity<ApiResponse<SubjectResponse>> deleteSubject(@PathVariable String code) {
+        String userEmail = getAuthenticatedUserEmail(); // Pega o "dono"
+        Subject deletedSubject = subjectService.deleteSubject(code, userEmail); // 5. Usa o e-mail
+        return ResponseEntity.ok(new ApiResponse<>(toResponse(deletedSubject)));
+    }
 
-//         List<Subject> subjects = subjectService.getAllSubjectsByInstitution(acronym);
-
-//         List<SubjectResponse> dtoList = subjects.stream().map(this::toResponse).collect(Collectors.toList());
-//         return ResponseEntity.ok(new ApiResponse<>(dtoList));
-//     }
-
-//     @DeleteMapping("/{code}")
-//     public ResponseEntity<ApiResponse<SubjectResponse>> deleteSubject(
-//         @PathVariable String acronym,
-//         @PathVariable String code) {
-//         Subject deletedSubject = subjectService.deleteSubject(code, acronym);
-//         return ResponseEntity.ok(new ApiResponse<>(toResponse(deletedSubject)));
-//     }
-
-//     private SubjectResponse toResponse(Subject subject) {
-//         SubjectResponse res = new SubjectResponse();
-//         res.setCode(subject.getCode());
-//         res.setName(subject.getName());
-//         res.setHours(subject.getHours());
-//         res.setDescription(subject.getDescription());
-//         res.setInstitutionAcronym(subject.getInstitutionAcronym());
-//         res.setCreatedAt(subject.getCreatedAt());
-//         res.setUpdatedAt(subject.getUpdatedAt());
-//         return res;
-//     }
-// }
+    private SubjectResponse toResponse(Subject subject) {
+        SubjectResponse res = new SubjectResponse();
+        res.setCode(subject.getCode());
+        res.setName(subject.getName());
+        res.setHours(subject.getHours());
+        res.setDescription(subject.getDescription());
+        res.setStudentEmail(subject.getStudentEmail());
+        res.setCreatedAt(subject.getCreatedAt());
+        res.setUpdatedAt(subject.getUpdatedAt());
+        return res;
+    }
+}

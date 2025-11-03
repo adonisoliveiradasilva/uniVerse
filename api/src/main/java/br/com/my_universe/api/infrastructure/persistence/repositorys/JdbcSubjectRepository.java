@@ -24,7 +24,7 @@ public class JdbcSubjectRepository implements SubjectRepository {
 
     @Override
     public Subject save(Subject subject) {
-        String sql = "INSERT INTO tb_subjects (code, name, hours, description, institution_acronym) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tb_subjects (code, name, hours, description, student_email) VALUES (?, ?, ?, ?, ?)";
         
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql); // Sem chaves de retorno
@@ -32,25 +32,25 @@ public class JdbcSubjectRepository implements SubjectRepository {
             ps.setString(2, subject.getName());
             ps.setInt(3, subject.getHours());
             ps.setString(4, subject.getDescription());
-            ps.setString(5, subject.getInstitutionAcronym());
+            ps.setString(5, subject.getStudentEmail());
             return ps;
         });
 
-        return findByCodeAndInstitutionAcronym(subject.getCode(), subject.getInstitutionAcronym())
+        return findByCodeAndStudentEmail(subject.getCode(), subject.getStudentEmail())
             .orElseThrow(() -> new RuntimeException("Falha ao buscar disciplina recém-criada."));
     }
 
     @Override
     public Subject update(String originalCode, String originalAcronym, Subject subjectDetails) {
-        String sql = "UPDATE tb_subjects SET code = ?, name = ?, hours = ?, description = ?, institution_acronym = ? " +
-                     "WHERE code = ? AND institution_acronym = ?";
+        String sql = "UPDATE tb_subjects SET code = ?, name = ?, hours = ?, description = ?, student_email = ? " +
+                     "WHERE code = ? AND student_email = ?";
         
         int updatedRows = jdbcTemplate.update(sql,
             subjectDetails.getCode(),
             subjectDetails.getName(),
             subjectDetails.getHours(),
             subjectDetails.getDescription(),
-            subjectDetails.getInstitutionAcronym(),
+            subjectDetails.getStudentEmail(),
             originalCode,
             originalAcronym
         );
@@ -62,15 +62,15 @@ public class JdbcSubjectRepository implements SubjectRepository {
     }
 
     @Override
-    public Optional<Subject> findByCodeAndInstitutionAcronym(String code, String institutionAcronym) {
-        String sql = "SELECT * FROM tb_subjects WHERE code = ? AND institution_acronym = ?";
-        return jdbcTemplate.query(sql, subjectRowMapper, code, institutionAcronym).stream().findFirst();
+    public Optional<Subject> findByCodeAndStudentEmail(String code, String studentEmail) {
+        String sql = "SELECT * FROM tb_subjects WHERE code = ? AND student_email = ?";
+        return jdbcTemplate.query(sql, subjectRowMapper, code, studentEmail).stream().findFirst();
     }
 
     @Override
-    public List<Subject> findAllByInstitutionAcronym(String institutionAcronym) {
-        String sql = "SELECT * FROM tb_subjects WHERE institution_acronym = ? ORDER BY name ASC";
-        return jdbcTemplate.query(sql, subjectRowMapper, institutionAcronym);
+    public List<Subject> findAllByStudentEmail(String studentEmail) {
+        String sql = "SELECT * FROM tb_subjects WHERE student_email = ? ORDER BY name ASC";
+        return jdbcTemplate.query(sql, subjectRowMapper, studentEmail);
     }
 
     @Override
@@ -80,9 +80,9 @@ public class JdbcSubjectRepository implements SubjectRepository {
     }
 
     @Override
-    public void deleteByCodeAndInstitutionAcronym(String code, String institutionAcronym) {
-        String sql = "DELETE FROM tb_subjects WHERE code = ? AND institution_acronym = ?";
-        int updatedRows = jdbcTemplate.update(sql, code, institutionAcronym);
+    public void deleteByCodeAndStudentEmail(String code, String studentEmail) {
+        String sql = "DELETE FROM tb_subjects WHERE code = ? AND student_email = ?";
+        int updatedRows = jdbcTemplate.update(sql, code, studentEmail);
         
         if (updatedRows == 0) {
              throw new RuntimeException("Falha ao deletar. Disciplina não encontrada.");

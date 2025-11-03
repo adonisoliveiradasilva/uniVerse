@@ -1,92 +1,87 @@
-// package br.com.my_universe.api.application.services;
+package br.com.my_universe.api.application.services;
 
-// import org.springframework.stereotype.Service;
-// import br.com.my_universe.api.application.exceptions.ResourceAlreadyExistsException;
-// import br.com.my_universe.api.application.exceptions.ResourceNotFoundException;
-// import br.com.my_universe.api.application.ports.SubjectRepository;
-// import br.com.my_universe.api.application.ports.InstitutionRepository;
-// import br.com.my_universe.api.domain.Subject;
-// import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // Importar
+import br.com.my_universe.api.application.exceptions.ResourceAlreadyExistsException;
+import br.com.my_universe.api.application.exceptions.ResourceNotFoundException;
+import br.com.my_universe.api.application.ports.SubjectRepository;
+import br.com.my_universe.api.application.ports.StudentRepository;
+import br.com.my_universe.api.domain.Subject;
+import java.util.List;
 
-// @Service
-// public class SubjectServiceImpl {
+@Service
+public class SubjectServiceImpl {
 
-//     private final SubjectRepository subjectRepository;
-//     private final InstitutionRepository institutionRepository;
+    private final SubjectRepository subjectRepository;
+    private final StudentRepository studentRepository;
 
-//     public SubjectServiceImpl(SubjectRepository subjectRepository, InstitutionRepository institutionRepository) {
-//         this.subjectRepository = subjectRepository;
-//         this.institutionRepository = institutionRepository;
-//     }
+    public SubjectServiceImpl(SubjectRepository subjectRepository, StudentRepository studentRepository) {
+        this.subjectRepository = subjectRepository;
+        this.studentRepository = studentRepository;
+    }
 
-//     public Subject createSubject(Subject subject) {
-//         if (subject.getCode() == null || subject.getCode().trim().isEmpty()) {
-//             throw new IllegalArgumentException("O código (code) da disciplina não pode ser vazio.");
-//         }
+    @Transactional
+    public Subject createSubject(Subject subject) {
+        if (subject.getCode() == null || subject.getCode().trim().isEmpty()) {
+            throw new IllegalArgumentException("O código (code) da disciplina não pode ser vazio.");
+        }
+        if (subject.getName() == null || subject.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome (name) da disciplina não pode ser vazio.");
+        }
+        if (subject.getStudentEmail() == null || subject.getStudentEmail().trim().isEmpty()) {
+            throw new IllegalArgumentException("O e-mail do estudante (studentEmail) não pode ser vazio.");
+        }
+        if (subject.getHours() == null || subject.getHours() <= 0) {
+            throw new IllegalArgumentException("A carga horária (hours) deve ser um número positivo.");
+        }
 
-//         if (subject.getName() == null || subject.getName().trim().isEmpty()) {
-//             throw new IllegalArgumentException("O nome (name) da disciplina não pode ser vazio.");
-//         }
+        studentRepository.findByEmail(subject.getStudentEmail())
+            .orElseThrow(() -> new ResourceNotFoundException("Aluno com e-mail '" + subject.getStudentEmail() + "' não encontrado. Não é possível criar a disciplina."));
 
-//         if (subject.getInstitutionAcronym() == null || subject.getInstitutionAcronym().trim().isEmpty()) {
-//             throw new IllegalArgumentException("A sigla da instituição (institutionAcronym) não pode ser vazia.");
-//         }
+        subjectRepository.findByCodeAndStudentEmail(subject.getCode(), subject.getStudentEmail())
+            .ifPresent(s -> {
+                throw new ResourceAlreadyExistsException("Disciplina com código '" + subject.getCode() + "' já existe para este aluno.");
+            });
 
-//         if (subject.getHours() == null || subject.getHours() <= 0) {
-//             throw new IllegalArgumentException("A carga horária (hours) deve ser um número positivo.");
-//         }
+        return subjectRepository.save(subject);
+    }
 
-//         institutionRepository.findByAcronym(subject.getInstitutionAcronym())
-//             .orElseThrow(() -> new ResourceNotFoundException("Instituição com sigla '" + subject.getInstitutionAcronym() + "' não encontrada. Não é possível criar a disciplina."));
+    @Transactional
+    public Subject updateSubject(String originalCode, String studentEmail, Subject subjectDetails) {
+        Subject existingSubject = getSubjectByCodeAndStudentEmail(originalCode, studentEmail);
 
-//         subjectRepository.findByCodeAndInstitutionAcronym(subject.getCode(), subject.getInstitutionAcronym())
-//             .ifPresent(s -> {
-//                 throw new ResourceAlreadyExistsException("Disciplina com código '" + subject.getCode() + "' já existe para a instituição '" + subject.getInstitutionAcronym() + "'.");
-//             });
+        boolean uniqueKeyChanged = !existingSubject.getCode().equals(subjectDetails.getCode());
 
-//         institutionRepository.findByAcronym(subject.getInstitutionAcronym())
-//             .orElseThrow(() -> new ResourceNotFoundException("Instituição com sigla '" + subject.getInstitutionAcronym() + "' não encontrada."));
-
-//         subjectRepository.findByCodeAndInstitutionAcronym(subject.getCode(), subject.getInstitutionAcronym())
-//             .ifPresent(s -> {
-//                 throw new ResourceAlreadyExistsException("Disciplina com código '" + subject.getCode() + "' já existe para a instituição '" + subject.getInstitutionAcronym() + "'.");
-//             });
-
-//         return subjectRepository.save(subject);
-//     }
-
-//     public Subject updateSubject(String originalCode, String originalAcronym, Subject subjectDetails) {
-//         Subject existingSubject = getSubjectByCodeAndAcronym(originalCode, originalAcronym);
-
-//         boolean uniqueKeyChanged = !existingSubject.getCode().equals(subjectDetails.getCode()) || 
-//                                    !existingSubject.getInstitutionAcronym().equals(subjectDetails.getInstitutionAcronym());
-
-//         if (uniqueKeyChanged) {
-//             subjectRepository.findByCodeAndInstitutionAcronym(subjectDetails.getCode(), subjectDetails.getInstitutionAcronym())
-//                 .ifPresent(s -> {
-//                     throw new ResourceAlreadyExistsException("Já existe outra disciplina com o código '" + subjectDetails.getCode() + "' para a instituição '" + subjectDetails.getInstitutionAcronym() + "'.");
-//                 });
-//         }
+        if (uniqueKeyChanged) {
+            subjectRepository.findByCodeAndStudentEmail(subjectDetails.getCode(), studentEmail)
+                .ifPresent(s -> {
+                    throw new ResourceAlreadyExistsException("Já existe outra disciplina com o código '" + subjectDetails.getCode() + "' para este aluno.");
+                });
+        }
         
-//         return subjectRepository.update(originalCode, originalAcronym, subjectDetails);
-//     }
+        return subjectRepository.update(originalCode, studentEmail, subjectDetails);
+    }
     
-//     public Subject getSubjectByCodeAndAcronym(String code, String acronym) {
-//         return subjectRepository.findByCodeAndInstitutionAcronym(code, acronym)
-//             .orElseThrow(() -> new ResourceNotFoundException("Disciplina com código '" + code + "' e instituição '" + acronym + "' não encontrada."));
-//     }
+    public Subject getSubjectByCodeAndStudentEmail(String code, String studentEmail) {
+        return subjectRepository.findByCodeAndStudentEmail(code, studentEmail)
+            .orElseThrow(() -> new ResourceNotFoundException("Disciplina com código '" + code + "' não encontrada para este aluno."));
+    }
 
-//     public Subject deleteSubject(String code, String acronym) {
-//         Subject subjectToDelete = getSubjectByCodeAndAcronym(code, acronym);
-//         subjectRepository.deleteByCodeAndInstitutionAcronym(code, acronym);
-//         return subjectToDelete;
-//     }
+    @Transactional
+    public Subject deleteSubject(String code, String studentEmail) {
+        Subject subjectToDelete = getSubjectByCodeAndStudentEmail(code, studentEmail);
+        subjectRepository.deleteByCodeAndStudentEmail(code, studentEmail);
+        return subjectToDelete;
+    }
 
-//     public List<Subject> getAllSubjectsByInstitution(String institutionAcronym) {
-//         return subjectRepository.findAllByInstitutionAcronym(institutionAcronym);
-//     }
+    public List<Subject> getAllSubjectsByStudentEmail(String studentEmail) {
+        studentRepository.findByEmail(studentEmail)
+            .orElseThrow(() -> new ResourceNotFoundException("Aluno com e-mail '" + studentEmail + "' não encontrado."));
+            
+        return subjectRepository.findAllByStudentEmail(studentEmail);
+    }
 
-//     public List<Subject> getAllSubjects() {
-//         return subjectRepository.findAll();
-//     }
-// }
+    public List<Subject> getAllSubjects() {
+        return subjectRepository.findAll();
+    }
+}

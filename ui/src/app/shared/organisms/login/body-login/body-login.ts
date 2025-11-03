@@ -7,6 +7,8 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../../../services/api/student-service/student-service';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
+import { AuthService } from '../../../../services/api/auth-service/auth-service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type AuthState = 'login' | 'register' | 'awaitingApproval' | 'forgotPassword'; 
 
@@ -21,6 +23,7 @@ export class BodyLogin {
   private _fb = inject(FormBuilder);
   private _studentService = inject(StudentService);
   private _alertService = inject(AlertService);
+  private _authService = inject(AuthService)
 
   private _authState$ = new BehaviorSubject<AuthState>('login');
   public authState$ = this._authState$.asObservable();
@@ -45,8 +48,21 @@ export class BodyLogin {
       this._alertService.warn('Por favor, preencha seu email e senha.');
       return;
     }
-    console.log('Login data:', this.loginForm.value);
-    this._router.navigate(['/']);
+
+    const { email, password } = this.loginForm.value;
+    this._authService.login(email, password).subscribe({
+      next: (response) => {
+        console.log('Login bem-sucedido!', response.data.user.name);
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          this._alertService.error('E-mail ou senha inválidos.');
+        } else {
+          this._alertService.error('Erro inesperado. Tente novamente.');
+          console.error('Erro ao fazer login:', err);
+        }
+      }
+    });
   }
 
   goToRegister(): void {
