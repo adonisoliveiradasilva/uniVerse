@@ -28,11 +28,13 @@ $my-theme: mat.define-theme((
     --color-background-default: #EFF2FD;
     --color-background-secondary: #EFF3FF;
     --color-background-tertiary: #BDCAFF;
+    --color-background-quaternary: #c4b8e8;
     --color-shadow: #F3F2FB;
     --color-shadow-dark: #c5c3ce;
     --color-background-light: rgba(86, 95, 96, .08);
     --color-background-modal: rgba(116, 116, 116, 0.5);
     --image-background-login: url("./assets/background-login.jpeg");
+    --image-not-found: url("./assets/404-image.png");
 
     --color-text-success: #14934b;
     --color-background-success: #E8FDEC;
@@ -47,7 +49,6 @@ $my-theme: mat.define-theme((
 .dark-theme {
     --image-background-login: url("./assets/background-login.jpeg");
 }
-
 
 body, * {
     margin: 0;

@@ -14,7 +14,7 @@ export class StudentService {
   private _alertService = inject(AlertService);
 
   public createStudent(student: Pick<IStudent, 'email' | 'name'>): Observable<IStudent> {
-    const url = `${environment.apiUrl}/students`; // Endpoint de criação
+    const url = `${environment.apiUrl}/students`;
     return this._http.post<IApiSingleResponse<IStudent>>(url, student).pipe(
       map(response => response.data),
       catchError(error => {

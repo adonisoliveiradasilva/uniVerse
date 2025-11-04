@@ -6,6 +6,7 @@ import br.com.my_universe.api.application.ports.StudentRepository;
 import br.com.my_universe.api.domain.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import br.com.my_universe.api.application.services.AuthServiceImpl;
 
 import java.util.List;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class StudentServiceImpl {
 
     private final StudentRepository studentRepository;
+    private final AuthServiceImpl authService;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, AuthServiceImpl authService) {
         this.studentRepository = studentRepository;
+        this.authService = authService;
     }
 
     @Transactional
@@ -33,6 +36,15 @@ public class StudentServiceImpl {
             });
 
         Student savedStudent = studentRepository.save(student);
+
+        try {
+            authService.requestPasswordSetup(savedStudent.getEmail());
+        } catch (Exception e) {
+            System.err.println(
+                "### AVISO: Aluno " + savedStudent.getEmail() + " criado com sucesso, " + 
+                "mas falha ao enviar e-mail de configuração de senha: " + e.getMessage()
+            );
+        }
 
         return savedStudent;
     }

@@ -17,7 +17,7 @@
     },
     {
       "label": "Start API (Spring Boot)",
-      "command": "mvn spring-boot:run",
+      "command": "mvn clean spring-boot:run",
       "type": "shell",
       "presentation": {
         "group": "servers",

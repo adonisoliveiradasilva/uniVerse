@@ -5,6 +5,7 @@ import { Dashboard } from './pages/dashboard/dashboard';
 import { PageSubjects } from './pages/page-subjects/page-subjects';
 import { PageSetPasswordComponent } from './pages/page-set-password/page-set-password';
 import { authGuard } from './core/guards/auth-guard';
+import { PageNotFound } from './pages/page-not-found/page-not-found';
 
 export const routes: Routes = [
     {
@@ -33,7 +34,7 @@ export const routes: Routes = [
 
     {
         path: '**',
-        redirectTo: 'login'
+        component: PageNotFound
     }
 
 ];

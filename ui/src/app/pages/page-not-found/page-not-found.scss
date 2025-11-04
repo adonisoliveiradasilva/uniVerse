@@ -1,0 +1,48 @@
+@use '../../../styles/mixins' as *;
+
+.page-not-found {
+    @include flex-column-center-top;
+    @include gap-3;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(var(--color-background-quaternary) 0%, var(--color-text-light) 100%);
+
+    section{
+        z-index: 100;
+    }
+
+    .page-not-found-image{
+        width: clamp(200px, 50vw, 600px);
+        height: clamp(200px, 50vh, 600px);
+        background-image: var(--image-not-found);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        animation: float 3s ease-in-out infinite;
+        z-index: 99;
+    }
+
+    .page-not-found-background{
+        width: clamp(200px, 50vw, 600px);
+        height: clamp(200px, 50vh, 600px);        
+        background-image: url('../../../assets/logo-alone.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 15%;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translatey(0px);
+        }
+        50% {
+            transform: translatey(-1rem);
+        }
+        100% {
+            transform: translatey(0px);
+        }
+    }
+
+
+}

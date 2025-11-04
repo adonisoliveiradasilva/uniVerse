@@ -37,7 +37,7 @@ public class AuthController {
         return ResponseEntity.ok(new ApiResponse<>(message));
     }
 
-    @PostMapping("/define-password")
+    @PostMapping("/set-password")
     public ResponseEntity<ApiResponse<String>> definePassword(@RequestBody PasswordDefine request) {
         authService.definePassword(request.getToken(), request.getNewPassword());
         String message = "Senha definida com sucesso!";
