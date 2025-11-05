@@ -6,7 +6,7 @@ import { AlertService } from '../../../../services/rxjs/alert-service/alert-serv
 import { CommonModule } from '@angular/common';
 import { FormInput } from '../../../atoms/forms/form-input/form-input';
 import { Button } from '../../../atoms/buttons/button/button';
-
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-body-register',
   imports: [CommonModule, ReactiveFormsModule, FormInput, Button],
@@ -29,7 +29,7 @@ export class BodyRegister {
   
   constructor() {
     this.passwordForm = this._fb.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]]
     }, {
       validators: this.passwordMatchValidator
@@ -63,7 +63,7 @@ export class BodyRegister {
       if (this.passwordForm.errors?.['passwordMismatch']) {
         this._alertService.warn('As senhas não coincidem.');
       } else {
-        this._alertService.warn('Por favor, preencha a senha corretamente (mínimo 6 caracteres).');
+        this._alertService.warn('Por favor, preencha a senha corretamente (mínimo 8 caracteres).');
       }
       return;
     }
@@ -82,10 +82,12 @@ export class BodyRegister {
         this._alertService.success("Senha definida com sucesso! Você já pode fazer o login.");
         this._router.navigate(['/login']);
       },
-      error: (err) => {
-        this.isLoading = false;
-        this.invalidToken = true;
+      error: (err: HttpErrorResponse) => {
         console.error("Erro ao definir senha:", err);
+        if (err.status === 401 || err.status === 404 || err.status === 403) {
+          this.invalidToken = true;
+          this.passwordForm.disable();
+        } 
       }
     });
   }

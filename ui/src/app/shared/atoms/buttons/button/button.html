@@ -1,5 +1,7 @@
-<button (click)="onClick()" 
-[ngClass]="getClass()">
+<button 
+    [type]="buttonType"
+    (click)="onClick()" 
+    [ngClass]="getClass()">
     <span>{{ label }}</span>
     <i class="fas" [ngClass]="icon"></i>
 </button>

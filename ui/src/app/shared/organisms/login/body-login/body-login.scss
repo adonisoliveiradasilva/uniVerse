@@ -44,7 +44,20 @@
     }
 }
 
-.error-message{
-    width: 100%;
+.error-message, .info-message{
+    @include font-size-medium;
+    @include padding-1_5;
+    @include border-radius-1;
     text-align: center;
+    width: 100%;
+}
+
+.info-message{
+    background-color: var(--color-background-info);
+    color: var(--color-text-info);
+}
+
+.error-message{
+    background-color: var(--color-background-error);
+    color: var(--color-text-error);
 }

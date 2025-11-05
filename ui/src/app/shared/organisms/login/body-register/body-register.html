@@ -9,7 +9,7 @@
                 <app-form-input 
                     label="Senha" 
                     formControlName="password" 
-                    placeholder="Pelo menos 6 caracteres"
+                    placeholder="Pelo menos 8 caracteres"
                     type="password">
                 </app-form-input>
 
@@ -21,6 +21,8 @@
                 </app-form-input>
 
                 <app-button 
+                    [buttonType]="'submit'"
+
                     label="Salvar Senha">
                 </app-button>
             } @else {

@@ -12,6 +12,7 @@ export class Button {
   @Input() label: string = '';
   @Input() icon: string = '';
   @Input() type: ButtonType = 'primary'
+  @Input() buttonType: 'button' | 'submit' | 'reset' = 'button';
   @Output() buttonClick = new EventEmitter<void>();
 
   onClick(): void {
