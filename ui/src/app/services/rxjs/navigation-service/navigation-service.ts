@@ -1,9 +1,7 @@
-// src/app/services/navigation.service.ts
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 import { SIDE_BAR_DATA } from '../../../core/data/side-bar.data';
-import { SideBarItem } from '../../../core/models/side-bar-item.model';
 
 interface ActiveNavigationItem {
     title: string;
@@ -20,10 +18,10 @@ export class NavigationService {
     constructor(private router: Router) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => this.updateActiveItem());
+      .subscribe(() => this._updateActiveItem());
   }
 
-    private updateActiveItem(): void {
+    private _updateActiveItem(): void {
         const currentRoute = this.router.url;
         const foundItem = SIDE_BAR_DATA
         .flatMap(section => section.items)

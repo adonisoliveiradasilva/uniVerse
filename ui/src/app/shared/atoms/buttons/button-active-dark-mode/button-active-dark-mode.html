@@ -1,0 +1,4 @@
+<button (click)="toggleTheme()" *ngIf="currentTheme$ | async as theme">
+      <span *ngIf="theme === 'light'">🌙 (Modo Escuro)</span>
+      <span *ngIf="theme === 'dark'">☀️ (Modo Claro)</span>
+    </button>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
@@ -9,39 +9,37 @@ import { environment } from '../../../environment/environment';
   providedIn: 'root'
 })
 export class AuthService {
+  private _http = inject(HttpClient);
+  private _router = inject(Router);
+  private _currentUserSubject = new BehaviorSubject<UserData | null>(null);
 
-  private currentUserSubject = new BehaviorSubject<UserData | null>(null);
-
-  public currentUser$ = this.currentUserSubject.asObservable();
+  public currentUser$ = this._currentUserSubject.asObservable();
   
-  private authApiUrl = `${environment.apiUrl}/auth`;
+  private _authApiUrl = `${environment.apiUrl}/auth`;  
 
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
-    this.loadInitialUser();
+  public initUser(): void {
+    this._loadInitialUser();
   }
 
-  private loadInitialUser(): void {
+  private _loadInitialUser(): void {
     const userDataString = localStorage.getItem('currentUser');
     if (userDataString) {
       const user = JSON.parse(userDataString) as UserData;
-      this.currentUserSubject.next(user);
+      this._currentUserSubject.next(user);
     }
   }
 
   public login(email: string, password: string): Observable<ApiResponse<LoginResponse>> {
-    return this.http.post<ApiResponse<LoginResponse>>(`${this.authApiUrl}/login`, { email, password }).pipe(
+    return this._http.post<ApiResponse<LoginResponse>>(`${this._authApiUrl}/login`, { email, password }).pipe(
       tap(response => {
         const { token, user } = response.data;
 
         localStorage.setItem('authToken', token);
         localStorage.setItem('currentUser', JSON.stringify(user));
 
-        this.currentUserSubject.next(user);
-
-        this.router.navigate(['/dashboard']); 
+        this._currentUserSubject.next(user);
+        
+        this._router.navigate(['/dashboard']); 
       })
     );
   }
@@ -50,9 +48,9 @@ export class AuthService {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
 
-    this.currentUserSubject.next(null);
+    this._currentUserSubject.next(null);
 
-    this.router.navigate(['/login']);
+    this._router.navigate(['/login']);
   }
 
   public getToken(): string | null {
@@ -64,6 +62,6 @@ export class AuthService {
   }
   
   public getCurrentUser(): UserData | null {
-    return this.currentUserSubject.value;
+    return this._currentUserSubject.value;
   }
 }

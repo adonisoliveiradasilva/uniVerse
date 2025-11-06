@@ -27,7 +27,7 @@ export class FormConfirmDisplayDelete {
 
   ngOnInit() {
     this.form = this._formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3), this.nameEqualsValidator.bind(this)]],
+      name: ['', [Validators.required, Validators.minLength(3), this._nameEqualsValidator.bind(this)]],
     });
 
     this._subscription.add(
@@ -51,7 +51,7 @@ export class FormConfirmDisplayDelete {
     });
   }
 
-  private nameEqualsValidator(control: AbstractControl) {
+  private _nameEqualsValidator(control: AbstractControl) {
     if (this.name === null || this.name === undefined) {
       return null;
     }

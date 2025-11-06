@@ -38,8 +38,8 @@ export class Table {
   private _filteredRows: ITableRow[] = [];
   visiblePages: (number | string)[] = [];
 
-  private searchSubject = new Subject<string>();
-  private destroy$ = new Subject<void>();
+  private _searchSubject = new Subject<string>();
+  private _destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     if(this.type === 'multi-select'){
@@ -50,11 +50,11 @@ export class Table {
       this._currentSelectedIds = ids;
     });
 
-    this.searchSubject
+    this._searchSubject
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       )
       .subscribe(term => this.filterRows(term));
   }
@@ -73,8 +73,8 @@ export class Table {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   get getPaginatedRows(): ITableRow[] {
@@ -94,7 +94,7 @@ export class Table {
 
   onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.searchSubject.next(value);
+    this._searchSubject.next(value);
   }
 
   onRowClick(row: ITableRow){
