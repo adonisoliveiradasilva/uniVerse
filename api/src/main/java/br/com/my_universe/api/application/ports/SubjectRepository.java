@@ -6,7 +6,7 @@ import br.com.my_universe.api.domain.Subject;
 
 public interface SubjectRepository {
     Subject save(Subject subject);
-    Subject update(String originalCode, String originalAcronym, Subject subjectDetails);
+    Subject update(String originalCode, String studentEmail, Subject subjectDetails);
     Optional<Subject> findByCodeAndStudentEmail(String code, String studentEmail);
     List<Subject> findAllByStudentEmail(String studentEmail);
     List<Subject> findAll();

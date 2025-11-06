@@ -39,7 +39,7 @@ export class FormSubject {
       nameSubject: ['', [Validators.required, Validators.minLength(3)]],
       hoursSubject: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]],
       codeSubject: ['', [Validators.required, Validators.minLength(3)]],
-      descriptionSubject: ['', [Validators.required, Validators.minLength(3)]]
+      descriptionSubject: ['']
     });
 
     const currentModal = this._formModalService.currentModal;      
@@ -63,9 +63,7 @@ export class FormSubject {
 
   private _loadEntityData(acronym: string) {
     this.isLoading = true;
-    // const studentAcronym = this._studentService.getCurrentstudentAcronym(); // Criar esse método depois
-    const studentAcronym = "UFOP"
-    this._subjectService.getSubjectByCode(studentAcronym, acronym).pipe(
+    this._subjectService.getSubjectByCode(acronym).pipe(
       take(1),
       finalize(() => {
         this.isLoading = false;

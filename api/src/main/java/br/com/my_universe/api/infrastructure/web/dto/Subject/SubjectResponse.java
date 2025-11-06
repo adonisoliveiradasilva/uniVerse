@@ -9,8 +9,8 @@ public class SubjectResponse {
     private Integer hours;
     private String description;
     private String studentEmail;
-    private OffsetDateTime created_at;
-    private OffsetDateTime updated_at;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 
     public String getCode() {
         return code;
@@ -48,16 +48,16 @@ public class SubjectResponse {
     }
 
     public OffsetDateTime getCreatedAt() {
-        return created_at;
+        return createdAt;
     }
-    public void setCreatedAt(OffsetDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public OffsetDateTime getUpdatedAt() {
-        return updated_at;
+        return updatedAt;
     }
-    public void setUpdatedAt(OffsetDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

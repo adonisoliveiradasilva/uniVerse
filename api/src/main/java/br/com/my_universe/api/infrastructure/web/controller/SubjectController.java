@@ -41,6 +41,7 @@ public class SubjectController {
         subject.setCode(request.getCode());
         subject.setName(request.getName());
         subject.setHours(request.getHours());
+        subject.setDescription(request.getDescription());
         subject.setStudentEmail(userEmail);
         
         Subject createdSubject = subjectService.createSubject(subject); 
@@ -63,6 +64,7 @@ public class SubjectController {
         subjectDetails.setCode(request.getCode());
         subjectDetails.setName(request.getName());
         subjectDetails.setHours(request.getHours());
+        subjectDetails.setDescription(request.getDescription());
         subjectDetails.setStudentEmail(userEmail);
         
         Subject updatedSubject = subjectService.updateSubject(code, userEmail, subjectDetails);
@@ -74,15 +76,15 @@ public class SubjectController {
 
     @GetMapping("/{code}")
     public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectByKey(@PathVariable String code) {
-        String userEmail = getAuthenticatedUserEmail(); // Pega o "dono"
-        Subject subject = subjectService.getSubjectByCodeAndStudentEmail(code, userEmail); // 5. Usa o e-mail
+        String userEmail = getAuthenticatedUserEmail();
+        Subject subject = subjectService.getSubjectByCodeAndStudentEmail(code, userEmail);
         return ResponseEntity.ok(new ApiResponse<>(toResponse(subject)));
     }
     
     @GetMapping
     public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
-        String userEmail = getAuthenticatedUserEmail(); // Pega o "dono"
-        List<Subject> subjects = subjectService.getAllSubjectsByStudentEmail(userEmail); // 5. Usa o e-mail
+        String userEmail = getAuthenticatedUserEmail();
+        List<Subject> subjects = subjectService.getAllSubjectsByStudentEmail(userEmail);
         
         List<SubjectResponse> dtoList = subjects.stream().map(this::toResponse).collect(Collectors.toList());
         return ResponseEntity.ok(new ApiResponse<>(dtoList));
@@ -90,8 +92,8 @@ public class SubjectController {
 
     @DeleteMapping("/{code}")
     public ResponseEntity<ApiResponse<SubjectResponse>> deleteSubject(@PathVariable String code) {
-        String userEmail = getAuthenticatedUserEmail(); // Pega o "dono"
-        Subject deletedSubject = subjectService.deleteSubject(code, userEmail); // 5. Usa o e-mail
+        String userEmail = getAuthenticatedUserEmail();
+        Subject deletedSubject = subjectService.deleteSubject(code, userEmail);
         return ResponseEntity.ok(new ApiResponse<>(toResponse(deletedSubject)));
     }
 
