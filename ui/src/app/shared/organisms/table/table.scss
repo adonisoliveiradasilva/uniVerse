@@ -14,7 +14,7 @@
     .table-section-header{
         @include flex-row-center-space-between;
         width: 100%;
-        
+
         .table-section-header-input {
             @include flex-row-center;
             position: relative;
@@ -89,6 +89,7 @@
 
             th {
                 @include font-size-medium;
+                color: var(--color-text-primary);
                 background-color: var(--color-background-default);
                 font-weight: bolder;
                 padding: 1rem 2rem;

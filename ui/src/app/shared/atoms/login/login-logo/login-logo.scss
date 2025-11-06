@@ -1,7 +1,7 @@
 .login-logo-content {
     width: 10rem;
     height: 3rem;
-    background-image: url('../../../../../assets/image-logo.png');
+    background-image: var(--image-logo);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
