@@ -1,4 +1,27 @@
-<button (click)="toggleTheme()" *ngIf="currentTheme$ | async as theme">
-      <span *ngIf="theme === 'light'">🌙 (Modo Escuro)</span>
-      <span *ngIf="theme === 'dark'">☀️ (Modo Claro)</span>
-    </button>
+<div class="theme-switcher-wrapper">
+  
+  <span class="label">
+    Light
+  </span>
+
+  <label class="toggle-switch">
+    
+    <input 
+      type="checkbox" 
+      [checked]="(currentTheme$ | async) === 'dark'" 
+      (change)="toggleTheme()">
+    
+    <span class="slider">
+      <span class="circle">
+        <span class="crater crater-1"></span>
+        <span class="crater crater-2"></span>
+        <span class="crater crater-3"></span>
+      </span>
+    </span>
+  </label>
+  
+  <span class="label">
+    Dark
+  </span>
+
+</div>
