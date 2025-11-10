@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserData, LoginResponse, ApiResponse } from '../../../core/models/auth.model';
 import { environment } from '../../../environment/environment';
+import { IStudent } from '../../../core/models/entitys/IStudent.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class AuthService {
         const { token, user } = response.data;
 
         localStorage.setItem('authToken', token);
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('currentUser', JSON.stringify(user as IStudent));
 
         this._currentUserSubject.next(user);
         

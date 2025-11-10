@@ -49,10 +49,18 @@
         .user-avatar-content-background-title{
             position: relative;
             text-align: left;
-            width: 100%;
+            width: calc(100% - 3rem);
             color: var(--color-text-primary);
             font-weight: bold;
             margin-top: .5rem;
+
+            h5 {
+                white-space: nowrap;                
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: block;
+                width: 100%;
+            }
 
             &:before{
                 @include border-radius-2;
