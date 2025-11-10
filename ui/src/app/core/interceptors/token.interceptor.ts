@@ -1,32 +1,43 @@
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http';
-import { inject } from '@angular/core'; // 1. Importe o inject
-import { Observable } from 'rxjs';
-import { AuthService } from '../../services/api/auth-service/auth-service'; // Use o caminho correto para seu AuthService
+import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core'; 
+import { AuthService } from '../../services/api/auth-service/auth-service';
 import { environment } from '../../environment/environment';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { AlertService } from '../../services/rxjs/alert-service/alert-service';
 
-// É apenas uma função, não uma classe
 export const TokenInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
 
-  // 2. Injete o serviço usando inject()
   const authService = inject(AuthService); 
-  
+  const alertService = inject(AlertService);
   const token = authService.getToken();
   const isApiRequest = req.url.startsWith(environment.apiUrl);
 
+  let requestToHandle = req
+
   if (token && isApiRequest) {
-    // 3. Clone a requisição (req) que veio como parâmetro
     const clonedReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
-    // 4. Passe a requisição clonada
     return next(clonedReq);
   }
 
-  // 5. Se não tiver token, passe a requisição original
-  return next(req);
+  return next(requestToHandle).pipe(
+    catchError((error: HttpEvent<any>) => {
+      
+      if (error instanceof HttpErrorResponse) {
+        
+        if (error.status === 401) {
+          alertService.error('Sua sessão expirou. Por favor, logue-se novamente.');
+          authService.logout();
+        }
+      }
+      return throwError(() => error);
+    })
+  );;
 };
