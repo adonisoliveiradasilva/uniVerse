@@ -15,6 +15,12 @@
         background-color: var(--color-surface-light);
         border-top-left-radius: 3rem;
         border-bottom-left-radius: 3rem;
+
+        .shell-content-display-top{
+            @include flex-row-center-space-between;
+            width: 100%;
+            padding-right: 1rem;
+        }
     }
 
     .sidebar{

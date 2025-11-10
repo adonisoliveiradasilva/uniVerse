@@ -1,0 +1,90 @@
+@use '../../../../styles/mixins' as *;
+
+.user-avatar-content{
+    position: relative;
+    transition: all 0.3s ease;
+
+    &:hover{
+        transform: scale(1.1);
+        transition: all 0.3s ease;
+        transition: all 0.3s ease;
+
+        .user-avatar-content-background{
+            width: 15rem;
+            height: auto;
+            transition: all 0.3s ease;
+            padding: 1rem;
+        }
+    }
+
+    .user-avatar-content-span{
+        @include flex-row-center;
+        @include border-radius-2;
+        @include font-size-larger;
+        cursor: pointer;
+        font-weight: bolder;
+        width: 3rem;
+        height: 3rem;
+        right: 0rem;
+        top: -1.5rem;
+        background-color: var(--color-text-destak);
+        color: var(--color-text-light);        
+        position: absolute;
+        z-index: 9;
+    }
+
+    .user-avatar-content-background{
+        @include flex-column-left-top;
+        @include border-radius-2;
+        @include gap-3;
+        position: absolute;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        right: -.5rem;
+        top: -2rem;
+        width: 0rem;
+        height: 0rem;
+        background-color: var(--color-background-default);
+
+        .user-avatar-content-background-title{
+            position: relative;
+            text-align: left;
+            width: 100%;
+            color: var(--color-text-primary);
+            font-weight: bold;
+            margin-top: .5rem;
+
+            &:before{
+                @include border-radius-2;
+                content: '';
+                position: absolute;
+                top: -.5rem;
+                left: -1rem;
+                width: .3rem;
+                height: 2rem;
+                background-color: var(--color-text-destak);
+            }
+        }
+
+        .user-avatar-content-background-item{
+            @include flex-column-left-top;
+            @include gap-2;
+
+            app-button-active-dark-mode{
+                transform: scale(.6);
+                margin-left: -1.8rem;
+                margin-top: -1rem;
+            }
+            
+            span{
+                @include font-size-small;  
+                color: var(--color-text-primary);
+            }
+
+            h6{
+                color: var(--color-text-primary);
+            }
+        }
+    }
+}
+
