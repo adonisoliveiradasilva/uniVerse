@@ -92,6 +92,16 @@
             h6{
                 color: var(--color-text-primary);
             }
+
+            .user-avatar-content-background-item-logout{
+                cursor: pointer;
+                transition: all 0.3s ease   ;
+
+                &:hover{
+                    transform: scale(1.1);
+                    transition: all 0.3s ease;
+                }
+            }
         }
     }
 }

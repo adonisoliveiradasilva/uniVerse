@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ShellHeader } from '../../atoms/shell/shell-header/shell-header';
+import { Component, inject, OnInit } from '@angular/core';
 import { ButtonActiveDarkMode } from '../../atoms/buttons/button-active-dark-mode/button-active-dark-mode';
 import { IStudent } from '../../../core/models/entitys/IStudent.model';
+import { AuthService } from '../../../services/api/auth-service/auth-service';
 
 @Component({
   selector: 'app-user-avatar',
-  imports: [ShellHeader, ButtonActiveDarkMode],
+  imports: [ButtonActiveDarkMode],
   templateUrl: './user-avatar.html',
   styleUrl: './user-avatar.scss'
 })
@@ -13,6 +13,8 @@ export class UserAvatar implements OnInit {
   private _name: string = '';
   private _acronym: string = '';
   
+  private _authService = inject(AuthService);
+
   ngOnInit(): void { 
     const userDataString = localStorage.getItem('currentUser');
     if (userDataString) {
@@ -39,6 +41,10 @@ export class UserAvatar implements OnInit {
 
   get getAcronym(): string {
     return this._acronym;
+  }
+
+  logout(): void {
+    this._authService.logout();
   }
 
 }
