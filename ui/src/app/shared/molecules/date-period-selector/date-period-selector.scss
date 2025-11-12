@@ -1,0 +1,6 @@
+@use '../../../../styles/mixins' as *;
+
+.date-period-selector-content {
+    @include flex-row-center;
+    @include gap-2;
+}

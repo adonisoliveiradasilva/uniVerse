@@ -1,0 +1,14 @@
+@use '../../../../../styles/mixins' as *;
+
+i{
+    @include font-size-larger;
+    transition: all .3s ease;
+    color: var(--color-text-destak);
+
+    &:hover{
+        cursor: pointer;
+        transition: all .3s ease;
+        transform: scale(1.1);
+    }
+
+}

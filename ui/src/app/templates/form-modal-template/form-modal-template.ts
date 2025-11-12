@@ -118,6 +118,12 @@ export class FormModalTemplate {
         edit: "Editar Disciplina",
         delete: "Deletar Disciplina",
         default: "Criar nova Disciplina"
+      },
+      [TableContextEnum.Periods]: {
+        create: "Vincular nova Disciplina",
+        edit: "Editar Disciplina",
+        delete: "Deletar Disciplina",
+        default: "Vincular nova Disciplina"
       }
     };
     const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';
@@ -132,6 +138,12 @@ export class FormModalTemplate {
         edit: "Preencha as informações da Disciplina",
         delete: "Confirme a exclusão da Disciplina",
         default: "Preencha as informações da nova Disciplina"
+      },
+      [TableContextEnum.Periods]: {
+        create: "Preencha as informações da Disciplina",
+        edit: "Preencha as informações da Disciplina",
+        delete: "Confirme a exclusão da Disciplina",
+        default: "Preencha as informações da Disciplina"
       }
     };
     const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';

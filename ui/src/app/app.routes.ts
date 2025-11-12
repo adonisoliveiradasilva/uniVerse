@@ -6,6 +6,7 @@ import { PageSubjects } from './pages/page-subjects/page-subjects';
 import { PageSetPasswordComponent } from './pages/page-set-password/page-set-password';
 import { authGuard } from './core/guards/auth-guard';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
+import { PagePeriods } from './pages/page-periods/page-periods';
 
 export const routes: Routes = [
     {
@@ -28,6 +29,10 @@ export const routes: Routes = [
             {
                 path: 'subjects',
                 component: PageSubjects
+            },
+            {
+                path: 'periods',
+                component: PagePeriods
             }
         ]
     },

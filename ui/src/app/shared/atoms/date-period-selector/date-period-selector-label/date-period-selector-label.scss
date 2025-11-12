@@ -1,0 +1,6 @@
+@use '../../../../../styles/mixins' as *;
+
+span{
+    @include font-size-larger;
+    color: var(--color-text-primary);
+}

@@ -23,7 +23,7 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
                 title: 'Seus Períodos',
                 subtitle: 'Acompanhe a sua evolução por período', 
                 icon: 'fas fa-list-check',
-                route: '/yout-periods'
+                route: '/periods'
             },
             {
                 slug: 'diary',
