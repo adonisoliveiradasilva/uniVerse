@@ -1,12 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Table } from '../../shared/organisms/table/table';
 import { TableTdType } from '../../core/types/table-td.type';
-import { BehaviorSubject, catchError, map, Observable, of, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, of } from 'rxjs'; // 1. Imports
 import { TableContextEnum } from '../../core/types/table-context.type';
 import { CommonModule } from '@angular/common';
 import { ITableRow } from '../../core/models/table.model';
 import { DatePeriodSelector } from '../../shared/molecules/date-period-selector/date-period-selector';
-import { SubjectService } from '../../services/api/subject-service/subject-service';
+import { PeriodService } from '../../services/api/period-service/period-service';
+import { IPeriod } from '../../core/models/entitys/IPeriod.model';
 
 @Component({
   selector: 'app-page-periods',
@@ -14,48 +15,71 @@ import { SubjectService } from '../../services/api/subject-service/subject-servi
   templateUrl: './page-periods.html',
   styleUrl: './page-periods.scss'
 })
-export class PagePeriods {
+export class PagePeriods implements OnInit {
   TableTdType = TableTdType;
   TableContextEnum = TableContextEnum;
 
-  private _period$ = new BehaviorSubject<number>(1);
-  private _subjectService = inject(SubjectService);
+  private _periodService = inject(PeriodService);
 
-  public periodLabel$: Observable<string> = this._period$.pipe(
-    map(period => `Período ${period}`)
-  );
+  public periodLabel$!: Observable<string>;
+  public _rows$!: Observable<ITableRow[]>;
+  
+  private _allPeriods: IPeriod[] = [];
 
   _columns = [
-    {
-      key: 'name',
-      type: TableTdType.Text
-    },
+    { key: 'name', label: 'Nome da Disciplina', type: TableTdType.Text },
+    { key: 'status', label: 'Status', type: TableTdType.Text },
+    { key: 'grade', label: 'Nota', type: TableTdType.Text },
+    { key: 'absences', label: 'Faltas', type: TableTdType.Text },
   ];
+  _headers = ['Nome', 'Status', 'Nota', 'Faltas'];
 
-  public _rows$!: Observable<ITableRow[]>; //temporario enquando não fica pronto a api e a service
 
   ngOnInit() {
-    this._rows$ = this._subjectService.getSubjects();
-  }
-  // public _rows$: Observable<ITableRow[]> = this._period$.pipe(    
-    // switchMap((period: string) => 
-    //   this._subjectService.getSubjectByCode(period).pipe(
-    //     catchError(err => {
-    //       console.error("Falha ao buscar disciplinas do período:", err);
-    //       return of([]); 
-    //     })
-    //   )
-    // ),
-  // );
+    this._rows$ = this._periodService.currentPeriodSubjects$.pipe(
+      map(enrolledSubjects => 
+        enrolledSubjects.map(subject => ({
+          id: subject.subjectCode,
+          name: subject.subjectCode,
+          status: subject.status,
+          grade: subject.grade,
+          absences: subject.absences
+        } as ITableRow))
+      )
+    );
 
-navigate(navigate: 'left' | 'right') { 
-    const currentPeriod = this._period$.getValue();
+    this._periodService.periods$.subscribe(periods => {
+      this._allPeriods = periods;
+    });
 
-    if(navigate === 'left' && currentPeriod > 1) {
-      this._period$.next(currentPeriod - 1);
-    }
-    else if(navigate === 'right' && currentPeriod < 20) { 
-      this._period$.next(currentPeriod + 1);
+    this.periodLabel$ = combineLatest([
+      this._periodService.periods$,
+      this._periodService.currentPeriodId$
+    ]).pipe(
+      map(([periods, currentId]) => {
+        const currentIndex = periods.findIndex(p => p.id === currentId);
+        const currentLabel = currentIndex + 1;
+        return `Período ${currentLabel} de ${periods.length}`;
+      })
+    );
+  }
+
+  navigate(navigate: 'left' | 'right') { 
+    const currentId = this._periodService.getCurrentPeriodId();
+    if (currentId === null) return;
+
+    const currentIndex = this._allPeriods.findIndex(p => p.id === currentId);
+
+    if (navigate === 'left' && currentIndex > 0) {
+      const prevPeriodId = this._allPeriods[currentIndex - 1].id;
+      this._periodService.fetchSubjectsForPeriod(prevPeriodId).subscribe();
+    } 
+    else if (navigate === 'right' && currentIndex < this._allPeriods.length - 1) {
+      const nextPeriodId = this._allPeriods[currentIndex + 1].id;
+      this._periodService.fetchSubjectsForPeriod(nextPeriodId).subscribe();
     }
   }
+
+  // TODO: Você precisará de um botão "Adicionar Período"
+  // que chame this._periodService.createPeriod()
 }

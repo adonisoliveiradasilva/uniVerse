@@ -97,6 +97,16 @@ public class SubjectController {
         return ResponseEntity.ok(new ApiResponse<>(toResponse(deletedSubject)));
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAvailableSubjects() {
+        String userEmail = getAuthenticatedUserEmail();
+        
+        List<Subject> subjects = subjectService.getAvailableSubjectsByStudentEmail(userEmail); 
+        
+        List<SubjectResponse> dtoList = subjects.stream().map(this::toResponse).collect(Collectors.toList());
+        return ResponseEntity.ok(new ApiResponse<>(dtoList));
+    }
+
     private SubjectResponse toResponse(Subject subject) {
         SubjectResponse res = new SubjectResponse();
         res.setCode(subject.getCode());

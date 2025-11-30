@@ -88,4 +88,18 @@ public class JdbcSubjectRepository implements SubjectRepository {
              throw new RuntimeException("Falha ao deletar. Disciplina não encontrada.");
         }
     }
+
+    @Override
+    public List<Subject> findAvailableSubjectsByStudentEmail(String studentEmail) {
+        String sql = "SELECT * FROM tb_subjects s " +
+                     "WHERE s.student_email = ? " +
+                     "AND s.code NOT IN ( " +
+                     "    SELECT ps.subject_code " +
+                     "    FROM tb_period_subjects ps " +
+                     "    WHERE ps.student_email = ? " +
+                     "    AND ps.status = 'aprovado' " +
+                     ") ORDER BY s.name ASC";
+
+        return jdbcTemplate.query(sql, subjectRowMapper, studentEmail, studentEmail);
+    }
 }

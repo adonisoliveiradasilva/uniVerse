@@ -30,7 +30,7 @@ export class Table {
   private _formModalService = inject(FormModal)
   private _TableContextEnum = TableContextEnum
   private _currentSelectedIds: string[] = [];
-  private _selectionSubscription = new Subscription();
+  // private _selectionSubscription = new Subscription();
   
   currentPage = 1;
   itemsPerPage = 5;
@@ -46,9 +46,9 @@ export class Table {
       this.headers?.unshift('Selecionar');
     }
 
-    this._selectionSubscription = this._tableSelectService.selectedIds$.subscribe(ids => {
-      this._currentSelectedIds = ids;
-    });
+    // this._selectionSubscription = this._tableSelectService.selectedIds$.subscribe(ids => {
+    //   this._currentSelectedIds = ids;
+    // });
 
     this._searchSubject
       .pipe(
@@ -87,6 +87,8 @@ export class Table {
     switch (this.context) {
       case this._TableContextEnum.Subjects:
         return 'Criar Disciplina';
+      case this._TableContextEnum.Periods:
+        return 'Vincular disciplina';
       default:
         return '';
     }

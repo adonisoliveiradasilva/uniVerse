@@ -117,3 +117,8 @@ body, * {
   height: 0;
 }
 
+.mat-mdc-menu-panel {
+  background-color: var(--color-background-default)!important;
+  color: var(--color-text-primary)!important;
+}
+

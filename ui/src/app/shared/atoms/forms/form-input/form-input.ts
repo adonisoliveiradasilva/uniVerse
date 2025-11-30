@@ -15,7 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule
     }
   ]
 })
-export class FormInput implements OnInit, ControlValueAccessor { // Implementar ControlValueAccessor
+export class FormInput implements OnInit, ControlValueAccessor {
   @Input() label!: string;
   @Input() placeholder: string = '';
   @Input() type: string = 'text';

@@ -1,0 +1,83 @@
+@use '../form-input/form-input.scss' as *;
+@use '../../../../../styles/mixins' as *;
+
+.button-menu{
+    @include border-radius-1;
+    @include flex-row-center;
+
+    color: var(--color-text-light)!important;
+    background-color: var(--color-text-destak);
+    padding: .8rem;
+    gap: 1rem!important;
+    height: 2.5rem;
+    width: 100%;
+    border-radius: .4rem;
+    cursor: pointer;
+
+    span{
+        width: 100%;
+    }
+
+    i{
+        position: relative!important;
+        margin-bottom: 5%;
+    }
+}
+
+.search-container {
+    @include flex-row-center;
+    @include padding-1_5;
+    position: relative;
+    background-color: var(--color-background-default);
+    padding: .2rem .5rem .2rem .2rem;
+    border-radius: .4rem;
+    color: var(--color-text-primary);
+    height: 2rem;
+    width: 90%;
+    margin-left: 5%;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0 0 0 2px transparent;
+
+    &:focus-within {
+        box-shadow: 0 0 0 2px var(--color-text-destak);
+        background-color: var(--color-background-secondary);
+
+        i{
+            color: var(--color-text-destak);
+        }
+    }
+
+    input {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding: .2rem;
+        width: 100%;
+        color: var(--color-text-primary);
+    }
+
+    i {
+        font-size: .9rem;
+        color: var(--color-text-secondary);
+        transition: color 0.2s ease;
+    }
+}
+
+.button-item{
+    @include font-size-medium;
+    font-weight: 500;
+    color: var(--color-text-default);
+
+    &:hover{
+        background-color: var(--color-surface-muted)!important;
+    }
+}
+
+.option-selected{
+    background-color: var(--color-surface-muted)!important;
+
+    &:hover{
+        background-color: var(--color-surface-muted)!important;
+        cursor: default;
+    }
+}

@@ -1,6 +1,6 @@
 <div class="page-content">
     <app-date-period-selector (navigate)="navigate($event)" [label]="periodLabel$ | async"></app-date-period-selector>
     <ng-container *ngIf="_rows$ | async as _rows;">
-        <app-table [context]="TableContextEnum.Periods" [rows]="_rows" [columns]="_columns" [headers]="['Nome do Periodo']"> </app-table>
+        <app-table [context]="TableContextEnum.Periods" [rows]="_rows" [columns]="_columns" [headers]="['Nome da Disciplina']"> </app-table>
     </ng-container>
 </div>

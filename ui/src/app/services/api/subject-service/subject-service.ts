@@ -54,6 +54,18 @@ export class SubjectService {
     );
   }
 
+  public getAvailableSubjects(): Observable<ISubject[]> {
+    const url = `${this._apiUrl}/available`;
+    return this._http.get<IApiResponse<ISubject>>(url).pipe(
+      map(response => response.data),
+      catchError(error => {
+        const msg = error?.error?.message || 'Falha ao buscar disciplinas disponíveis.';
+        this._alertService.error(msg);
+        return throwError(() => error);
+      })
+    );
+  } 
+
   public createSubject(subject: Pick<ISubject, 'code' | 'name' | 'hours' | 'description'>): Observable<ISubject> {
     return this._http.post<IApiSingleResponse<ISubject>>(this._apiUrl, subject).pipe(
       map(response => response.data),

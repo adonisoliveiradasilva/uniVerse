@@ -79,6 +79,10 @@
     box-shadow: 0 -10px 15px 0 var(--color-text-default);
 }
 
+@mixin padding-1{
+    padding: clamp(1px, 1vh, 6px);
+}
+
 @mixin padding-1_5 {
     padding: clamp(2px, 1.5vh, 12px);
 }

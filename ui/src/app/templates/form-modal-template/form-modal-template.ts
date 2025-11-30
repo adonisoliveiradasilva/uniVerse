@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TableAction, TableContextEnum, TableContextType } from '../../core/types/table-context.type';
 import { FormModal } from '../../services/rxjs/form-modal-service/form-modal-service';
 import { CommonModule } from '@angular/common';
@@ -8,15 +8,18 @@ import { FormBusService } from '../../services/rxjs/form-bus-service/form-bus-se
 import { SubjectService } from '../../services/api/subject-service/subject-service';
 import { FormConfirmDisplayDelete } from '../../shared/organisms/forms/form-confirm-display-delete/form-confirm-display-delete';
 import { FormSubject } from '../../shared/organisms/forms/form-subject/form-subject';
+import { FormPeriod } from '../../shared/organisms/forms/form-period/form-period';
+import { PeriodService } from '../../services/api/period-service/period-service';
+import { IPeriod } from '../../core/models/entitys/IPeriod.model';
 
 @Component({
   selector: 'app-form-modal-template',
-  imports: [CommonModule, ShellHeader, Button, FormConfirmDisplayDelete, FormSubject],
+  imports: [CommonModule, ShellHeader, Button, FormConfirmDisplayDelete, FormSubject, FormPeriod],  
   standalone: true,
   templateUrl: './form-modal-template.html',
   styleUrl: './form-modal-template.scss'
 })
-export class FormModalTemplate {
+export class FormModalTemplate implements OnInit {
   context!: TableContextType;
   action: TableAction | null = null;
   isOpen = false;
@@ -28,6 +31,7 @@ export class FormModalTemplate {
   private _formModalService = inject(FormModal);
   private _formBusService = inject(FormBusService);
   private _subjectService = inject(SubjectService);
+  private _periodService = inject(PeriodService);
 
   get getTableContextEnum(): typeof TableContextEnum {
     return TableContextEnum;
@@ -60,6 +64,20 @@ export class FormModalTemplate {
               description: payload.data.descriptionSubject ?? ''
             };
             this._subjectService.createSubject(subjectData).subscribe({
+              next: () => setTimeout(() => this.close(), 0)
+            });
+            break;
+            
+          case TableContextEnum.Periods:
+            const periodId_create = this._periodService.getCurrentPeriodId();
+            const currentSubjects = this._periodService.getCurrentPeriodSubjects();
+            
+            if (!periodId_create) return;
+
+            const newSubjectCode = payload.data.subjectCode;
+            const updatedSubjectList = [...currentSubjects.map(s => s.subjectCode), newSubjectCode];
+            
+            this._periodService.updatePeriodSubjectsList(periodId_create, updatedSubjectList).subscribe({
               next: () => this.close()
             });
             break;
@@ -79,6 +97,23 @@ export class FormModalTemplate {
               next: () => this.close()
             });
             break;
+            
+          case TableContextEnum.Periods:
+            const periodId_edit = this._periodService.getCurrentPeriodId();
+            const subjectCode_edit = this.identifier;
+
+            if (!periodId_edit || !subjectCode_edit) return;
+
+            const updateData = {
+              status: payload.data.status,
+              grade: payload.data.grade,
+              absences: payload.data.absences
+            };
+
+            this._periodService.updateEnrolledSubjectDetails(periodId_edit, subjectCode_edit, updateData).subscribe({
+              next: () => this.close()
+            });
+            break;
         }
       }
 
@@ -86,6 +121,23 @@ export class FormModalTemplate {
         switch (payload.source) {
           case TableContextEnum.Subjects:
             this._subjectService.deleteSubject(this.identifier as string).subscribe({
+              next: () => this._formModalService.closeAll()
+            });
+            break;
+            
+          case TableContextEnum.Periods:
+            const periodId_delete = this._periodService.getCurrentPeriodId();
+            const subjectCode_delete = this.identifier;
+            
+            if (!periodId_delete || !subjectCode_delete) return;
+            
+            const currentSubjects_delete = this._periodService.getCurrentPeriodSubjects();
+            
+            const updatedSubjectList_delete = currentSubjects_delete
+              .map(s => s.subjectCode)
+              .filter(code => code !== subjectCode_delete);
+              
+            this._periodService.updatePeriodSubjectsList(periodId_delete, updatedSubjectList_delete).subscribe({
               next: () => this._formModalService.closeAll()
             });
             break;
@@ -110,7 +162,7 @@ export class FormModalTemplate {
     this._formBusService.triggerSubmit();
   }
 
-    resolveTitle(context: TableContextType | null, action: TableAction | null): string {
+  resolveTitle(context: TableContextType | null, action: TableAction | null): string {
     if (!context) return '';
     const map: Record<TableContextType, { create: string; edit: string; delete: string; default: string }> = {
       [TableContextEnum.Subjects]: {
@@ -149,5 +201,4 @@ export class FormModalTemplate {
     const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';
     return map[context][key] ?? '';
   }
-
 }

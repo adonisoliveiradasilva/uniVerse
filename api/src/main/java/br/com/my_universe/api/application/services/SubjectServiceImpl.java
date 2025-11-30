@@ -79,6 +79,13 @@ public class SubjectServiceImpl {
             .orElseThrow(() -> new ResourceNotFoundException("Aluno com e-mail '" + studentEmail + "' não encontrado."));
             
         return subjectRepository.findAllByStudentEmail(studentEmail);
+    }   
+
+    public List<Subject> getAvailableSubjectsByStudentEmail(String studentEmail) {
+        studentRepository.findByEmail(studentEmail)
+            .orElseThrow(() -> new ResourceNotFoundException("Aluno com e-mail '" + studentEmail + "' não encontrado."));
+        
+        return subjectRepository.findAvailableSubjectsByStudentEmail(studentEmail);
     }
 
     public List<Subject> getAllSubjects() {

@@ -11,4 +11,5 @@ public interface SubjectRepository {
     List<Subject> findAllByStudentEmail(String studentEmail);
     List<Subject> findAll();
     void deleteByCodeAndStudentEmail(String code, String studentEmail);
+    List<Subject> findAvailableSubjectsByStudentEmail(String studentEmail);
 }

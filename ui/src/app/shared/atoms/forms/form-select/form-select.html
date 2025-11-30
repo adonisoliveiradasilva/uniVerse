@@ -1,0 +1,33 @@
+<div class="form-input-content">
+    <span> {{ label }}  <i class="fas fa-lock" *ngIf="disabled"></i></span>
+
+    @if (!loading) {
+        <div mat-button [matMenuTriggerFor]="menu" class="button-menu">
+            <span>{{ selectedOption.label }}</span>
+            <i class="fa-solid fa-caret-down"></i>
+        </div>
+
+        <mat-menu #menu="matMenu">
+            <div class="search-container" (click)="preventMenuClose($event)">
+                <input type="text" 
+                    (keydown)="$event.stopPropagation()"
+                    [(ngModel)]="searchOption" 
+                    placeholder="Pesquisar...">
+                <i class="fas fa-magnifying-glass"></i>
+            </div>
+            <button
+                mat-menu-item
+                *ngFor="let item of getMenuFarmItems"
+                (click)="selectOption(item)"
+                class="button-item"
+                [ngClass]="{ 'option-selected': selectedOption.id === item.id }">
+                {{ item.label }}
+            </button>
+        </mat-menu>
+        
+
+    }@else{
+      <div class="input-loading"></div>
+    }
+    
+</div>
