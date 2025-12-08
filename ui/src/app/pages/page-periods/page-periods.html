@@ -1,6 +1,19 @@
 <div class="page-content">
-    <app-date-period-selector (navigate)="navigate($event)" [label]="periodLabel$ | async"></app-date-period-selector>
-    <ng-container *ngIf="_rows$ | async as _rows;">
-        <app-table [context]="TableContextEnum.Periods" [rows]="_rows" [columns]="_columns" [headers]="['Nome da Disciplina']"> </app-table>
-    </ng-container>
+    @if(getAllPeriods.length > 0){
+        <app-date-period-selector 
+            (navigate)="navigate($event)" 
+            [label]="periodLabel$ | async"
+            (create)="createPeriod()"
+        ></app-date-period-selector>
+        <ng-container *ngIf="_rows$ | async as _rows;">
+            <app-table [context]="TableContextEnum.Periods" [rows]="_rows" [columns]="_columns" [headers]="['Nome da Disciplina']"> </app-table>
+        </ng-container>
+    }@else{
+        <app-button 
+            [label]="'Criar período'" 
+            [icon]="'fa-circle-plus'"  
+            (click)="createPeriod()"  
+        ></app-button>    
+    }
+    
 </div>

@@ -11,8 +11,13 @@ import { DatePeriodSelectorLabel } from '../../atoms/date-period-selector/date-p
 export class DatePeriodSelector {
   @Input() label!: string | null;
   @Output() navigate = new EventEmitter<'left' | 'right'>();
-
+  @Output() create = new EventEmitter<void>();
+  
   onClick(direction: 'left' | 'right'): void {
     this.navigate.emit(direction);
+  }
+
+  onCreate(): void {
+    this.create.emit();
   }
 }

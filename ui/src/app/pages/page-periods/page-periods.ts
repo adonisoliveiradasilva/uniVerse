@@ -8,10 +8,11 @@ import { ITableRow } from '../../core/models/table.model';
 import { DatePeriodSelector } from '../../shared/molecules/date-period-selector/date-period-selector';
 import { PeriodService } from '../../services/api/period-service/period-service';
 import { IPeriod } from '../../core/models/entitys/IPeriod.model';
+import { Button } from '../../shared/atoms/buttons/button/button';
 
 @Component({
   selector: 'app-page-periods',
-  imports: [CommonModule, Table, DatePeriodSelector],
+  imports: [CommonModule, Table, DatePeriodSelector, Button],
   templateUrl: './page-periods.html',
   styleUrl: './page-periods.scss'
 })
@@ -33,7 +34,6 @@ export class PagePeriods implements OnInit {
     { key: 'absences', label: 'Faltas', type: TableTdType.Text },
   ];
   _headers = ['Nome', 'Status', 'Nota', 'Faltas'];
-
 
   ngOnInit() {
     this._rows$ = this._periodService.currentPeriodSubjects$.pipe(
@@ -64,6 +64,10 @@ export class PagePeriods implements OnInit {
     );
   }
 
+  get getAllPeriods(): IPeriod[]{
+    return this._allPeriods;
+  }
+
   navigate(navigate: 'left' | 'right') { 
     const currentId = this._periodService.getCurrentPeriodId();
     if (currentId === null) return;
@@ -80,6 +84,14 @@ export class PagePeriods implements OnInit {
     }
   }
 
-  // TODO: Você precisará de um botão "Adicionar Período"
-  // que chame this._periodService.createPeriod()
+  createPeriod() {
+    this._periodService.createPeriod().subscribe({
+      next: (newPeriod) => {
+        this._periodService.fetchSubjectsForPeriod(newPeriod.id).subscribe();
+      },
+      error: (err) => {
+        console.error('Falha ao criar período', err);
+      }
+    });
+  }
 }

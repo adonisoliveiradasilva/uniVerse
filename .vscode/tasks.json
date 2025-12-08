@@ -11,7 +11,7 @@
         "reveal": "always"
       },
       "options": {
-        "cwd": "C:/dev/projetos/uniVerse/ui"
+        "cwd": "C:/dev/Estudos/uniVerse/ui"
       },
       "problemMatcher": []
     },
@@ -25,7 +25,7 @@
         "reveal": "always"
       },
       "options": {
-        "cwd": "C:/dev/projetos/uniVerse/api"
+        "cwd": "C:/dev/Estudos/uniVerse/api"
       },
       "problemMatcher": []
     },
