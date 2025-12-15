@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
 import { IApiResponse, IApiSingleResponse } from '../../../core/models/api-response.model';
 import { AlertService } from '../../rxjs/alert-service/alert-service';
 import { environment } from '../../../environment/environment';
@@ -58,7 +58,7 @@ export class PeriodService {
     return this._http.post<IApiSingleResponse<IPeriod>>(this._periodsApiUrl, payload).pipe(
       map(response => response.data),
       tap(newPeriod => {
-        this._alertService.success(`Período ${newPeriod.id} criado com sucesso!`);
+        this._alertService.success(`Período criado com sucesso!`);
         this.fetchAllPeriods().subscribe();
       }),
       catchError(error => {
@@ -69,12 +69,13 @@ export class PeriodService {
     );
   }
 
-  public deletePeriod(periodId: number): Observable<void> {
+  public deletePeriod(periodId: number): Observable<IPeriod[]> {
     const url = `${this._periodsApiUrl}/${periodId}`;
+    
     return this._http.delete<void>(url).pipe(
-      tap(() => {
-        this._alertService.success(`Período ${periodId} deletado com sucesso!`);
-        this.fetchAllPeriods().subscribe();
+      switchMap(() => {
+        this._alertService.success(`Período deletado com sucesso!`);
+        return this.fetchAllPeriods();
       }),
       catchError(error => {
         const msg = error?.error?.message || `Falha ao deletar período ${periodId}.`;
@@ -131,9 +132,14 @@ export class PeriodService {
     );
   }
 
-  public updatePeriodSubjectsList(periodId: number, subjectCodes: string[]): Observable<IPeriod> {
+  public getCurrentPeriodsValue(): IPeriod[] {
+    return this._periods$.value;
+  
+  }
+
+  public updatePeriodSubjectsList(periodId: number, subjects: any[]): Observable<IPeriod> {
     const url = `${this._periodsApiUrl}/${periodId}`;
-    const payload = { subjectCodes: subjectCodes };
+    const payload = { subjects: subjects };    
     
     return this._http.put<IApiSingleResponse<IPeriod>>(url, payload).pipe(
       map(response => response.data),

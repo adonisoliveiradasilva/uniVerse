@@ -3,9 +3,7 @@
     <app-date-period-selector-label [label]="label"></app-date-period-selector-label>
     <app-date-period-selector-button (navigate)="onClick($event)" [direction]="'left'"></app-date-period-selector-button>
     <app-date-period-selector-button (navigate)="onClick($event)" [direction]="'right'"></app-date-period-selector-button>
-    <button class="btn-add-period" (click)="onCreate()" title="Novo Período">
-        <i class="fa-solid fa-plus"></i>
-    </button>
+    <app-button (click)="onCreate()" [icon]="'fa-circle-plus'" [label]="'Criar Período'"></app-button>
 </div>
 
 

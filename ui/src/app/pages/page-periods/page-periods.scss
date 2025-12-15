@@ -1,1 +1,38 @@
 @use '../../../styles/pages' as *;
+@use '../../../styles/mixins' as *;
+
+.period-header{
+    @include flex-row-center-left;
+    width: 100%;
+    gap: 1rem;
+
+    .period-actions{
+        @include flex-row-center;
+        @include gap-1;
+
+        i.fas.fa-trash{
+            font-size: 1.25rem;
+            color: var(--color-danger);
+            cursor: pointer;
+
+            &:hover{
+                color: var(--color-danger-dark);
+            }
+        }
+    }
+}
+
+.empty-state{
+    @include flex-column-center-top;
+    @include gap-1;
+    width: 100%;
+    height: auto;
+    position: relative;
+
+    p{
+        @include font-size-medium;
+        color: var(--color-text-primary);
+    }
+
+    
+}

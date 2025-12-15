@@ -13,6 +13,9 @@
     width: 100%;
     border-radius: .4rem;
     cursor: pointer;
+    border: 2px solid transparent; // Prepara para a borda de erro
+    transition: all 0.2s ease-in-out;
+    text-transform: capitalize;
 
     span{
         width: 100%;
@@ -21,6 +24,31 @@
     i{
         position: relative!important;
         margin-bottom: 5%;
+    }
+
+    // --- ESTILO DE ERRO (REQUISITO 1) ---
+    &.is-invalid {
+        border: 2px solid var(--color-text-error);
+        color: var(--color-text-error) !important;
+        background-color: var(--color-background-error); // Opcional: fundo avermelhado claro
+        
+        // Se quiser mudar a cor do ícone também
+        i {
+            color: var(--color-text-error);
+        }
+    }
+
+    // --- ESTILO DESABILITADO (REQUISITO 2) ---
+    &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: var(--color-background-light); // Um cinza ou cor neutra
+        color: var(--color-text-secondary) !important;
+        box-shadow: none;
+
+        &:hover {
+            background-color: var(--color-background-light); // Remove efeito de hover
+        }
     }
 }
 
@@ -67,7 +95,8 @@
     @include font-size-medium;
     font-weight: 500;
     color: var(--color-text-default);
-
+    text-transform: capitalize;
+    
     &:hover{
         background-color: var(--color-surface-muted)!important;
     }

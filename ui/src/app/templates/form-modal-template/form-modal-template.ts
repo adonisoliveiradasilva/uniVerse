@@ -173,8 +173,8 @@ export class FormModalTemplate implements OnInit {
       },
       [TableContextEnum.Periods]: {
         create: "Vincular nova Disciplina",
-        edit: "Editar Disciplina",
-        delete: "Deletar Disciplina",
+        edit: "Editar dados da Disciplina no Período",
+        delete: "Desvincular Disciplina",
         default: "Vincular nova Disciplina"
       }
     };
@@ -194,7 +194,7 @@ export class FormModalTemplate implements OnInit {
       [TableContextEnum.Periods]: {
         create: "Preencha as informações da Disciplina",
         edit: "Preencha as informações da Disciplina",
-        delete: "Confirme a exclusão da Disciplina",
+        delete: "Confirme a desvinculação da Disciplina",
         default: "Preencha as informações da Disciplina"
       }
     };

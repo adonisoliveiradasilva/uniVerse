@@ -1,10 +1,45 @@
-<form [formGroup]="form" class="form-entity-content">
+<form [formGroup]="form" class="form-entity-content" *ngIf="form">
+    
     <div class="form-entity-row">
-        <app-form-select [label]="'Disciplina'" [options]="[{id: 1, label: 'Matemática'}, {id: 2, label: 'Português'}]"></app-form-select>
-        <app-form-select [label]="'Status'" [options]="[{id: 1, label: 'Aprovado'}, {id: 2, label: 'Cursando'}]"></app-form-select>
+        <app-form-select
+            [label]="'Disciplina'"
+            [width]="'50%'"
+            [loading]="isLoading"
+            [options]="subjectOptions"
+            formControlName="subjectCode"
+            [required]="true"
+            >
+        </app-form-select>
+        
+        <app-form-select
+            [label]="'Status'"
+            [width]="'50%'"
+            [loading]="isLoading"
+            [options]="statusOptions"
+            formControlName="status"
+            [required]="true"
+            >
+        </app-form-select>
     </div>
+
     <div class="form-entity-row">
-        <app-form-input [label]="'Notas (0 a 10)'"></app-form-input>
-        <app-form-input [label]="'Faltas (em horas)'"></app-form-input>
+        <app-form-input 
+            [label]="'Nota (0 a 10)'"
+            formControlName="grade" 
+            [width]="'50%'"
+            [loading]="isLoading"
+            [type]="'float'"
+            >
+        </app-form-input>
+        
+        <app-form-input 
+            [label]="'Faltas'"
+            formControlName="absences" 
+            [width]="'50%'"
+            [loading]="isLoading"
+            [type]="'number'"
+            >
+        </app-form-input>
     </div>
+    
 </form>

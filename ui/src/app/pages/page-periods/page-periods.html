@@ -1,19 +1,42 @@
 <div class="page-content">
-    @if(getAllPeriods.length > 0){
-        <app-date-period-selector 
-            (navigate)="navigate($event)" 
-            [label]="periodLabel$ | async"
-            (create)="createPeriod()"
-        ></app-date-period-selector>
-        <ng-container *ngIf="_rows$ | async as _rows;">
-            <app-table [context]="TableContextEnum.Periods" [rows]="_rows" [columns]="_columns" [headers]="['Nome da Disciplina']"> </app-table>
-        </ng-container>
-    }@else{
-        <app-button 
-            [label]="'Criar período'" 
-            [icon]="'fa-circle-plus'"  
-            (click)="createPeriod()"  
-        ></app-button>    
-    }
     
-</div>
+    <ng-container *ngIf="periodService.periods$ | async as periods">
+        
+        @if(periods.length > 0){
+            <div class="period-header">
+                <app-date-period-selector 
+                    (navigate)="navigate($event)" 
+                    (create)="createPeriod()"
+                    [label]="periodLabel$ | async">
+                </app-date-period-selector>
+                <ng-container *ngIf="_rows$ | async as _rows">
+                    <ng-container *ngIf="_rows?.length === 0">
+                        <app-button [label]="'Deletar Período'" icon="fa-trash" type="delete" (click)="deleteCurrentPeriod()"></app-button>
+                    </ng-container>
+                </ng-container>
+            </div>
+
+            <ng-container *ngIf="_rows$ | async as _rows;">
+                <app-table 
+                    [context]="TableContextEnum.Periods" 
+                    [rows]="_rows" 
+                    [columns]="_columns" 
+                    [headers]="_headers"> 
+                </app-table>
+            </ng-container>
+
+        } @else {
+            <div class="empty-state">
+                <p>Você ainda não tem períodos cadastrados.</p>
+                <app-button 
+                    [label]="'Criar Primeiro Período'" 
+                    [icon]="'fa-circle-plus'"  
+                    (click)="createPeriod()"  
+                ></app-button>    
+            </div>
+
+            <app-no-data></app-no-data>            
+        }
+
+    </ng-container>
+</div>      

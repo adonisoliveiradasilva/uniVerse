@@ -6,6 +6,7 @@ import br.com.my_universe.api.application.ports.PeriodSubjectRepository;
 import br.com.my_universe.api.application.ports.StudentRepository;
 import br.com.my_universe.api.domain.EnrolledSubject;
 import br.com.my_universe.api.domain.Period;
+import br.com.my_universe.api.infrastructure.web.dto.Period.PeriodSubjectDto; 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,37 +28,35 @@ public class PeriodServiceImpl {
     }
 
     @Transactional
-    public Period createPeriod(Period period, List<String> subjectCodes) {
+    public Period createPeriod(Period period, List<PeriodSubjectDto> subjects) {
         String studentEmail = period.getStudentEmail();
         
         studentRepository.findByEmail(studentEmail)
-            .orElseThrow(() -> new ResourceNotFoundException("Aluno com e-mail '" + studentEmail + "' não encontrado."));
+            .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado."));
 
-        
         List<Period> allPeriods = periodRepository.findAllByStudentEmail(studentEmail);
-        
+    
         if (!allPeriods.isEmpty()) {
             Period latestPeriod = allPeriods.get(allPeriods.size() - 1);
             
-            List<EnrolledSubject> latestPeriodSubjects = 
+            List<EnrolledSubject> latestSubjects = 
                 periodSubjectRepository.findEnrolledSubjectsByPeriod(latestPeriod.getId(), studentEmail);
 
-            if (latestPeriodSubjects.isEmpty()) {
-                throw new IllegalArgumentException("Não é possível criar um novo período pois o período anterior (ID: " + latestPeriod.getId() + ") está vazio. Adicione disciplinas a ele primeiro.");
+            if (latestSubjects.isEmpty()) {
+                throw new IllegalArgumentException("Não é possível criar um novo período pois o período anterior está vazio.");
             }
             
-            boolean hasSubjectsInProgress = latestPeriodSubjects.stream()
-                .anyMatch(subject -> "cursando".equals(subject.getStatus()));
-                
-            if (hasSubjectsInProgress) {
-                throw new IllegalArgumentException("Não é possível criar um novo período pois o período anterior (ID: " + latestPeriod.getId() + ") ainda possui disciplinas em 'cursando'.");
+            boolean hasInProgress = latestSubjects.stream()
+                .anyMatch(s -> "cursando".equals(s.getStatus()));
+            if (hasInProgress) {
+                throw new IllegalArgumentException("O período anterior ainda possui disciplinas 'cursando'.");
             }
         }
 
         Period savedPeriod = periodRepository.save(period);
         
-        if (subjectCodes != null && !subjectCodes.isEmpty()) {
-            periodSubjectRepository.linkSubjectsToPeriod(savedPeriod.getId(), savedPeriod.getStudentEmail(), subjectCodes);
+        if (subjects != null && !subjects.isEmpty()) {
+            periodSubjectRepository.linkSubjectsToPeriod(savedPeriod.getId(), savedPeriod.getStudentEmail(), subjects);
         }
         
         List<EnrolledSubject> enrolled = periodSubjectRepository.findEnrolledSubjectsByPeriod(savedPeriod.getId(), savedPeriod.getStudentEmail());
@@ -67,13 +66,13 @@ public class PeriodServiceImpl {
     }
 
     @Transactional
-    public Period updatePeriod(Integer periodId, String studentEmail, List<String> subjectCodes) {
+    public Period updatePeriod(Integer periodId, String studentEmail, List<PeriodSubjectDto> subjects) {
         Period existingPeriod = getPeriodById(periodId, studentEmail);
         
         periodSubjectRepository.unlinkAllSubjectsFromPeriod(periodId, studentEmail);
         
-        if (subjectCodes != null && !subjectCodes.isEmpty()) {
-            periodSubjectRepository.linkSubjectsToPeriod(periodId, studentEmail, subjectCodes);
+        if (subjects != null && !subjects.isEmpty()) {
+            periodSubjectRepository.linkSubjectsToPeriod(periodId, studentEmail, subjects);
         }
         
         List<EnrolledSubject> enrolled = periodSubjectRepository.findEnrolledSubjectsByPeriod(periodId, studentEmail);
@@ -84,7 +83,7 @@ public class PeriodServiceImpl {
     public Period getPeriodById(Integer periodId, String studentEmail) {
         Period period = periodRepository.findById(periodId, studentEmail)
             .orElseThrow(() -> new ResourceNotFoundException("Período com ID '" + periodId + "' não encontrado para este aluno."));
-    
+        
         List<EnrolledSubject> enrolled = periodSubjectRepository.findEnrolledSubjectsByPeriod(periodId, studentEmail);
         period.setEnrolledSubjects(enrolled);
         

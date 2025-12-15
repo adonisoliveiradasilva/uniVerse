@@ -1,10 +1,10 @@
 package br.com.my_universe.api.infrastructure.web.controller;
 
 import br.com.my_universe.api.application.services.PeriodServiceImpl;
-import br.com.my_universe.api.domain.EnrolledSubject; // 1. IMPORTAR
+import br.com.my_universe.api.domain.EnrolledSubject;
 import br.com.my_universe.api.domain.Period;
-import br.com.my_universe.api.infrastructure.web.dto.Period.EnrolledSubjectRequest; // 2. IMPORTAR
-import br.com.my_universe.api.infrastructure.web.dto.Period.EnrolledSubjectResponse; // 2. IMPORTAR
+import br.com.my_universe.api.infrastructure.web.dto.Period.EnrolledSubjectRequest;
+import br.com.my_universe.api.infrastructure.web.dto.Period.EnrolledSubjectResponse;
 import br.com.my_universe.api.infrastructure.web.dto.Period.PeriodRequest;
 import br.com.my_universe.api.infrastructure.web.dto.Period.PeriodResponse;
 import br.com.my_universe.api.infrastructure.web.dto.shared.ApiResponse;
@@ -38,7 +38,9 @@ public class PeriodController {
         String email = getAuthenticatedUserEmail();
         Period period = new Period();
         period.setStudentEmail(email);
-        Period createdPeriod = periodService.createPeriod(period, request.getSubjectCodes());
+        
+        Period createdPeriod = periodService.createPeriod(period, request.getSubjects());
+        
         return ResponseEntity.created(URI.create("/api/periods/" + createdPeriod.getId()))
                              .body(new ApiResponse<>(toResponse(createdPeriod)));
     }
@@ -47,7 +49,9 @@ public class PeriodController {
     public ResponseEntity<ApiResponse<PeriodResponse>> updatePeriod(@PathVariable Integer id,
                                                                     @RequestBody PeriodRequest request) {
         String email = getAuthenticatedUserEmail();
-        Period updatedPeriod = periodService.updatePeriod(id, email, request.getSubjectCodes());
+        
+        Period updatedPeriod = periodService.updatePeriod(id, email, request.getSubjects());
+        
         return ResponseEntity.ok(new ApiResponse<>(toResponse(updatedPeriod)));
     }
 
@@ -81,7 +85,6 @@ public class PeriodController {
         
         String email = getAuthenticatedUserEmail();
         
-        // Mapeia DTO -> Domínio
         EnrolledSubject details = new EnrolledSubject();
         details.setStatus(request.getStatus());
         details.setGrade(request.getGrade());
@@ -91,7 +94,6 @@ public class PeriodController {
         
         return ResponseEntity.ok(new ApiResponse<>(toEnrolledSubjectResponse(updated)));
     }
-
 
     private PeriodResponse toResponse(Period period) {
         PeriodResponse res = new PeriodResponse();

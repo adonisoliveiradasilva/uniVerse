@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, forwardRef, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, ControlValueAccessor } from '@angular/forms';
+import { Component, HostBinding, Input, forwardRef, ViewChild, ChangeDetectorRef, inject, OnInit, Injector } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, ControlValueAccessor, NgControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { IButtonMenuOption } from '../../../../core/models/button-menu-option.model';
@@ -18,7 +18,7 @@ import { IButtonMenuOption } from '../../../../core/models/button-menu-option.mo
     }
   ]
 })
-export class FormSelect implements ControlValueAccessor {
+export class FormSelect implements ControlValueAccessor, OnInit {
   @Input() label!: string;
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
@@ -31,7 +31,21 @@ export class FormSelect implements ControlValueAccessor {
   searchOption: string = '';
   selectedOption: IButtonMenuOption = { label: 'Selecionar' };
   
+  public ngControl: NgControl | null = null;
+
   private _cdr = inject(ChangeDetectorRef);
+  private _injector = inject(Injector);
+
+  ngOnInit() {
+    this.ngControl = this._injector.get(NgControl, null);
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
+
+  get isInvalid(): boolean {
+    return !!(this.ngControl?.invalid && (this.ngControl?.touched || this.ngControl?.dirty));
+  }
 
   onChange: any = (value: any) => {};
   onTouched: any = () => {};
@@ -55,8 +69,9 @@ export class FormSelect implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+    this._cdr.detectChanges();
   }
 
   get getMenuFarmItems(): IButtonMenuOption[] {

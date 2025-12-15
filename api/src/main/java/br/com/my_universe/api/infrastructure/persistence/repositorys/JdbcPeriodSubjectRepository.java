@@ -3,7 +3,7 @@ package br.com.my_universe.api.infrastructure.persistence.repositorys;
 import br.com.my_universe.api.application.ports.PeriodSubjectRepository;
 import br.com.my_universe.api.domain.EnrolledSubject;
 import br.com.my_universe.api.infrastructure.persistence.mappers.EnrolledSubjectRowMapper;
-
+import br.com.my_universe.api.infrastructure.web.dto.Period.PeriodSubjectDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -23,16 +23,21 @@ public class JdbcPeriodSubjectRepository implements PeriodSubjectRepository {
     }
 
     @Override
-    public void linkSubjectsToPeriod(Integer periodId, String studentEmail, List<String> subjectCodes) {
-        String sql = "INSERT INTO tb_period_subjects (period_id, student_email, subject_code) VALUES (?, ?, ?)";
+    public void linkSubjectsToPeriod(Integer periodId, String studentEmail, List<PeriodSubjectDto> subjects) {
+        String sql = "INSERT INTO tb_period_subjects (period_id, student_email, subject_code, status, grade, absences) VALUES (?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, 
-            subjectCodes,
-            100,
-            (PreparedStatement ps, String subjectCode) -> {
+            subjects,
+            100, 
+            (PreparedStatement ps, PeriodSubjectDto subject) -> {
                 ps.setInt(1, periodId);
                 ps.setString(2, studentEmail);
-                ps.setString(3, subjectCode);
+                ps.setString(3, subject.getSubjectCode());
+                
+                // Define valores ou defaults se vierem nulos do DTO
+                ps.setString(4, subject.getStatus() != null ? subject.getStatus() : "cursando");
+                ps.setObject(5, subject.getGrade()); // aceita null
+                ps.setInt(6, subject.getAbsences() != null ? subject.getAbsences() : 0);
             });
     }
 

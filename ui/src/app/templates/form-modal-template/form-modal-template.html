@@ -20,7 +20,7 @@
 
     <div class="form-modal-template-buttons">
       <app-button label="Cancelar" icon="fa-ban" type="secondary" (click)="close()"></app-button>
-      <app-button label="Excluir" *ngIf="action == 'edit'" icon="fa-trash" type="delete" (click)="openDelete()"></app-button>
+      <app-button [label]="context === getTableContextEnum.Periods ? 'Desvincular' : 'Excluir'" *ngIf="action == 'edit'" icon="fa-trash" type="delete" (click)="openDelete()"></app-button>
       <app-button label="Salvar" *ngIf="action !== 'delete'" icon="fa-floppy-disk" (click)="save()"></app-button>
       <app-button label="Confirmar Exclusão" *ngIf="action == 'delete'" icon="fa-trash" type="delete" (click)="confirmDelete()"></app-button>
     </div>
