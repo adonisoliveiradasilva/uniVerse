@@ -1,4 +1,4 @@
-<div class="form-input-content">
+<div class="form-input-content" [class.calendar]="context === 'calendar'">
     <span> {{ label }}  <i class="fas fa-lock" *ngIf="disabled"></i></span>
 
     @if (!loading) {

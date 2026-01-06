@@ -91,6 +91,24 @@
     }
 }
 
+.form-input-content.calendar{
+
+    .button-menu{
+        background-color: var(--color-background-pink)!important;
+        color: var(--color-text-pink)!important;
+
+        span{
+            color: var(--color-text-pink)!important;
+        }
+    }
+    
+
+    span{
+        @include font-size-medium;
+        color: var(--color-text-secondary);
+    }
+}
+
 .button-item{
     @include font-size-medium;
     font-weight: 500;

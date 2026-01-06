@@ -23,6 +23,7 @@ export class FormSelect implements ControlValueAccessor, OnInit {
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
   @Input() loading: boolean = false;
+  @Input() context: 'default' | 'calendar' = 'default';
   @Input() @HostBinding('style.width') width: string = '100%';
   @Input() options!: IButtonMenuOption[];
 

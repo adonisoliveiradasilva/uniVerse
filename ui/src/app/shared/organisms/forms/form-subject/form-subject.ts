@@ -4,7 +4,7 @@ import { TableTdType } from '../../../../core/types/table-td.type';
 import { TableAction, TableContextEnum } from '../../../../core/types/table-context.type';
 import { Subscription, finalize, take } from 'rxjs';
 import { FormBusService } from '../../../../services/rxjs/form-bus-service/form-bus-service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors} from '@angular/forms';
 import { FormModal } from '../../../../services/rxjs/form-modal-service/form-modal-service';
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
@@ -38,7 +38,7 @@ export class FormSubject {
     this.form = this._formBuilder.group({
       nameSubject: ['', [Validators.required, Validators.minLength(3)]],
       hoursSubject: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]],
-      codeSubject: ['', [Validators.required, Validators.minLength(3)]],
+      codeSubject: ['', [Validators.required, Validators.minLength(3), this._noSpacesValidator]],      
       descriptionSubject: ['']
     });
 
@@ -56,9 +56,19 @@ export class FormSubject {
 
     this._subscription.add(
       this._formBusService.submitForm$.subscribe(() => {
-        this._handleSubmit();
+        if (this._formModalService.currentModal?.context === TableContextEnum.Subjects) {
+          this._handleSubmit();
+        }
       })
     );
+  }
+
+  private _noSpacesValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value as string;
+    if (value && value.toString().indexOf(' ') >= 0) {
+        return { whitespace: true };
+    }
+    return null;
   }
 
   private _loadEntityData(acronym: string) {
@@ -85,7 +95,11 @@ export class FormSubject {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       
-      this._alertService.warn('Por favor, preencha os campos corretamente. (Mínimo 3 caracteres)');
+      if (this.form.get('codeSubject')?.hasError('whitespace')) {
+         this._alertService.warn('O código da disciplina não pode conter espaços.');
+      } else {
+         this._alertService.warn('Por favor, preencha os campos corretamente.');
+      }
       return;
     }
 

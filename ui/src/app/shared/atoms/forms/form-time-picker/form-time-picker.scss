@@ -1,0 +1,84 @@
+@use '../../../../../styles/_mixins.scss' as *;
+
+:host{
+    width: 100%;
+}
+
+.form-time-picker-content{
+    @include flex-column-left-top;
+    @include gap-0_5;
+    position: relative;
+    color: var(--color-text-primary);
+    width: 100%;
+
+    .title{
+        @include font-size-medium;
+        margin-left: 1%;
+        color: var(--color-text-secondary);
+    }   
+
+    .form-time-picker-boxes{
+        @include flex-row-center;
+        @include gap-1;
+        width: 100%;
+
+        .form-time-picker-box{
+            @include padding-1_5;;
+            @include border-radius-1;
+            @include flex-row-center-space-between;
+            @include font-size-larger;
+            width: 50%;
+            background-color: var(--color-background-warn);
+            color: var(--color-text-warn);
+            cursor: pointer;
+            height: 4rem;
+
+            input{
+                @include font-size-larger;
+                width: 100%;
+                background-color: transparent;
+                border: none;
+                color: var(--color-text-warn);
+                text-decoration: none;
+                appearance: none!important;
+                -webkit-appearance: none;
+            }
+
+            input[type="time"]::-webkit-calendar-picker-indicator {
+                display: none;
+            }
+
+        }
+    }
+
+    .input-loading{
+        @include padding-1_5;
+        @include border-radius-1;
+        width: 4rem;
+        height: 1.5rem;
+        background-color: var(--color-background-warn);
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -50%;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, var(--color-text-warn), transparent);
+            animation: shimmer 1.2s infinite;
+        }
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(150%);
+    }
+}

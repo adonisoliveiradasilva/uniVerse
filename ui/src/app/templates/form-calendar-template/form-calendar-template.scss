@@ -1,0 +1,51 @@
+@use '../../../styles/mixins' as *;
+@use '../../../styles/_forms.scss' as *;
+
+:host{
+    width: 100%;
+    height: 100%;
+}
+
+.form-calendar-template-content {
+    @include flex-column-center-top;
+    width: 100%;
+    height: 100%;
+
+    .form-calendar-template-header{
+        width: 100%;
+        height: .5rem;
+        border-radius: 1rem;
+        background-color: var(--color-text-destak);
+        position: relative;
+
+        .icon{
+            @include flex-row-center;
+            position: absolute;
+            top: -.5rem;
+            background-color: var(--color-text-error);
+            color: var(--color-background-error);
+            border-radius: 100%;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 1.5rem;
+            height: 1.5rem;
+            right: 0;
+            transition: all 0.3s ease;
+
+            &:hover{
+                transform: scale(1.1);
+                transition: all 0.3s ease;
+            };
+        }
+    }
+
+    .title-day{
+        @include font-size-larger;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        width: 100%;
+        text-align: left;
+        margin: 1rem 1rem;
+        padding: 1rem;
+    }
+}

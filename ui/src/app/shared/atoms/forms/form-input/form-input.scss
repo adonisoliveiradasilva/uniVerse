@@ -82,6 +82,13 @@
 
 }
 
+.form-input-content.calendar{
+    span{
+        @include font-size-medium;
+        color: var(--color-text-secondary);
+    }
+}
+
 @keyframes shimmer {
     0% {
         transform: translateX(0);

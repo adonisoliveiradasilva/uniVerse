@@ -1,0 +1,18 @@
+<div class="calendar-container">
+    <div class="week-days-header">
+        <div *ngFor="let day of weekDays" class="week-day-label">
+            {{ day }}
+        </div>
+    </div>
+
+    <div class="days-grid">
+        <div *ngFor="let day of calendarDays" class="day-cell" [ngClass]="{
+                'disabled-month': !day.isCurrentMonth,
+                'is-today': day.isToday,
+                'selected-day': checkIsSelected(day.date)
+             }" (click)="onDayClick(day)">
+
+            <span class="day-number">{{ day.dayNumber }}</span>
+        </div>
+    </div>
+</div>

@@ -9,7 +9,7 @@ import { FormInput } from '../../../atoms/forms/form-input/form-input';
 
 // Serviços
 import { PeriodService } from '../../../../services/api/period-service/period-service';
-import { SubjectService } from '../../../../services/api/subject-service/subject-service'; // <--- IMPORTANTE
+import { SubjectService } from '../../../../services/api/subject-service/subject-service';
 import { FormBusService } from '../../../../services/rxjs/form-bus-service/form-bus-service';
 import { FormModal } from '../../../../services/rxjs/form-modal-service/form-modal-service';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
@@ -17,7 +17,7 @@ import { AlertService } from '../../../../services/rxjs/alert-service/alert-serv
 // Modelos e Constantes
 import { IButtonMenuOption } from '../../../../core/models/button-menu-option.model';
 import { ISubject } from '../../../../core/models/entitys/ISubject.model';
-import { PERIOD_STATUS_OPTIONS } from '../../../../core/data/period-status.data'; // <--- A NOVA CONSTANTE
+import { PERIOD_STATUS_OPTIONS } from '../../../../core/data/period-status.data';
 import { TableAction, TableContextEnum } from '../../../../core/types/table-context.type';
 
 @Component({
@@ -27,16 +27,14 @@ import { TableAction, TableContextEnum } from '../../../../core/types/table-cont
   styleUrl: './form-period.scss'
 })
 export class FormPeriod implements OnInit, OnDestroy {
-  // Injeções
   private _formBuilder = inject(FormBuilder);
   private _periodService = inject(PeriodService);
-  private _subjectService = inject(SubjectService); // Serviço para buscar disciplinas
+  private _subjectService = inject(SubjectService);
   private _formModalService = inject(FormModal);
   private _formBusService = inject(FormBusService);
   private _alertService = inject(AlertService);
   private _cdr = inject(ChangeDetectorRef);
 
-  // Variáveis de Estado
   form!: FormGroup;
   isLoading: boolean = false;
   periodId: number | null = null;

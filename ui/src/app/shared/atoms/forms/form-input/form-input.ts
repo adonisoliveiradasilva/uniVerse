@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, OnInit, forwardRef, inject, Injector } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, forwardRef, Injector } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -23,6 +23,7 @@ export class FormInput implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
   @Input() loading: boolean = false;
+  @Input() context: 'default' | 'calendar' = 'default';
   @Input() @HostBinding('style.width') width: string = '100%';
 
   private _showPassword: boolean = false;

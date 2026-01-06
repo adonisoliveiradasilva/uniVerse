@@ -1,0 +1,13 @@
+<div class="schedule-toggle-content">
+    <button
+    (click)="onClick('tasks')"
+    [class.active]="toggledSlug === 'tasks'">
+    Tarefas
+    </button>
+
+    <button
+    (click)="onClick('class_schedule')"
+    [class.active]="toggledSlug === 'class_schedule'">
+    Horário de aulas
+    </button>
+</div>

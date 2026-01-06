@@ -1,0 +1,52 @@
+<div class="form-calendar-template-content">
+    <div class="form-calendar-template-header">
+        <div class="icon">
+            <i class="fas fa-xmark" (click)="changeState('void')"></i>
+        </div>
+    </div>
+
+    <ng-container *ngIf="_scheduleService.selectedDayState$ | async as selectedDate">
+        <span class="title-day">
+            Dia: {{ selectedDate | date:'dd/MM/yyyy' }}
+        </span>
+    </ng-container>
+
+
+    <ng-container *ngIf="_scheduleService.viewState$ | async as state">
+        <ng-container *ngIf="state === 'tasks'">
+            <div class="form-entity-content">
+                <div class="form-entity-row">
+                    <app-form-input 
+                        [label]="'Título'"
+                        [context]="'calendar'" 
+                        >
+                    </app-form-input>
+                </div>
+
+                <div class="form-entity-row">
+                    <app-form-select 
+                        [context]="'calendar'"
+                        [label]="'Disciplina'" 
+                        [options]="subjectOptions"
+                        >
+                    </app-form-select>
+                </div>
+
+                <div class="form-entity-row">
+                    <app-form-time-picker [label]="'Hora'"></app-form-time-picker>
+                </div>
+
+                <div class="form-entity-row">
+                    <app-form-input 
+                        [type]="'textarea'"
+                        [label]="'Descrição'" 
+                        [context]="'calendar'" 
+                        >
+                    </app-form-input>
+                </div>
+                
+            </div>
+        </ng-container>
+    </ng-container>
+
+</div>

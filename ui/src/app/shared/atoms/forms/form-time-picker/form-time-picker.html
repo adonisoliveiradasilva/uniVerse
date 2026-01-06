@@ -1,0 +1,29 @@
+<div class="form-time-picker-content">
+    <span class="title"> {{ label }} </span>
+
+    <div class="form-time-picker-boxes">
+        <label class="form-time-picker-box">
+            <div>
+                <span> de </span>
+                @if (!loading) {
+                    <input type="time" />  
+                }@else{
+                    <div class="input-loading"></div>
+                }
+            </div>
+            <i class="fas fa-clock"></i>
+        </label>
+        <label class="form-time-picker-box">
+            <div>
+                <span> até </span>
+                @if (!loading) {
+                    <input type="time" />  
+                }@else{
+                    <div class="input-loading"></div>
+                }                </div>
+            <i class="fas fa-clock"></i>
+        </label>
+    </div>
+  
+
+</div>

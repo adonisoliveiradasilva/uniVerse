@@ -20,8 +20,9 @@ $my-theme: mat.define-theme((
 :root {
     --color-text-primary: #081616;
     --color-text-secondary: #A4A4A4;
-    --color-text-destak: #6E15EB;
+    --color-text-destak: rgb(110, 21, 235);
     --color-text-light: #FFD3FF;
+    --color-text-surface: #66607C;
     --color-surface-light: #FFFFFF;
     --color-surface-overlay: rgba(8, 59, 60, .45);
     --color-surface-destak: #673AB7;
@@ -36,6 +37,7 @@ $my-theme: mat.define-theme((
     --image-background-login: url("./assets/background-login.jpeg");
     --image-not-found: url("./assets/404-image.png");
     --image-logo: url("./assets/image-logo.png");
+    --border-color: #E7E6EB;
 
     --color-text-success: #14934b;
     --color-background-success: #E8FDEC;
@@ -45,14 +47,18 @@ $my-theme: mat.define-theme((
     --color-background-warn: #FFF2EA;
     --color-text-info: #1986CF;
     --color-background-info: #E8EFFD;
+
+    --color-background-pink: #FFE2F1;
+    --color-text-pink: #FF67A6;
 }
 
 .dark-theme {
     --color-text-primary: #E4E4E4;
     --color-text-secondary: #A4A4A4;
-    --color-text-destak: #FFD3FF;
+    --color-text-destak: rgb(255, 211, 255);
     --color-text-light: #431c79;
     --color-surface-light: #353535;
+    --color-text-surface: #a09dab;
     --color-surface-overlay: rgb(24, 36, 34, .5);
     --color-surface-destak: #c09cff;
     --color-background-default: #535353;
@@ -66,6 +72,7 @@ $my-theme: mat.define-theme((
     --image-background-login: url("./assets/background-login-dark.png");
     --image-not-found: url("./assets/404-image.png");
     --image-logo: url("./assets/image-logo-dark.png");
+    --border-color: #3c3c3c;
 
     --color-text-success: #14934b;
     --color-background-success: #E8FDEC;
@@ -75,6 +82,9 @@ $my-theme: mat.define-theme((
     --color-background-warn: #FFF2EA;
     --color-text-info: #1986CF;
     --color-background-info: #E8EFFD;
+
+    --color-background-pink: #FFE2F1;
+    --color-text-pink: #FF67A6;
 }
 
 body, * {
@@ -89,7 +99,6 @@ body, * {
 :root, .dark-theme {
     transition: all 0.3s ease;
 }
-
 
 ::-webkit-scrollbar {
   width: 8px;

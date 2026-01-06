@@ -26,11 +26,11 @@ export const SIDE_BAR_DATA: SideBarSection[] = [
                 route: '/periods'
             },
             {
-                slug: 'diary',
+                slug: 'schedule',
                 title: 'Sua Agenda',
                 subtitle: 'Acompanhe sua agenda acadêmica',
                 icon: 'fas fa-calendar-week',
-                route: '/diary'
+                route: '/schedule'
             },
             {
                 slug: 'subjects',

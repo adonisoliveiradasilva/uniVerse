@@ -7,6 +7,7 @@ import { PageSetPasswordComponent } from './pages/page-set-password/page-set-pas
 import { authGuard } from './core/guards/auth-guard';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
 import { PagePeriods } from './pages/page-periods/page-periods';
+import { PageSchedule } from './pages/page-schedule/page-schedule';
 
 export const routes: Routes = [
     {
@@ -29,6 +30,10 @@ export const routes: Routes = [
             {
                 path: 'subjects',
                 component: PageSubjects
+            },
+            {
+                path: 'schedule',
+                component: PageSchedule
             },
             {
                 path: 'periods',

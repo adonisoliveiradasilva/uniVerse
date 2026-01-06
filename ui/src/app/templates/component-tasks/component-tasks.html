@@ -1,0 +1,26 @@
+<div class="schedule-page-container">
+    <div class="calendar-section">
+        <div class="calendar-header">
+            <h3>{{ currentMonthLabel }}</h3>
+            
+            <div class="nav-buttons">
+                <i class="fa-solid fa-circle-chevron-left" (click)="prevMonth()"></i>
+                <i class="fa-solid fa-circle-chevron-right" (click)="nextMonth()"></i>
+            </div>
+        </div>
+
+        <div class="grid-wrapper">
+            <app-calendar 
+                [currentDate]="currentDate"
+                (dateSelected)="onDateSelected($event)">
+            </app-calendar>
+        </div>
+    </div>
+
+    <div class="form-section" *ngIf="_scheduleService.viewState$ | async as state">
+        <ng-container *ngIf="state !== 'void'">
+            <app-form-calendar-template></app-form-calendar-template>
+        </ng-container>
+    </div>
+
+</div>
