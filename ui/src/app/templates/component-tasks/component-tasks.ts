@@ -7,7 +7,7 @@ import { Button } from '../../shared/atoms/buttons/button/button';
 import { FormCalendarTemplate } from '../form-calendar-template/form-calendar-template';
 import { ScheduleService } from '../../services/rxjs/schedule-service/schedule-service';
 
-export type ComponentState = 'void' | 'tasks';
+export type ComponentState = 'void' | 'view_tasks' | 'new_task' | 'edit_task' | 'delete_task';
 
 @Component({
   selector: 'app-component-tasks',
@@ -37,7 +37,7 @@ export class ComponentTasks {
 
   onDateSelected(date: Date) {
     this._scheduleService.selectDay(date);
-    this.changeState('tasks');
+    this.changeState('view_tasks');
   }
 
   changeState(newState: ComponentState) {

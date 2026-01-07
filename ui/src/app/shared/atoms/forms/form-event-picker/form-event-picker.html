@@ -1,0 +1,20 @@
+
+<div class="form-event-picker-content">
+    <span class="label"> 
+        {{ label }}
+    </span>
+    <div class="form-event-picker-tags">
+        <ng-container *ngFor="let tag of tagArray">
+            <div class="form-event-picker-tag"  
+                [ngClass]="clickedTag === tag.slug ? 'selected' : ''"
+                [style.backgroundColor]="tag.backgroundColor" 
+                [style.color]="tag.textColor"
+                (click)="selectTag(tag.slug)"
+                >
+                <span>
+                    {{ tag.label }}
+                </span>
+            </div>
+        </ng-container>
+    </div>
+</div>

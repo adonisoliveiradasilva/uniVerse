@@ -45,7 +45,18 @@
         color: var(--color-text-primary);
         width: 100%;
         text-align: left;
-        margin: 1rem 1rem;
-        padding: 1rem;
+        padding-top: 1rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+
+        i{
+            @include font-size-larger;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            
+            &:hover{
+                transform: scale(1.1);
+            }
+        }
     }
 }

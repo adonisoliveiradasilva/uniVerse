@@ -7,46 +7,33 @@
 
     <ng-container *ngIf="_scheduleService.selectedDayState$ | async as selectedDate">
         <span class="title-day">
+            <i class="fas fa-arrow-left" (click)="prevState()"></i>
             Dia: {{ selectedDate | date:'dd/MM/yyyy' }}
         </span>
     </ng-container>
 
 
     <ng-container *ngIf="_scheduleService.viewState$ | async as state">
-        <ng-container *ngIf="state === 'tasks'">
+        <ng-container *ngIf="state === 'view_tasks'">
             <div class="form-entity-content">
-                <div class="form-entity-row">
-                    <app-form-input 
-                        [label]="'Título'"
-                        [context]="'calendar'" 
-                        >
-                    </app-form-input>
-                </div>
-
-                <div class="form-entity-row">
-                    <app-form-select 
-                        [context]="'calendar'"
-                        [label]="'Disciplina'" 
-                        [options]="subjectOptions"
-                        >
-                    </app-form-select>
-                </div>
-
-                <div class="form-entity-row">
-                    <app-form-time-picker [label]="'Hora'"></app-form-time-picker>
-                </div>
-
-                <div class="form-entity-row">
-                    <app-form-input 
-                        [type]="'textarea'"
-                        [label]="'Descrição'" 
-                        [context]="'calendar'" 
-                        >
-                    </app-form-input>
-                </div>
                 
+                // grid de tarefas aqui
+
+                <app-button 
+                    (click)="changeState('new_task')"
+                    [label]="'Adicionar Tarefa'"
+                    [icon]="'fas fa-circle-plus'"
+                    >
+                </app-button>
             </div>
         </ng-container>
-    </ng-container>
 
+        <ng-container *ngIf="state === 'new_task'">
+            <app-new-task-state [subjectOptions]="subjectOptions"></app-new-task-state>
+        </ng-container>
+
+        <ng-container *ngIf="state === 'edit_task'">
+            // mesmo formulario do new_task, mas com parametros para permitir editar
+        </ng-container>
+    </ng-container>
 </div>

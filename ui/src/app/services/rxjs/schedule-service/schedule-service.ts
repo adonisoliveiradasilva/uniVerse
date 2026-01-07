@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-export type ScheduleViewState = 'void' | 'tasks' | 'class_schedule' | 'view_tasks' | 'view_class_schedule';
+export type ScheduleViewState = 'void' | 'tasks' | 'class_schedule' | 'view_tasks' | 'view_class_schedule' | 'new_task' | 'new_class_schedule' | 'edit_task' | 'edit_class_schedule' | 'delete_task' | 'delete_class_schedule';
 
 @Injectable({
   providedIn: 'root'
