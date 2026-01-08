@@ -17,7 +17,7 @@
         <ng-container *ngIf="state === 'view_tasks'">
             <div class="form-entity-content">
                 
-                // grid de tarefas aqui
+                <app-view-tasks-state></app-view-tasks-state>
 
                 <app-button 
                     (click)="changeState('new_task')"

@@ -6,24 +6,30 @@
             <div>
                 <span> de </span>
                 @if (!loading) {
-                    <input type="time" />  
+                    <input 
+                        type="time" 
+                        #start 
+                        (input)="updateStart(start.value)" />  
                 }@else{
                     <div class="input-loading"></div>
                 }
             </div>
             <i class="fas fa-clock"></i>
         </label>
+        
         <label class="form-time-picker-box">
             <div>
                 <span> até </span>
                 @if (!loading) {
-                    <input type="time" />  
+                    <input 
+                        type="time" 
+                        #end 
+                        (input)="updateEnd(end.value)" />  
                 }@else{
                     <div class="input-loading"></div>
-                }                </div>
+                }                
+            </div>
             <i class="fas fa-clock"></i>
         </label>
     </div>
-  
-
 </div>

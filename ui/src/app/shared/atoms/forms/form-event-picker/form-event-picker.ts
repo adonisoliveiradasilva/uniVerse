@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IEventTag } from '../../../../core/models/event-tag.model';
 import { EVENT_TAGS } from '../../../../core/data/event-tag.data';
 import { CommonModule } from '@angular/common';
@@ -11,9 +11,10 @@ import { CommonModule } from '@angular/common';
 })
 export class FormEventPicker {
   @Input() label: string = "Evento";
+  @Output() onTagSelect = new EventEmitter<string>();
 
   tagArray: IEventTag[] = EVENT_TAGS;
-  clickedTag = this.tagArray[1].slug;
+  clickedTag: string = '';
 
   selectTag(tagSlug: string) {
     if(this.clickedTag === tagSlug) {
@@ -22,5 +23,6 @@ export class FormEventPicker {
     }
 
     this.clickedTag = tagSlug;
+    this.onTagSelect.emit(this.clickedTag);
   }
 }

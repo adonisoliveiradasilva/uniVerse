@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { addMonths, subMonths, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Calendar } from '../../shared/organisms/calendar/calendar';
-import { Button } from '../../shared/atoms/buttons/button/button';
 import { FormCalendarTemplate } from '../form-calendar-template/form-calendar-template';
 import { ScheduleService } from '../../services/rxjs/schedule-service/schedule-service';
 
@@ -11,7 +10,7 @@ export type ComponentState = 'void' | 'view_tasks' | 'new_task' | 'edit_task' | 
 
 @Component({
   selector: 'app-component-tasks',
-  imports: [CommonModule, Calendar, Button, FormCalendarTemplate],
+  imports: [CommonModule, Calendar, FormCalendarTemplate],
   templateUrl: './component-tasks.html',
   styleUrl: './component-tasks.scss'
 })

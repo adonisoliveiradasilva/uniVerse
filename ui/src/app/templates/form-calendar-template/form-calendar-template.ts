@@ -10,10 +10,11 @@ import { AlertService } from '../../services/rxjs/alert-service/alert-service';
 import { format } from 'date-fns';
 import { Button } from '../../shared/atoms/buttons/button/button';
 import { NewTaskState } from '../../shared/organisms/forms/calendar/new-task-state/new-task-state';
+import { ViewTasksState } from '../../shared/organisms/forms/calendar/view-tasks-state/view-tasks-state';
 
 @Component({
   selector: 'app-form-calendar-template',
-  imports: [CommonModule, Button, NewTaskState],
+  imports: [CommonModule, Button, NewTaskState, ViewTasksState],
   templateUrl: './form-calendar-template.html',
   styleUrl: './form-calendar-template.scss'
 })
@@ -84,7 +85,7 @@ export class FormCalendarTemplate {
       .subscribe(selectedDate => {
         if (selectedDate) {
           const formatedDate = format(selectedDate, 'dd/MM/yyyy');
-          console.log('Data selecionada (Reativo):', formatedDate);
+          // console.log('Data selecionada (Reativo):', formatedDate);
         }
       });
     

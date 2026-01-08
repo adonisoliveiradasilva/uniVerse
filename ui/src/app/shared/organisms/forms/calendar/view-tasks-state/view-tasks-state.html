@@ -1,0 +1,47 @@
+<div class="view-tasks-content" *ngIf="tasks$ | async as tasks">
+    
+    <div class="empty-state" *ngIf="tasks.length === 0">
+        <p>Nenhuma tarefa para este dia.</p>
+    </div>
+
+    <ng-container *ngFor="let task of tasks">
+        
+        <div class="task-card" 
+             *ngIf="getTaskStyle(task.taskType) as style"
+             [style.backgroundColor]="style.backgroundColor">
+            
+            <div class="card-header">
+                <span class="task-title" [style.color]="style.textColor">
+                    {{ task.title }}
+                </span>
+            </div>
+
+            <div class="task-time" [style.color]="style.textColor">
+                {{ task.startDate | date:'HH:mm' }} - {{ task.endDate | date:'HH:mm' }}
+            </div>
+
+            <div class="tags-row">
+                <span class="tag type-tag" 
+                      [style.color]="style.textColor"
+                      [style.borderColor]="style.textColor">
+                    {{ style.label }}
+                </span>
+
+                <span class="tag subject-tag" 
+                      *ngIf="task.subjectCode"
+                      [style.color]="style.textColor"
+                      [style.borderColor]="style.textColor">
+                    {{ task.subjectCode }}
+                </span>
+            </div>
+
+            <div class="task-description" 
+                 *ngIf="task.description"
+                 [style.color]="style.textColor">
+                {{ task.description }}
+            </div>
+
+        </div>
+    </ng-container>
+
+</div>

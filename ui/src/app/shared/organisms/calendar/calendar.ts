@@ -80,11 +80,6 @@ export class Calendar implements OnInit, OnChanges {
     const sub = this._scheduleService.selectedDayState$
       .subscribe(selectedDate => {
         this.selectedDate = selectedDate;
-
-        if (selectedDate) {
-          const formatedDate = format(selectedDate, 'dd/MM/yyyy');
-          console.log('Data selecionada (Reativo):', formatedDate);
-        }
       });
     
     this.subscription.add(sub);

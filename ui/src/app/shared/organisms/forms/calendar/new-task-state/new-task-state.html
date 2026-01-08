@@ -1,31 +1,57 @@
-<div class="form-entity-content" style="padding: 0;">
+<div class="form-entity-content" style="padding: 0;" [formGroup]="form" *ngIf="form">
+    
     <div class="form-entity-row">
-        <app-form-event-picker [label]="'Evento'"></app-form-event-picker>
+        <app-form-event-picker 
+            [label]="'Evento'" 
+            (onTagSelect)="updateTag($event)">
+        </app-form-event-picker>
     </div>
+
     <div class="form-entity-row">
-        <app-form-input [label]="'Título'" [context]="'calendar'">
+        <app-form-input 
+            [label]="'Título'" 
+            [context]="'calendar'" 
+            formControlName="title">
         </app-form-input>
     </div>
 
     <div class="form-entity-row">
-        <app-form-select [context]="'calendar'" [label]="'Disciplina'" [options]="subjectOptions">
+        <app-form-select 
+            [context]="'calendar'" 
+            [label]="'Disciplina'" 
+            [options]="subjectOptions"
+            formControlName="subject">
         </app-form-select>
     </div>
 
     <div class="form-entity-row">
-        <app-form-time-picker [label]="'Hora'"></app-form-time-picker>
+        <app-form-time-picker 
+            [label]="'Hora'"
+            (onTimeChange)="updateTime($event)">
+        </app-form-time-picker>
     </div>
 
     <div class="form-entity-row">
-        <app-form-input [type]="'textarea'" [label]="'Descrição'" [context]="'calendar'">
+        <app-form-input 
+            [type]="'textarea'" 
+            [label]="'Descrição'" 
+            [context]="'calendar'"
+            formControlName="description">
         </app-form-input>
     </div>
 
     <div class="form-entity-row">
-        <app-button (click)="changeState('view_tasks')" [label]="'Cancelar'" [type]="'secondary'" [icon]="'fas fa-ban'">
+        <app-button 
+            (click)="changeState('view_tasks')" 
+            [label]="'Cancelar'" 
+            [type]="'secondary'" 
+            [icon]="'fas fa-ban'">
         </app-button>
 
-        <app-button (click)="changeState('view_tasks')" [icon]="'fa-floppy-disk'" [label]="'Salvar'">
+        <app-button 
+            (click)="save()" 
+            [icon]="'fa-floppy-disk'" 
+            [label]="'Salvar'">
         </app-button>
     </div>
 </div>
