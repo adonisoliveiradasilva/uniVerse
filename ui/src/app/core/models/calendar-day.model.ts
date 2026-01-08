@@ -3,5 +3,6 @@ export interface ICalendarDay {
     dayNumber: string;
     isCurrentMonth: boolean;
     isToday: boolean;
+    taskCount?: number;
     // tasks: ITask[]
 }

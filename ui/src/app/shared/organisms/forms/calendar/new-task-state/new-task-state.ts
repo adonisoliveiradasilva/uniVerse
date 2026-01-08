@@ -113,8 +113,9 @@ export class NewTaskState implements OnInit, OnDestroy {
     this._taskService.createTask(payload).subscribe({
         next: (res) => {
           this._alertService.success("Tarefa criada com sucesso!");
+          this._scheduleService.notifyCalendarRefresh();
           this.changeState('view_tasks'); 
-          // recarregar aqui o calendario
+          //recarregar a listagem do calendario aqui
         },
         error: (err) => {
           console.error('Erro da API:', err);

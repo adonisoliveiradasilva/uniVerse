@@ -14,7 +14,6 @@ export class PageSchedule {
   private viewSubject = new BehaviorSubject<'tasks' | 'class_schedule'>('tasks');
   view$ = this.viewSubject.asObservable();
 
-
   navigate(navigate: 'tasks' | 'class_schedule'): void { 
     this.viewSubject.next(navigate);
   }

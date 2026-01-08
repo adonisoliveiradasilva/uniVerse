@@ -13,6 +13,16 @@
              }" (click)="onDayClick(day)">
 
             <span class="day-number">{{ day.dayNumber }}</span>
+
+            <div class="task-count-badge" *ngIf="day.taskCount && day.taskCount > 0">
+                <span>
+                    {{ day.taskCount }}
+                </span>
+                <h6> 
+                    {{ day.taskCount === 1 ? 'tarefa' : 'tarefas' }}
+                </h6>
+            </div>
+            
         </div>
     </div>
 </div>

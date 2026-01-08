@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { format, isSameDay } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import { ScheduleService } from '../../../../../services/rxjs/schedule-service/schedule-service';
 import { TaskService } from '../../../../../services/api/task-service/task-service';
 import { ITask } from '../../../../../core/models/entitys/ITaskRequest.model';
@@ -24,6 +24,13 @@ export class ViewTasksState implements OnInit {
   
   ngOnInit() {
     this.tasks$ = this.scheduleService.selectedDayState$.pipe(
+      
+      distinctUntilChanged((prev, curr) => {
+         if (!prev && !curr) return true;
+         if (!prev || !curr) return false;
+         return isSameDay(prev, curr);
+      }),
+
       switchMap(date => {
         if (!date) return of([]);
 
@@ -38,7 +45,9 @@ export class ViewTasksState implements OnInit {
             });
           })
         );
-      })
+      }),
+      
+      shareReplay(1) 
     );
   }
 
@@ -48,25 +57,15 @@ export class ViewTasksState implements OnInit {
 
   getTaskStyle(backendType: string): IEventTag {
     const type = backendType ? backendType.toUpperCase() : 'OUTROS';
-    
     let targetSlug = 'others';
 
     switch (type) {
-        case 'PROVA':
-            targetSlug = 'test';
-            break;
-        case 'TRABALHO':
-            targetSlug = 'work';
-            break;
+        case 'PROVA': targetSlug = 'test'; break;
+        case 'TRABALHO': targetSlug = 'work'; break;
         case 'ATIVIDADE':
-        case 'ESTUDO':
-            targetSlug = 'task';
-            break;
-        default:
-            targetSlug = 'others';
-            break;
+        case 'ESTUDO': targetSlug = 'task'; break;
+        default: targetSlug = 'others'; break;
     }
-
     return EVENT_TAGS.find(t => t.slug === targetSlug) || EVENT_TAGS[3]; 
   }
 }

@@ -54,15 +54,15 @@
     overflow: hidden;
 
     .day-cell {
+        @include flex-column-center-center;
         background-color: var(--color-surface-light);
         min-height: 100px;
         padding: 0.5rem;
         cursor: pointer;
-        display: flex;
-        flex-direction: column;
         transition: background-color 0.2s;
         border-right: 1px solid var(--border-color);
         border-bottom: 1px solid var(--border-color);
+        position: relative;
 
         &:hover {
             background-color: var(--color-background-secondary);
@@ -77,6 +77,9 @@
             border-radius: 100%;
             margin-left: auto;
             color: var(--color-text-primary);
+            position: absolute;
+            top: .2rem;
+            right: .2rem;
         }
 
         &.disabled-month {
@@ -101,6 +104,16 @@
                 background-color: var(--color-text-pink);
                 color: var(--color-surface-light);
             }
+        }
+
+        .task-count-badge {
+            @include flex-column-center-center;
+            @include font-size-medium;
+            border: .15rem solid var(--color-text-pink);
+            color: var(--color-text-pink);
+            width: 85%;
+            aspect-ratio: 1 / 1; 
+            border-radius: 50%; 
         }
     }
 }
