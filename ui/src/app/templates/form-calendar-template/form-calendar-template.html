@@ -29,11 +29,17 @@
         </ng-container>
 
         <ng-container *ngIf="state === 'new_task'">
-            <app-new-task-state [subjectOptions]="subjectOptions"></app-new-task-state>
+            <app-new-task-state 
+                [subjectOptions]="subjectOptions" 
+                [isEditMode]="false">
+            </app-new-task-state>        
         </ng-container>
 
         <ng-container *ngIf="state === 'edit_task'">
-            // mesmo formulario do new_task, mas com parametros para permitir editar
+            <app-new-task-state 
+                [subjectOptions]="subjectOptions" 
+                [isEditMode]="true">
+            </app-new-task-state>
         </ng-container>
     </ng-container>
 </div>

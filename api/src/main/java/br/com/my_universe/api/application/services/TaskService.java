@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface TaskService {
     Task createTask(TaskRequest request, String studentEmail);
+    Task updateTask(Integer id, TaskRequest request, String studentEmail);
+    void deleteTask(Integer id, String studentEmail);
     List<Task> getTasksByMonth(String studentEmail, int month, int year);
 }

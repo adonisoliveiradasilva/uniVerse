@@ -9,6 +9,7 @@
                     <input 
                         type="time" 
                         #start 
+                        [value]="startValue" 
                         (input)="updateStart(start.value)" />  
                 }@else{
                     <div class="input-loading"></div>
@@ -24,6 +25,7 @@
                     <input 
                         type="time" 
                         #end 
+                        [value]="endValue"
                         (input)="updateEnd(end.value)" />  
                 }@else{
                     <div class="input-loading"></div>

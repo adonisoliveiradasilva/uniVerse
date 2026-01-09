@@ -13,6 +13,8 @@ import { ComponentState } from '../../../../../templates/component-tasks/compone
 import { AlertService } from '../../../../../services/rxjs/alert-service/alert-service';
 import { format } from 'date-fns';
 import { TaskService } from '../../../../../services/api/task-service/task-service';
+import { FormModal } from '../../../../../services/rxjs/form-modal-service/form-modal-service';
+import { TableContextEnum } from '../../../../../core/types/table-context.type';
 
 @Component({
   selector: 'app-new-task-state',
@@ -22,19 +24,22 @@ import { TaskService } from '../../../../../services/api/task-service/task-servi
 })
 export class NewTaskState implements OnInit, OnDestroy {
   @Input() subjectOptions: IButtonMenuOption[] = [];
+  @Input() isEditMode: boolean = false;
 
   public _scheduleService = inject(ScheduleService);
   private _fb = inject(FormBuilder);
   private _alertService = inject(AlertService);
   private _taskService = inject(TaskService);
+  private _formModalService = inject(FormModal);
   
   form!: FormGroup;
   selectedDate: Date | null = null;
   private _sub = new Subscription();
+  taskId: number | null = null;
 
   ngOnInit() {
     this.form = this._fb.group({
-      title: ['', [Validators.required]],
+      title: ['', [Validators.required, Validators.minLength(3)]],
       subject: [null],
       description: [''],
       tag: [''],
@@ -47,6 +52,10 @@ export class NewTaskState implements OnInit, OnDestroy {
         this.selectedDate = date;
       })
     );
+
+    if (this.isEditMode) {
+        this._loadTaskData();
+    }
   }
 
   updateTag(tagSlug: string) {
@@ -81,8 +90,12 @@ export class NewTaskState implements OnInit, OnDestroy {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
 
+      const titleControl = this.form.get('title');
+
       if (!title) {
         this._alertService.warn("O título da tarefa é obrigatório.");
+      } else if (titleControl?.hasError('minlength')) {
+        this._alertService.warn("O título deve ter no mínimo 3 caracteres.");
       } else if (!startTime || !endTime) {
         this._alertService.warn("Os horários de início e fim são obrigatórios.");
       } else {
@@ -108,38 +121,89 @@ export class NewTaskState implements OnInit, OnDestroy {
       date: formatedDate
     };
 
-    console.log(payload.tag)
+    if (this.isEditMode && this.taskId) {
+        this._taskService.updateTask(this.taskId, payload).subscribe({
+            next: () => {
+                this._alertService.success("Tarefa atualizada com sucesso!");
+                this._scheduleService.notifyCalendarRefresh();
+                this.changeState('view_tasks');
+            },
+            error: (err) => this._handleError(err)
+        });
 
-    this._taskService.createTask(payload).subscribe({
-        next: (res) => {
-          this._alertService.success("Tarefa criada com sucesso!");
-          this._scheduleService.notifyCalendarRefresh();
-          this.changeState('view_tasks'); 
-          //recarregar a listagem do calendario aqui
-        },
-        error: (err) => {
-          console.error('Erro da API:', err);
-          
-          let msg = err.error?.message;
-          
-          if (!msg) {
-            msg = "Ocorreu um erro ao salvar a tarefa.";
-          }
-
-          if (err.status === 403) {
-            msg = "Acesso negado. Verifique sua sessão.";
-          }
-
-          this._alertService.error(msg);
-        }
-    });
+    } else {
+        this._taskService.createTask(payload).subscribe({
+            next: () => {
+                this._alertService.success("Tarefa criada com sucesso!");
+                this._scheduleService.notifyCalendarRefresh();
+                this.changeState('view_tasks'); 
+            },
+            error: (err) => this._handleError(err)
+        });
+    }
   }
 
   changeState(newState: ComponentState) {
     this._scheduleService.changeState(newState);
   }
 
+  delete() {
+    if (!this.taskId) return;
+
+    const taskTitle = this.form.get('title')?.value || 'Tarefa';
+
+    this._formModalService.openModal(
+        TableContextEnum.Tasks,
+        'delete',               
+        this.taskId.toString(), 
+        taskTitle               
+    );
+  }
+
+  private _loadTaskData() {
+    this._sub.add(
+        this._scheduleService.taskToEdit$.subscribe(task => {
+            if (task) {
+                this.taskId = task.id;
+                
+                const start = new Date(task.startDate);
+                const end = new Date(task.endDate);
+                
+                const tagSlug = this._mapBackendTypeToSlug(task.taskType);
+
+                this.form.patchValue({
+                    title: task.title,
+                    description: task.description,
+                    subject: task.subjectCode,
+                    tag: tagSlug,
+                    startTime: format(start, 'HH:mm'),
+                    endTime: format(end, 'HH:mm')
+                });
+            }
+        })
+    );
+  }
+
+  private _mapBackendTypeToSlug(type: string): string {
+      switch (type) {
+          case 'PROVA': return 'test';
+          case 'TRABALHO': return 'work';
+          case 'ATIVIDADE': 
+          case 'ESTUDO': return 'task';
+          default: return 'others';
+      }
+  }
+
+  private _handleError(err: any) {
+    console.error('Erro da API:', err);
+    let msg = err.error?.message || "Ocorreu um erro ao processar a tarefa.";
+    if (err.status === 403) msg = "Acesso negado.";
+    this._alertService.error(msg);
+  }
+
   ngOnDestroy() {
     this._sub.unsubscribe();
   }
+
+  
 }

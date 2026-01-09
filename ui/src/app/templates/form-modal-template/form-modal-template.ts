@@ -11,6 +11,9 @@ import { FormSubject } from '../../shared/organisms/forms/form-subject/form-subj
 import { FormPeriod } from '../../shared/organisms/forms/form-period/form-period';
 import { PeriodService } from '../../services/api/period-service/period-service';
 import { IPeriod } from '../../core/models/entitys/IPeriod.model';
+import { TaskService } from '../../services/api/task-service/task-service';
+import { ScheduleService } from '../../services/rxjs/schedule-service/schedule-service';
+import { AlertService } from '../../services/rxjs/alert-service/alert-service';
 
 @Component({
   selector: 'app-form-modal-template',
@@ -32,6 +35,10 @@ export class FormModalTemplate implements OnInit {
   private _formBusService = inject(FormBusService);
   private _subjectService = inject(SubjectService);
   private _periodService = inject(PeriodService);
+  private _taskService = inject(TaskService)
+  private _scheduleService = inject(ScheduleService);
+  private _alertService = inject(AlertService);
+
 
   get getTableContextEnum(): typeof TableContextEnum {
     return TableContextEnum;
@@ -141,6 +148,19 @@ export class FormModalTemplate implements OnInit {
               next: () => this._formModalService.closeAll()
             });
             break;
+
+          case TableContextEnum.Tasks:
+            if (!this.identifier) return;
+            const idTask = Number(this.identifier);
+            this._taskService.deleteTask(idTask, 'email-do-usuario-via-token').subscribe({
+                next: () => {
+                  this._formModalService.closeAll();
+                  this._scheduleService.notifyCalendarRefresh();
+                  this._scheduleService.changeState('view_tasks');
+                  this._alertService.success("Tarefa excluída com sucesso!");
+                }
+             });
+             break;
         }
       }
     });
@@ -176,6 +196,12 @@ export class FormModalTemplate implements OnInit {
         edit: "Editar dados da Disciplina no Período",
         delete: "Desvincular Disciplina",
         default: "Vincular nova Disciplina"
+      },
+      [TableContextEnum.Tasks]: {
+        create: "Criar Tarefa", 
+        edit: "Editar Tarefa",
+        delete: "Excluir Tarefa", // <--- Título do modal
+        default: "Tarefa"
       }
     };
     const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';
@@ -196,6 +222,12 @@ export class FormModalTemplate implements OnInit {
         edit: "Preencha as informações da Disciplina",
         delete: "Confirme a desvinculação da Disciplina",
         default: "Preencha as informações da Disciplina"
+      },
+      [TableContextEnum.Tasks]: {
+        create: "",
+        edit: "",
+        delete: "Para excluir, digite o nome da tarefa abaixo.", // <--- Subtítulo
+        default: ""
       }
     };
     const key = (action ?? 'default') as 'create' | 'edit' | 'delete' | 'default';

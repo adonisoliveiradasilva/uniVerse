@@ -8,12 +8,14 @@
         
         <div class="task-card" 
              *ngIf="getTaskStyle(task.taskType) as style"
-             [style.backgroundColor]="style.backgroundColor">
+             [style.backgroundColor]="style.backgroundColor"
+             (click)="selectTaskToEdit(task)">
             
             <div class="card-header">
                 <span class="task-title" [style.color]="style.textColor">
                     {{ task.title }}
                 </span>
+                <i class="fas fa-pen-to-square" [style.color]="style.textColor"></i>
             </div>
 
             <div class="task-time" [style.color]="style.textColor">

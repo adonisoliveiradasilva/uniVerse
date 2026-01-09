@@ -15,7 +15,15 @@ export class TaskService {
     return this._http.post<any>(this.API_URL, payload);
   }
 
+  updateTask(id: number, payload: ITaskRequest): Observable<any> {
+    return this._http.put<any>(`${this.API_URL}/${id}`, payload);
+  }
+  
   getTasksByMonth(month: number, year: number): Observable<ITask[]> {
     return this._http.get<ITask[]>(`${this.API_URL}/month?month=${month}&year=${year}`);
+  }
+
+  deleteTask(id: number, userEmail: string): Observable<any> {
+    return this._http.delete<any>(`${this.API_URL}/${id}?userEmail=${userEmail}`);
   }
 }

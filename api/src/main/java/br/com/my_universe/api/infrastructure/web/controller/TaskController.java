@@ -29,6 +29,18 @@ public class TaskController {
         Task createdTask = taskService.createTask(request, email);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Integer id, 
+                                           @RequestBody @Valid TaskRequest request, 
+                                           @AuthenticationPrincipal UserDetails userDetails) {
+        
+        String email = userDetails.getUsername();
+        
+        Task updatedTask = taskService.updateTask(id, request, email);
+        
+        return ResponseEntity.ok(updatedTask);
+    }
 
     @GetMapping("/month")
     public ResponseEntity<List<Task>> getByMonth(@RequestParam int month, 
@@ -38,5 +50,14 @@ public class TaskController {
         String email = userDetails.getUsername();
         List<Task> tasks = taskService.getTasksByMonth(email, month, year);
         return ResponseEntity.ok(tasks);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Integer id, 
+                                           @AuthenticationPrincipal UserDetails userDetails) {
+        
+        taskService.deleteTask(id, userDetails.getUsername());
+        
+        return ResponseEntity.noContent().build();
     }
 }

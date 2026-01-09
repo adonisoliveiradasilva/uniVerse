@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ITask } from '../../../core/models/entitys/ITaskRequest.model';
 
 export type ScheduleViewState = 'void' | 'tasks' | 'class_schedule' | 'view_tasks' | 'view_class_schedule' | 'new_task' | 'new_class_schedule' | 'edit_task' | 'edit_class_schedule' | 'delete_task' | 'delete_class_schedule';
 
@@ -15,6 +16,9 @@ export class ScheduleService {
 
   private _refreshCalendar$ = new Subject<void>();
   public refreshCalendar$ = this._refreshCalendar$.asObservable();
+
+  private _taskToEdit$ = new BehaviorSubject<ITask | null>(null);
+  public taskToEdit$ = this._taskToEdit$.asObservable();
 
   constructor() { }
 
@@ -36,5 +40,13 @@ export class ScheduleService {
 
   public notifyCalendarRefresh() {
     this._refreshCalendar$.next();
+  }
+
+  public setTaskToEdit(task: ITask) {
+    this._taskToEdit$.next(task);
+  }
+
+  public clearTaskToEdit() {
+    this._taskToEdit$.next(null);
   }
 }

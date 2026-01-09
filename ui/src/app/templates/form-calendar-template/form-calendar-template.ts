@@ -42,7 +42,7 @@ export class FormCalendarTemplate {
   prevState(){
     const currentState = this._scheduleService.currentViewState;
 
-    if(currentState === 'new_task'){
+    if(currentState === 'new_task' || currentState === 'edit_task'){
       this.changeState('view_tasks');
     }else{
       this.changeState('void');

@@ -12,6 +12,11 @@ import { CommonModule } from '@angular/common';
 export class FormEventPicker {
   @Input() label: string = "Evento";
   @Output() onTagSelect = new EventEmitter<string>();
+  @Input() set selectedTag(value: string) {
+    if (value) {
+      this.clickedTag = value;
+    }
+  }
 
   tagArray: IEventTag[] = EVENT_TAGS;
   clickedTag: string = '';

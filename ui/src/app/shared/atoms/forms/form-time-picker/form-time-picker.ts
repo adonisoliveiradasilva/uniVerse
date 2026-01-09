@@ -13,8 +13,16 @@ export class FormTimePicker {
 
   @Output() onTimeChange = new EventEmitter<{start: string, end: string}>();
 
-  private startValue: string = '';
-  private endValue: string = '';
+  @Input() set initialStart(value: string) {
+    if(value) this.startValue = value;
+  }
+
+  @Input() set initialEnd(value: string) {
+    if(value) this.endValue = value;
+  }
+  
+  public startValue: string = '';
+  public endValue: string = '';
 
   updateStart(value: string) {
     this.startValue = value;

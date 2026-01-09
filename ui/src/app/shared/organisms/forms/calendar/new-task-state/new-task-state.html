@@ -1,57 +1,41 @@
 <div class="form-entity-content" style="padding: 0;" [formGroup]="form" *ngIf="form">
-    
+
     <div class="form-entity-row">
-        <app-form-event-picker 
-            [label]="'Evento'" 
+        <app-form-event-picker [label]="'Tipo de Tarefa'" [selectedTag]="form.get('tag')?.value"
             (onTagSelect)="updateTag($event)">
         </app-form-event-picker>
     </div>
 
     <div class="form-entity-row">
-        <app-form-input 
-            [label]="'Título'" 
-            [context]="'calendar'" 
-            formControlName="title">
+        <app-form-input [label]="'Título'" [context]="'calendar'" formControlName="title">
         </app-form-input>
     </div>
 
     <div class="form-entity-row">
-        <app-form-select 
-            [context]="'calendar'" 
-            [label]="'Disciplina'" 
-            [options]="subjectOptions"
+        <app-form-select [context]="'calendar'" [label]="'Disciplina'" [options]="subjectOptions"
             formControlName="subject">
         </app-form-select>
     </div>
 
     <div class="form-entity-row">
-        <app-form-time-picker 
-            [label]="'Hora'"
-            (onTimeChange)="updateTime($event)">
+        <app-form-time-picker [label]="'Horário'" [initialStart]="form.get('startTime')?.value"
+            [initialEnd]="form.get('endTime')?.value" (onTimeChange)="updateTime($event)">
         </app-form-time-picker>
     </div>
 
     <div class="form-entity-row">
-        <app-form-input 
-            [type]="'textarea'" 
-            [label]="'Descrição'" 
-            [context]="'calendar'"
-            formControlName="description">
+        <app-form-input [type]="'textarea'" [label]="'Descrição'" [context]="'calendar'" formControlName="description">
         </app-form-input>
     </div>
 
     <div class="form-entity-row">
-        <app-button 
-            (click)="changeState('view_tasks')" 
-            [label]="'Cancelar'" 
-            [type]="'secondary'" 
-            [icon]="'fas fa-ban'">
+        <app-button (click)="delete()" *ngIf="isEditMode" [label]="'Excluir Tarefa'" [type]="'delete'" [icon]="'fas fa-trash'">
         </app-button>
 
-        <app-button 
-            (click)="save()" 
-            [icon]="'fa-floppy-disk'" 
-            [label]="'Salvar'">
+        <app-button (click)="changeState('view_tasks')" [label]="'Cancelar'" [type]="'secondary'" [icon]="'fas fa-ban'">
+        </app-button>
+
+        <app-button (click)="save()" [icon]="'fa-floppy-disk'" [label]="'Salvar'">
         </app-button>
     </div>
 </div>

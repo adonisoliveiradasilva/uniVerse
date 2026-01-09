@@ -51,9 +51,11 @@ export class ViewTasksState implements OnInit {
     );
   }
 
-  editTask(task: ITask) {
-    console.log('Editar tarefa', task);
-  }
+  selectTaskToEdit(task: ITask) {
+    this.scheduleService.setTaskToEdit(task);
+    
+    this.scheduleService.changeState('edit_task');
+  } 
 
   getTaskStyle(backendType: string): IEventTag {
     const type = backendType ? backendType.toUpperCase() : 'OUTROS';
