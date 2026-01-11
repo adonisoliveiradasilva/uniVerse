@@ -14,4 +14,6 @@ public interface PeriodRepository {
     Optional<Period> findById(Integer id, String studentEmail);
     
     List<Period> findAllByStudentEmail(String studentEmail);
+
+    Double getGlobalAverageIndex(String studentEmail);
 }

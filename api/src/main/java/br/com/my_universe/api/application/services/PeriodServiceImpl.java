@@ -129,6 +129,12 @@ public class PeriodServiceImpl {
             }
         }
 
+        if ("aprovado".equalsIgnoreCase(details.getStatus())) {
+            if (details.getGrade() == null) {
+                throw new BusinessException("Não é possível definir o status como 'Aprovado' sem informar a nota final.");
+            }
+        }
+
         if (details.getStatus() != null && !List.of("cursando", "aprovado", "reprovado").contains(details.getStatus())) {
             throw new IllegalArgumentException("Status inválido. Use 'cursando', 'aprovado' ou 'reprovado'.");
         }
@@ -138,5 +144,9 @@ public class PeriodServiceImpl {
         existing.setAbsences(details.getAbsences());
 
         return periodSubjectRepository.updateEnrolledSubject(existing);
+    }
+    
+    public Double getStudentGlobalAverage(String studentEmail) {
+        return periodRepository.getGlobalAverageIndex(studentEmail);
     }
 }

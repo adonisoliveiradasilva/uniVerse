@@ -70,4 +70,17 @@ public class JdbcPeriodRepository implements PeriodRepository {
         String sql = "SELECT * FROM tb_periods WHERE student_email = ? ORDER BY created_at ASC";
         return jdbcTemplate.query(sql, rowMapper, studentEmail);
     }
+
+    @Override
+    public Double getGlobalAverageIndex(String studentEmail) {
+        String sql = """
+            SELECT COALESCE(AVG(es.grade), 0) 
+            FROM tb_period_subjects es
+            JOIN tb_periods p ON es.period_id = p.id
+            WHERE p.student_email = ? 
+            AND es.status IN ('aprovado', 'reprovado', 'concluido')
+        """;
+        
+        return jdbcTemplate.queryForObject(sql, Double.class, studentEmail);
+    }
 }

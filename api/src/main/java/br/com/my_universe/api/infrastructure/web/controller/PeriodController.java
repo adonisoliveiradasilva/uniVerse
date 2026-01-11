@@ -33,6 +33,13 @@ public class PeriodController {
         return authentication.getName();
     }
 
+    @GetMapping("/stats/global-average")
+    public ResponseEntity<Double> getGlobalAverage() {
+        String email = getAuthenticatedUserEmail();
+        Double average = periodService.getStudentGlobalAverage(email);
+        return ResponseEntity.ok(average);
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<PeriodResponse>> createPeriod(@RequestBody PeriodRequest request) {
         String email = getAuthenticatedUserEmail();
@@ -49,9 +56,7 @@ public class PeriodController {
     public ResponseEntity<ApiResponse<PeriodResponse>> updatePeriod(@PathVariable Integer id,
                                                                     @RequestBody PeriodRequest request) {
         String email = getAuthenticatedUserEmail();
-        
         Period updatedPeriod = periodService.updatePeriod(id, email, request.getSubjects());
-        
         return ResponseEntity.ok(new ApiResponse<>(toResponse(updatedPeriod)));
     }
 

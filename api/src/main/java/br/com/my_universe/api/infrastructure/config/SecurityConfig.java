@@ -68,6 +68,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/set-password").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/students").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated() 
             )
             

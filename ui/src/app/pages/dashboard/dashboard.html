@@ -1,1 +1,107 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+    
+    <div class="dashboard-left-col">
+        
+        <div class="kpi-section">
+            
+            <div class="kpi-card highlight-purple">
+                <div class="kpi-icon-wrapper">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-value">{{ pendingTasksCount }}</span>
+                    <span class="kpi-label">Tarefas pendentes</span>
+                </div>
+            </div>
+
+            <div class="kpi-card highlight-green">
+                <div class="kpi-icon-wrapper">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-value">{{ globalAverage | number:'1.1-1' }}</span>
+                    <span class="kpi-label">Média global</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="subjects-section">
+            <h3>Disciplinas do período</h3>
+            
+            <div class="subjects-grid">
+                <ng-container *ngFor="let sub of currentSubjects">
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <span class="subject-code">{{ sub.displayName }}</span>
+                            <span class="grade-badge">{{ sub.grade || 0 }} pts</span>
+                        </div>
+                        <div class="subject-footer">
+                            <div class="absence-info">
+                                <i class="fa-solid fa-user-xmark"></i>
+                                <span>{{ sub.absences || 0 }} faltas</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div class="empty-state-card" *ngIf="currentSubjects.length === 0">
+                    Nenhuma disciplina encontrada.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-right-col">
+        <h3>Hoje {{ todayDate | date:'dd/MM/yyyy' }}</h3>
+        
+        <div class="tasks-list-wrapper">
+            
+            <div class="empty-state" *ngIf="todayTasks.length === 0">
+                <p>Nenhuma tarefa para este dia.</p>
+            </div>
+
+            <ng-container *ngFor="let task of todayTasks">
+                <div class="task-card" 
+                     *ngIf="getTaskStyle(task.taskType) as style"
+                     [style.backgroundColor]="style.backgroundColor">
+                    
+                    <div class="card-header">
+                        <span class="task-title" [style.color]="style.textColor">
+                            {{ task.title }}
+                        </span>
+                    </div>
+
+                    <div class="task-time" [style.color]="style.textColor">
+                        {{ task.startDate | date:'HH:mm' }} - {{ task.endDate | date:'HH:mm' }}
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="tag type-tag" 
+                              [style.color]="style.textColor"
+                              [style.borderColor]="style.textColor">
+                            {{ style.label }}
+                        </span>
+
+                        <span class="tag subject-tag" 
+                              *ngIf="task.subjectCode"
+                              [style.color]="style.textColor"
+                              [style.borderColor]="style.textColor">
+                            {{ task.subjectCode }}
+                        </span>
+                    </div>
+
+                    <div class="task-description" 
+                         *ngIf="task.description"
+                         [style.color]="style.textColor">
+                        {{ task.description }}
+                    </div>
+
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+
+</div>

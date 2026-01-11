@@ -5,7 +5,6 @@
     </div>
 
     <ng-container *ngFor="let task of tasks">
-        
         <div class="task-card" 
              *ngIf="getTaskStyle(task.taskType) as style"
              [style.backgroundColor]="style.backgroundColor"

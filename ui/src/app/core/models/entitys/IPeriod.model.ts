@@ -5,6 +5,7 @@ export interface IEnrolledSubjectRequest {
 }
 export interface IEnrolledSubject extends IEnrolledSubjectRequest {
   subjectCode: string;
+  displayName?: string;
 }
 export interface IPeriod {
   id: number;

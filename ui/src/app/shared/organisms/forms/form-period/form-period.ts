@@ -34,7 +34,7 @@ export class FormPeriod implements OnInit, OnDestroy {
   periodId: number | null = null;
   action: TableAction | null = null;
   subjectCodeIdentifier: string | null = null;
-  
+
   private _subscription = new Subscription();
 
   statusOptions: IButtonMenuOption[] = PERIOD_STATUS_OPTIONS;
@@ -42,9 +42,9 @@ export class FormPeriod implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this._formBuilder.group({
-      subjectCode: ['', [Validators.required]], 
+      subjectCode: ['', [Validators.required]],
       status: ['cursando', [Validators.required]],
-      grade: [null, [Validators.min(0), Validators.max(10)]],
+      grade: [null, [Validators.required, Validators.min(0), Validators.max(10)]],
       absences: [0, [Validators.required, Validators.min(0)]]
     });
 
@@ -54,21 +54,21 @@ export class FormPeriod implements OnInit, OnDestroy {
     this.periodId = this._periodService.getCurrentPeriodId();
 
     if (!this.periodId) {
-       this._alertService.error("Erro: Período não identificado.");
-       this._formModalService.closeModal();
-       return;
+      this._alertService.error("Erro: Período não identificado.");
+      this._formModalService.closeModal();
+      return;
     }
 
     if (this.action === 'edit' && this.subjectCodeIdentifier) {
-        this._setupEditMode();
+      this._setupEditMode();
     } else if (this.action === 'create') {
-        this._setupCreateMode();
+      this._setupCreateMode();
     }
 
     this._subscription.add(
       this._formBusService.submitForm$.subscribe(() => {
         if (this._formModalService.currentModal?.context === TableContextEnum.Periods) {
-            this._handleSubmit();
+          this._handleSubmit();
         }
       })
     );
@@ -81,10 +81,17 @@ export class FormPeriod implements OnInit, OnDestroy {
 
   private _loadAvailableSubjects() {
     this.isLoading = true;
+
+    const enrolledSubjects = this._periodService.getCurrentPeriodSubjects();
+    const existingCodes = enrolledSubjects.map(s => s.subjectCode);
+
     this._subjectService.getAvailableSubjects().pipe(
       take(1),
-      map((subjects: ISubject[]) => 
-        subjects.map((subject, index) => ({
+      map((subjects: ISubject[]) => {
+        return subjects.filter(subject => !existingCodes.includes(subject.code));
+      }),
+      map((filteredSubjects) =>
+        filteredSubjects.map((subject, index) => ({
           id: index,
           label: subject.code
         }))
@@ -96,8 +103,10 @@ export class FormPeriod implements OnInit, OnDestroy {
     ).subscribe({
       next: (options) => {
         this.subjectOptions = options;
+
         if (options.length === 0) {
-            this._alertService.warn("Você não possui disciplinas disponíveis para vincular.");
+          this._alertService.warn("Todas as disciplinas disponíveis já foram adicionadas a este período.");
+          this.form.get('subjectCode')?.disable();
         }
       },
       error: () => this._alertService.error("Erro ao carregar disciplinas disponíveis.")
@@ -106,40 +115,52 @@ export class FormPeriod implements OnInit, OnDestroy {
 
   private _setupEditMode() {
     this.form.get('subjectCode')?.disable();
-    
+
     const currentSubjects = this._periodService.getCurrentPeriodSubjects();
     const subjectToEdit = currentSubjects.find(s => s.subjectCode === this.subjectCodeIdentifier);
 
     if (subjectToEdit) {
-        this.subjectOptions = [{ id: 1, label: subjectToEdit.subjectCode }];
-        
-        this.form.patchValue({
-            subjectCode: subjectToEdit.subjectCode,
-            status: subjectToEdit.status,
-            grade: subjectToEdit.grade,
-            absences: subjectToEdit.absences
-        });
-        this._formModalService.setNameConfirm(subjectToEdit.subjectCode);
+      this.subjectOptions = [{ id: 1, label: subjectToEdit.subjectCode }];
+
+      this.form.patchValue({
+        subjectCode: subjectToEdit.subjectCode,
+        status: subjectToEdit.status,
+        grade: subjectToEdit.grade,
+        absences: subjectToEdit.absences
+      });
+      this._formModalService.setNameConfirm(subjectToEdit.subjectCode);
     }
   }
 
   private _handleSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this._alertService.warn('Preencha os campos obrigatórios.');
+
+      const gradeControl = this.form.get('grade');
+      const absencesControl = this.form.get('absences');
+
+      if (gradeControl?.hasError('min') || gradeControl?.hasError('max')) {
+        this._alertService.warn('A nota precisa estar no intervalo de 0 a 10.');
+      }
+      else if (absencesControl?.hasError('min')) {
+        this._alertService.warn('O número de faltas não pode ser negativo.');
+      }
+      else {
+        this._alertService.warn('Preencha os campos obrigatórios.');
+      }
       return;
     }
 
     if (this.action === 'create') {
-        this._handleCreate();
+      this._handleCreate();
     } else if (this.action === 'edit') {
-        this._handleEdit();
+      this._handleEdit();
     }
   }
 
   private _handleCreate() {
     if (!this.periodId) return;
-    
+
     const newSubjectEntry = {
       subjectCode: this.form.value.subjectCode,
       status: this.form.value.status,
@@ -148,7 +169,7 @@ export class FormPeriod implements OnInit, OnDestroy {
     };
 
     const currentSubjects = this._periodService.getCurrentPeriodSubjects();
-    
+
     const existingSubjectsDto = currentSubjects.map(s => ({
       subjectCode: s.subjectCode,
       status: s.status,
@@ -157,7 +178,7 @@ export class FormPeriod implements OnInit, OnDestroy {
     }));
 
     const updatedSubjectList = [...existingSubjectsDto, newSubjectEntry];
-    
+
     this._periodService.updatePeriodSubjectsList(this.periodId, updatedSubjectList)
       .pipe(take(1))
       .subscribe({
@@ -167,20 +188,20 @@ export class FormPeriod implements OnInit, OnDestroy {
   }
 
   private _handleEdit() {
-      if (!this.periodId || !this.subjectCodeIdentifier) return;
+    if (!this.periodId || !this.subjectCodeIdentifier) return;
 
-      const payload = {
-        status: this.form.value.status,
-        grade: this.form.value.grade,
-        absences: this.form.value.absences
-      };
+    const payload = {
+      status: this.form.value.status,
+      grade: this.form.value.grade,
+      absences: this.form.value.absences
+    };
 
-      this._periodService.updateEnrolledSubjectDetails(this.periodId, this.subjectCodeIdentifier, payload)
-        .pipe(take(1))
-        .subscribe({
-            next: () => this._formModalService.closeModal(),
-            error: (err) => console.error(err)
-        });
+    this._periodService.updateEnrolledSubjectDetails(this.periodId, this.subjectCodeIdentifier, payload)
+      .pipe(take(1))
+      .subscribe({
+        next: () => this._formModalService.closeModal(),
+        error: (err) => console.error(err)
+      });
   }
 
   ngOnDestroy() {

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, switchMap, tap, throwError } from 'rxjs';
 import { IApiResponse, IApiSingleResponse } from '../../../core/models/api-response.model';
 import { AlertService } from '../../rxjs/alert-service/alert-service';
 import { environment } from '../../../environment/environment';
@@ -151,6 +151,21 @@ export class PeriodService {
         const msg = error?.error?.message || `Falha ao atualizar disciplinas do período ${periodId}.`;
         this._alertService.error(msg);
         return throwError(() => error);
+      })
+    );
+  }
+
+  public getGlobalAverage(): Observable<number> {
+    const url = `${this._periodsApiUrl}/stats/global-average`;
+    
+    return this._http.get(url, { responseType: 'text' }).pipe(
+      map(response => {
+        const num = parseFloat(response);
+        return isNaN(num) ? 0 : num;
+      }),
+      catchError(error => {
+        console.error('Erro ao buscar média global', error);
+        return of(0); 
       })
     );
   }
