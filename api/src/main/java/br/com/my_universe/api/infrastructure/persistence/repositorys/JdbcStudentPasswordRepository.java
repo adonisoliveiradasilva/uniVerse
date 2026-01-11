@@ -26,11 +26,9 @@ public class JdbcStudentPasswordRepository implements StudentPasswordRepository 
         String sql = "SELECT password_hash FROM tb_student_passwords WHERE email = ?";
         
         try {
-            // Usa queryForObject para buscar uma única String
             String hash = jdbcTemplate.queryForObject(sql, String.class, email);
             return Optional.ofNullable(hash);
         } catch (Exception e) {
-            // Retorna vazio se não encontrar (queryForObject lança exceção)
             return Optional.empty();
         }
     }

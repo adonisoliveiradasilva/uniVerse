@@ -42,7 +42,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
         if (updatedRows > 0) {
             return findByEmail(student.getEmail())
-                .orElse(student); // Fallback
+                .orElse(student);
         }
         throw new RuntimeException("Falha ao atualizar estudante com email: " + originalEmail);
     }

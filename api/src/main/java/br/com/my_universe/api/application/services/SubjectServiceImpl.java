@@ -1,7 +1,7 @@
 package br.com.my_universe.api.application.services;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; // Importar
+import org.springframework.transaction.annotation.Transactional;
 import br.com.my_universe.api.application.exceptions.ResourceAlreadyExistsException;
 import br.com.my_universe.api.application.exceptions.ResourceNotFoundException;
 import br.com.my_universe.api.application.ports.SubjectRepository;

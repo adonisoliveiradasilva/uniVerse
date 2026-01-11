@@ -3,12 +3,9 @@ export interface IEnrolledSubjectRequest {
   grade: number | null;
   absences: number;
 }
-
 export interface IEnrolledSubject extends IEnrolledSubjectRequest {
   subjectCode: string;
 }
-
-
 export interface IPeriod {
   id: number;
   studentEmail: string;

@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-// 1. NOVOS IMPORTS
 import org.springframework.util.AntPathMatcher;
 import java.util.Arrays;
 
@@ -25,7 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
-    // 2. ADICIONAR UM MATCHER DE ROTAS
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsServiceImpl userDetailsService) {
@@ -33,20 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-    // 3. **** MÉTODO NOVO ADICIONADO ****
-    /**
-     * Diz ao Spring para NÃO EXECUTAR este filtro em rotas públicas.
-     */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        // Lista de rotas públicas que este filtro deve IGNORAR
         final String[] PUBLIC_PATHS = {
             "/api/auth/**",
             "/api/students"
         };
 
-        // Se a rota da requisição bater com uma das rotas públicas,
-        // este filtro NÃO DEVE RODAR (retorna true).
         return Arrays.stream(PUBLIC_PATHS)
                      .anyMatch(path -> pathMatcher.match(path, request.getServletPath()));
     }
@@ -57,16 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Graças ao 'shouldNotFilter', este código agora SÓ RODA para
-        // rotas protegidas (ex: GET /api/subjects, PUT /api/students/{email}, etc.)
-
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // Se for uma rota protegida sem token, o Spring Security
-            // (mais adiante na cadeia) vai bloquear com 401/403.
             filterChain.doFilter(request, response);
             return;
         }
@@ -75,7 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             userEmail = jwtService.extractUsername(jwt);
         } catch (Exception e) {
-            // Se o token estiver expirado ou for inválido
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"status\": 401, \"error\": \"Token JWT inválido ou expirado.\"}");

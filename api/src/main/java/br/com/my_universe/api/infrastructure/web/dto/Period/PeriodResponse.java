@@ -2,7 +2,6 @@ package br.com.my_universe.api.infrastructure.web.dto.Period;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import br.com.my_universe.api.infrastructure.web.dto.Period.EnrolledSubjectResponse;
 
 public class PeriodResponse {
 

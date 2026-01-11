@@ -25,51 +25,40 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public Task createTask(TaskRequest request, String studentEmail) {
-        // 1. Parse de Datas (Via método auxiliar)
         LocalDateTime[] dateTimes = parseAndValidateDates(request);
         LocalDateTime startDateTime = dateTimes[0];
         LocalDateTime endDateTime = dateTimes[1];
 
-        // 2. Validar Conflito (Criação verifica tudo)
         if (taskRepository.hasTimeConflict(studentEmail, startDateTime, endDateTime)) {
             throw new BusinessException("Já existe uma tarefa ou aula agendada neste horário.");
         }
         
-        // 3. Montar Objeto
         Task task = new Task();
         task.setStudentEmail(studentEmail);
-        fillTaskData(task, request, startDateTime, endDateTime); // Método auxiliar para preencher campos
-
-        // 4. Salvar
+        fillTaskData(task, request, startDateTime, endDateTime);
         return taskRepository.save(task);
     }
 
     @Override
     @Transactional
     public Task updateTask(Integer id, TaskRequest request, String studentEmail) {
-        // 1. Buscar Tarefa Existente
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Tarefa não encontrada."));
 
-        // 2. Validar Dono
         if (!task.getStudentEmail().equals(studentEmail)) {
             throw new BusinessException("Você não tem permissão para editar esta tarefa.");
         }
 
-        // 3. Parse de Datas
         LocalDateTime[] dateTimes = parseAndValidateDates(request);
         LocalDateTime startDateTime = dateTimes[0];
         LocalDateTime endDateTime = dateTimes[1];
 
-        // 4. Validar Conflito (IMPORTANTE: Passar o ID para excluir a própria tarefa da checagem)
         if (taskRepository.hasTimeConflict(studentEmail, startDateTime, endDateTime, id)) {
             throw new BusinessException("Já existe uma tarefa ou aula agendada neste horário.");
         }
 
-        // 5. Atualizar Dados
         fillTaskData(task, request, startDateTime, endDateTime);
 
-        // 6. Persistir atualização
         taskRepository.update(task);
 
         return task;
@@ -78,16 +67,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public void deleteTask(Integer id, String studentEmail) {
-        // 1. Busca a tarefa (se não achar, erro)
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Tarefa não encontrada."));
 
-        // 2. Valida se o aluno é dono da tarefa
         if (!task.getStudentEmail().equals(studentEmail)) {
             throw new BusinessException("Você não tem permissão para excluir esta tarefa.");
         }
 
-        // 3. Manda deletar
         taskRepository.deleteById(id);
     }
 
@@ -99,8 +85,6 @@ public class TaskServiceImpl implements TaskService {
 
         return taskRepository.findByMonth(studentEmail, startOfMonth, endOfMonth);
     }
-
-    // --- Métodos Auxiliares para evitar repetição de código ---
 
     private LocalDateTime[] parseAndValidateDates(TaskRequest request) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -134,7 +118,6 @@ public class TaskServiceImpl implements TaskService {
         task.setStartDate(start);
         task.setEndDate(end);
 
-        // Lógica de Tag
         String tagSlug = request.getTag() != null ? request.getTag().toLowerCase() : "";
         switch (tagSlug) {
             case "test":
@@ -152,7 +135,6 @@ public class TaskServiceImpl implements TaskService {
                 break;
         }
 
-        // Lógica de Disciplina
         if (request.getSubjectCode() != null && !request.getSubjectCode().isBlank()) {
             task.setSubjectCode(request.getSubjectCode());
         } else {

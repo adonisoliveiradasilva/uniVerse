@@ -74,7 +74,6 @@ public class StudentController {
         return ResponseEntity.ok(new ApiResponse<>(toResponse(deletedStudent)));
     }
 
-    // Helper de conversão
     private StudentResponse toResponse(Student student) {
         StudentResponse res = new StudentResponse();
         res.setEmail(student.getEmail());

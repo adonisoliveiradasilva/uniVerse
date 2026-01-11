@@ -18,7 +18,7 @@ export class FormModal {
   closeModal() {
     const currentStack = this._modalStack.value;
     if (currentStack.length > 0) {
-      this._modalStack.next(currentStack.slice(0, -1)); // remove o último modal
+      this._modalStack.next(currentStack.slice(0, -1));
     }
   }
 

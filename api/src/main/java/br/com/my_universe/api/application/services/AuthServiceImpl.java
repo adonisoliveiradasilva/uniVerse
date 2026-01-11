@@ -65,7 +65,7 @@ public class AuthServiceImpl {
             .orElseThrow(() -> new ResourceNotFoundException("E-mail ou senha inválidos."));
             
         StudentPreferences prefs = studentPreferencesRepository.findByEmail(email)
-            .orElse(new StudentPreferences()); // Retorna default se não achar
+            .orElse(new StudentPreferences());
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         

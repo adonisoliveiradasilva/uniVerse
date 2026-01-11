@@ -16,8 +16,8 @@ public class StudentRowMapper implements RowMapper<Student> {
         Student student = new Student();
         student.setEmail(rs.getString("email"));
         student.setName(rs.getString("name"));
-        student.setCreatedAt(rs.getObject("created_at", OffsetDateTime.class)); // "created_at" minúsculo
-        student.setUpdatedAt(rs.getObject("updated_at", OffsetDateTime.class)); // "updated_at" minúsculo
+        student.setCreatedAt(rs.getObject("created_at", OffsetDateTime.class));
+        student.setUpdatedAt(rs.getObject("updated_at", OffsetDateTime.class));
         return student;
     }
 }

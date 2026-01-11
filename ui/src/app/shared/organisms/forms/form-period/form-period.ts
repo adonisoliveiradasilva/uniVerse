@@ -2,19 +2,13 @@ import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angula
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subscription, finalize, take, map } from 'rxjs';
-
-// Componentes Visuais
 import { FormSelect } from '../../../atoms/forms/form-select/form-select';
 import { FormInput } from '../../../atoms/forms/form-input/form-input';
-
-// Serviços
 import { PeriodService } from '../../../../services/api/period-service/period-service';
 import { SubjectService } from '../../../../services/api/subject-service/subject-service';
 import { FormBusService } from '../../../../services/rxjs/form-bus-service/form-bus-service';
 import { FormModal } from '../../../../services/rxjs/form-modal-service/form-modal-service';
 import { AlertService } from '../../../../services/rxjs/alert-service/alert-service';
-
-// Modelos e Constantes
 import { IButtonMenuOption } from '../../../../core/models/button-menu-option.model';
 import { ISubject } from '../../../../core/models/entitys/ISubject.model';
 import { PERIOD_STATUS_OPTIONS } from '../../../../core/data/period-status.data';

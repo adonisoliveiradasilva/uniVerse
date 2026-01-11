@@ -30,7 +30,6 @@ export class Table {
   private _formModalService = inject(FormModal)
   private _TableContextEnum = TableContextEnum
   private _currentSelectedIds: string[] = [];
-  // private _selectionSubscription = new Subscription();
   
   currentPage = 1;
   itemsPerPage = 5;
@@ -45,10 +44,6 @@ export class Table {
     if(this.type === 'multi-select'){
       this.headers?.unshift('Selecionar');
     }
-
-    // this._selectionSubscription = this._tableSelectService.selectedIds$.subscribe(ids => {
-    //   this._currentSelectedIds = ids;
-    // });
 
     this._searchSubject
       .pipe(

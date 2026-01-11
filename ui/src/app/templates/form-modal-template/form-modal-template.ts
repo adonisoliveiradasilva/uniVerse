@@ -200,7 +200,7 @@ export class FormModalTemplate implements OnInit {
       [TableContextEnum.Tasks]: {
         create: "Criar Tarefa", 
         edit: "Editar Tarefa",
-        delete: "Excluir Tarefa", // <--- Título do modal
+        delete: "Excluir Tarefa",
         default: "Tarefa"
       }
     };
@@ -226,7 +226,7 @@ export class FormModalTemplate implements OnInit {
       [TableContextEnum.Tasks]: {
         create: "",
         edit: "",
-        delete: "Para excluir, digite o nome da tarefa abaixo.", // <--- Subtítulo
+        delete: "Para excluir, digite o nome da tarefa abaixo.",
         default: ""
       }
     };

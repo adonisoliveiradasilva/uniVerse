@@ -34,9 +34,8 @@ public class JdbcPeriodSubjectRepository implements PeriodSubjectRepository {
                 ps.setString(2, studentEmail);
                 ps.setString(3, subject.getSubjectCode());
                 
-                // Define valores ou defaults se vierem nulos do DTO
                 ps.setString(4, subject.getStatus() != null ? subject.getStatus() : "cursando");
-                ps.setObject(5, subject.getGrade()); // aceita null
+                ps.setObject(5, subject.getGrade());
                 ps.setInt(6, subject.getAbsences() != null ? subject.getAbsences() : 0);
             });
     }

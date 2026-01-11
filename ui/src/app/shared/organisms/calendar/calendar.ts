@@ -61,7 +61,7 @@ export class Calendar implements OnInit, OnChanges, OnDestroy {
         dayNumber: format(day, 'd'),
         isCurrentMonth: isSameMonth(day, monthStart),
         isToday: isSameDay(day, new Date()),
-        taskCount: 0 // Inicializa com 0
+        taskCount: 0
       };
     });
   }
