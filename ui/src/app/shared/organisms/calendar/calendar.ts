@@ -6,7 +6,6 @@ import {
 } from 'date-fns';
 import { Subscription } from 'rxjs';
 
-// Seus imports
 import { ICalendarDay } from '../../../core/models/calendar-day.model';
 import { ScheduleService } from '../../../services/rxjs/schedule-service/schedule-service';
 import { TaskService } from '../../../services/api/task-service/task-service';

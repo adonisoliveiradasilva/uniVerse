@@ -1,8 +1,7 @@
 <div class="page-content">
-    <app-schedule-toggle (navigate)="navigate($event)"></app-schedule-toggle>
+    <!-- <app-schedule-toggle (navigate)="navigate($event)"></app-schedule-toggle> -->
 
     <ng-container *ngIf="view$ | async as view">
         <app-component-tasks *ngIf="view === 'tasks'"></app-component-tasks>
-        <!-- <app-class-schedule *ngIf="view === 'class_schedule'"></app-class-schedule> -->
     </ng-container>
 </div>

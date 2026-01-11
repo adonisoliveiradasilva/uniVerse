@@ -5,7 +5,7 @@
     height: 100%;
 }
 
-.view-tasks-content {
+.view-tasks-content, .view-schedules-content {
     @include flex-column-center-top;
     gap: 1rem;
     padding: 1rem;

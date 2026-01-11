@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { ScheduleToggle } from '../../shared/molecules/schedule-toggle/schedule-toggle';
 import { BehaviorSubject } from 'rxjs';
 import { ComponentTasks } from '../../templates/component-tasks/component-tasks';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-page-schedule',
-  imports: [ScheduleToggle, ComponentTasks, CommonModule],
+  imports: [ComponentTasks, CommonModule],
   templateUrl: './page-schedule.html',
   styleUrl: './page-schedule.scss'
 })
