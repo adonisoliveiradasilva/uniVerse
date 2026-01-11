@@ -2,6 +2,8 @@ package br.com.my_universe.api.application.ports;
 
 import java.util.List;
 import java.util.Optional;
+
+import br.com.my_universe.api.domain.Student;
 import br.com.my_universe.api.domain.Subject;
 
 public interface SubjectRepository {

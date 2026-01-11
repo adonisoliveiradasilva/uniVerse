@@ -1,12 +1,15 @@
 package br.com.my_universe.api.application.services;
 
+import br.com.my_universe.api.application.exceptions.BusinessException;
 import br.com.my_universe.api.application.exceptions.ResourceNotFoundException;
 import br.com.my_universe.api.application.ports.PeriodRepository;
 import br.com.my_universe.api.application.ports.PeriodSubjectRepository;
 import br.com.my_universe.api.application.ports.StudentRepository;
+import br.com.my_universe.api.application.ports.SubjectRepository;
 import br.com.my_universe.api.domain.EnrolledSubject;
 import br.com.my_universe.api.domain.Period;
-import br.com.my_universe.api.infrastructure.web.dto.Period.PeriodSubjectDto; 
+import br.com.my_universe.api.domain.Subject;
+import br.com.my_universe.api.infrastructure.web.dto.Period.PeriodSubjectDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +21,16 @@ public class PeriodServiceImpl {
     private final PeriodRepository periodRepository;
     private final PeriodSubjectRepository periodSubjectRepository;
     private final StudentRepository studentRepository;
+    private final SubjectRepository subjectRepository;
 
     public PeriodServiceImpl(PeriodRepository periodRepository,
                              PeriodSubjectRepository periodSubjectRepository,
-                             StudentRepository studentRepository) {
+                             StudentRepository studentRepository,
+                             SubjectRepository subjectRepository) {
         this.periodRepository = periodRepository;
         this.periodSubjectRepository = periodSubjectRepository;
         this.studentRepository = studentRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     @Transactional
@@ -35,20 +41,20 @@ public class PeriodServiceImpl {
             .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado."));
 
         List<Period> allPeriods = periodRepository.findAllByStudentEmail(studentEmail);
-    
+        
         if (!allPeriods.isEmpty()) {
             Period latestPeriod = allPeriods.get(allPeriods.size() - 1);
-            
-            List<EnrolledSubject> latestSubjects = 
+            List<EnrolledSubject> latestPeriodSubjects = 
                 periodSubjectRepository.findEnrolledSubjectsByPeriod(latestPeriod.getId(), studentEmail);
 
-            if (latestSubjects.isEmpty()) {
+            if (latestPeriodSubjects.isEmpty()) {
                 throw new IllegalArgumentException("Não é possível criar um novo período pois o período anterior está vazio.");
             }
             
-            boolean hasInProgress = latestSubjects.stream()
-                .anyMatch(s -> "cursando".equals(s.getStatus()));
-            if (hasInProgress) {
+            boolean hasSubjectsInProgress = latestPeriodSubjects.stream()
+                .anyMatch(subject -> "cursando".equals(subject.getStatus()));
+                
+            if (hasSubjectsInProgress) {
                 throw new IllegalArgumentException("O período anterior ainda possui disciplinas 'cursando'.");
             }
         }
@@ -111,6 +117,17 @@ public class PeriodServiceImpl {
     public EnrolledSubject updateEnrolledSubjectDetails(Integer periodId, String studentEmail, String subjectCode, EnrolledSubject details) {
         EnrolledSubject existing = periodSubjectRepository.findEnrolledSubjectByKey(periodId, studentEmail, subjectCode)
             .orElseThrow(() -> new ResourceNotFoundException("A disciplina '" + subjectCode + "' não está matriculada no período '" + periodId + "'."));
+
+        Subject subject = subjectRepository.findByCodeAndStudentEmail(subjectCode, studentEmail)
+             .orElseThrow(() -> new ResourceNotFoundException("Disciplina não encontrada: " + subjectCode));
+
+        if (details.getAbsences() != null) {
+            if (details.getAbsences() > subject.getHours()) {
+                throw new BusinessException(
+                    String.format("Número de faltas (%dh) superior ao permitido na disciplina (máximo %dh)!", details.getAbsences(), subject.getHours())
+                );
+            }
+        }
 
         if (details.getStatus() != null && !List.of("cursando", "aprovado", "reprovado").contains(details.getStatus())) {
             throw new IllegalArgumentException("Status inválido. Use 'cursando', 'aprovado' ou 'reprovado'.");
