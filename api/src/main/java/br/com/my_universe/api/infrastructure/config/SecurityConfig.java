@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.List; // Importante adicionar este import
 
 @Configuration
 @EnableWebSecurity
@@ -63,13 +63,13 @@ public class SecurityConfig {
             .httpBasic(AbstractHttpConfigurer::disable)
             
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/auth/request-password").permitAll()
-                .requestMatchers(HttpMethod.POST, "/auth/request-password-reset").permitAll()
-                .requestMatchers(HttpMethod.POST, "/auth/set-password").permitAll()
-                .requestMatchers(HttpMethod.POST, "/students").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/request-password").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/request-password-reset").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/set-password").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/students").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated() 
             )
