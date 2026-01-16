@@ -14,7 +14,6 @@ public class Task {
     private TaskType taskType;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Boolean finished;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

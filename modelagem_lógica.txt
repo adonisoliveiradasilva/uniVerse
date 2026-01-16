@@ -1,0 +1,17 @@
+ALUNO (<u>email</u>, nome*, criado_em, atualizado_em)
+
+DISCIPLINA (<u>codigo</u>, <u>#email_aluno</u>, nome*, horas*, descricao, criado_em, atualizado_em)
+#email_aluno referencia ALUNO(email)
+
+PERIODO (<u>id</u>, #email_aluno*, criado_em, atualizado_em)
+#email_aluno referencia ALUNO(email)
+
+AGRUPAM (<u>#id_periodo</u>, <u>#email_aluno</u>, <u>#codigo_disciplina</u>, status*, nota, faltas)
+#id_periodo referencia PERIODO(id)
+(#codigo_disciplina, #email_aluno) referencia DISCIPLINA(codigo, email_aluno)
+
+TAREFA (<u>id</u>, titulo*, descricao, tipo_tarefa*, data_inicio*, data_fim, #email_aluno*, #codigo_disciplina, criado_em, atualizado_em)
+#email_aluno referencia ALUNO(email)
+(#codigo_disciplina, #email_aluno) referencia DISCIPLINA(codigo, email_aluno)
+
+

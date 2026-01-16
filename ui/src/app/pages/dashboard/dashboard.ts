@@ -63,7 +63,7 @@ export class Dashboard implements OnInit {
     const now = new Date();
 
     this.pendingTasksCount = tasks.filter(t => 
-        new Date(t.startDate) >= startOfDay(now) && !t.finished 
+        new Date(t.startDate) >= startOfDay(now) 
     ).length;
 
     this.todayTasks = tasks

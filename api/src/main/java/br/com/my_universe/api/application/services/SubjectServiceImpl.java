@@ -2,22 +2,33 @@ package br.com.my_universe.api.application.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.my_universe.api.application.exceptions.BusinessException;
 import br.com.my_universe.api.application.exceptions.ResourceAlreadyExistsException;
 import br.com.my_universe.api.application.exceptions.ResourceNotFoundException;
 import br.com.my_universe.api.application.ports.SubjectRepository;
+import br.com.my_universe.api.application.ports.TaskRepository;
+import br.com.my_universe.api.application.ports.PeriodSubjectRepository;
 import br.com.my_universe.api.application.ports.StudentRepository;
 import br.com.my_universe.api.domain.Subject;
+
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SubjectServiceImpl {
 
     private final SubjectRepository subjectRepository;
     private final StudentRepository studentRepository;
+    private final PeriodSubjectRepository periodSubjectRepository;
+    private final TaskRepository taskRepository;
 
-    public SubjectServiceImpl(SubjectRepository subjectRepository, StudentRepository studentRepository) {
+    public SubjectServiceImpl(SubjectRepository subjectRepository, StudentRepository studentRepository, PeriodSubjectRepository periodSubjectRepository, TaskRepository taskRepository) {
         this.subjectRepository = subjectRepository;
         this.studentRepository = studentRepository;
+        this.periodSubjectRepository = periodSubjectRepository;
+        this.taskRepository = taskRepository;
     }
 
     @Transactional
@@ -66,11 +77,31 @@ public class SubjectServiceImpl {
         return subjectRepository.findByCodeAndStudentEmail(code, studentEmail)
             .orElseThrow(() -> new ResourceNotFoundException("Disciplina com código '" + code + "' não encontrada para este aluno."));
     }
-
+    
     @Transactional
     public Subject deleteSubject(String code, String studentEmail) {
         Subject subjectToDelete = getSubjectByCodeAndStudentEmail(code, studentEmail);
+
+        Optional<Integer> periodId = periodSubjectRepository.findPeriodIdBySubject(code, studentEmail);
+        if (periodId.isPresent()) {
+            throw new BusinessException(
+                "A disciplina não pode ser apagada pois está vinculada ao período " + periodId.get()
+            );
+        }
+
+        Optional<OffsetDateTime> taskDate = taskRepository.findFirstTaskDateBySubject(code, studentEmail);
+        
+        if (taskDate.isPresent()) {
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = taskDate.get().format(formatter);
+
+            throw new BusinessException(
+                "Não foi possível apagar a disciplina, ela tem vinculo com uma tarefa no dia " + formattedDate
+            );
+        }
+
         subjectRepository.deleteByCodeAndStudentEmail(code, studentEmail);
+        
         return subjectToDelete;
     }
 

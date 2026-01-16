@@ -16,4 +16,6 @@ public interface PeriodSubjectRepository {
     Optional<EnrolledSubject> findEnrolledSubjectByKey(Integer periodId, String studentEmail, String subjectCode);
 
     EnrolledSubject updateEnrolledSubject(EnrolledSubject enrolledSubject);
+
+    Optional<Integer> findPeriodIdBySubject(String subjectCode, String studentEmail);
 }

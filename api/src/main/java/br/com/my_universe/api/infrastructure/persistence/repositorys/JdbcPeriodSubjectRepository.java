@@ -4,6 +4,8 @@ import br.com.my_universe.api.application.ports.PeriodSubjectRepository;
 import br.com.my_universe.api.domain.EnrolledSubject;
 import br.com.my_universe.api.infrastructure.persistence.mappers.EnrolledSubjectRowMapper;
 import br.com.my_universe.api.infrastructure.web.dto.Period.PeriodSubjectDto;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -76,5 +78,24 @@ public class JdbcPeriodSubjectRepository implements PeriodSubjectRepository {
             throw new RuntimeException("Falha ao atualizar matrícula, registro não encontrado.");
         }
         return enrolledSubject;
+    }
+
+    @Override
+    public Optional<Integer> findPeriodIdBySubject(String subjectCode, String studentEmail) {
+        String sql = """
+            SELECT p.id 
+            FROM tb_periods p
+            JOIN tb_period_subjects ps ON p.id = ps.period_id
+            WHERE ps.subject_code = ? 
+            AND p.student_email = ?
+            LIMIT 1
+        """;
+        
+        try {
+            Integer periodId = jdbcTemplate.queryForObject(sql, Integer.class, subjectCode, studentEmail);
+            return Optional.ofNullable(periodId);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 }

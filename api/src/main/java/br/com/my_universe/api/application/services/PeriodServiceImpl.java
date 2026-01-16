@@ -74,17 +74,25 @@ public class PeriodServiceImpl {
     @Transactional
     public Period updatePeriod(Integer periodId, String studentEmail, List<PeriodSubjectDto> subjects) {
         Period existingPeriod = getPeriodById(periodId, studentEmail);
-        
+
+        if (subjects != null && !subjects.isEmpty()) {
+            validateAbsences(subjects, studentEmail);
+        }
+
         periodSubjectRepository.unlinkAllSubjectsFromPeriod(periodId, studentEmail);
-        
+
         if (subjects != null && !subjects.isEmpty()) {
             periodSubjectRepository.linkSubjectsToPeriod(periodId, studentEmail, subjects);
         }
-        
-        List<EnrolledSubject> enrolled = periodSubjectRepository.findEnrolledSubjectsByPeriod(periodId, studentEmail);
+
+        List<EnrolledSubject> enrolled =
+            periodSubjectRepository.findEnrolledSubjectsByPeriod(periodId, studentEmail);
+
         existingPeriod.setEnrolledSubjects(enrolled);
+
         return existingPeriod;
     }
+
 
     public Period getPeriodById(Integer periodId, String studentEmail) {
         Period period = periodRepository.findById(periodId, studentEmail)
@@ -149,4 +157,32 @@ public class PeriodServiceImpl {
     public Double getStudentGlobalAverage(String studentEmail) {
         return periodRepository.getGlobalAverageIndex(studentEmail);
     }
+
+    private void validateAbsences(List<PeriodSubjectDto> subjects, String studentEmail) {
+    for (PeriodSubjectDto dto : subjects) {
+        if (dto.getAbsences() != null) {
+            Subject subject = subjectRepository
+                .findByCodeAndStudentEmail(dto.getSubjectCode(), studentEmail)
+                .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                        "Disciplina não encontrada: " + dto.getSubjectCode()
+                    )
+                );
+
+            if (dto.getAbsences() > subject.getHours()) {
+                throw new BusinessException(
+                    String.format(
+                        "Número de faltas (%dh) superior ao permitido na disciplina %s (máximo %dh)!",
+                        dto.getAbsences(),
+                        dto.getSubjectCode(),
+                        subject.getHours()
+                    )
+                );
+            }
+        }
+    }
+}
+
+
+
 }

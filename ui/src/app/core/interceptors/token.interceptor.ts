@@ -16,28 +16,31 @@ export const TokenInterceptor: HttpInterceptorFn = (
   const token = authService.getToken();
   const isApiRequest = req.url.startsWith(environment.apiUrl);
 
-  let requestToHandle = req
+  let requestToHandle = req;
 
   if (token && isApiRequest) {
-    const clonedReq = req.clone({
+    requestToHandle = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
-    return next(clonedReq);
   }
 
   return next(requestToHandle).pipe(
-    catchError((error: HttpEvent<any>) => {
+    catchError((error: any) => {
       
       if (error instanceof HttpErrorResponse) {
         
         if (error.status === 401) {
-          alertService.error('Sua sessão expirou. Por favor, logue-se novamente.');
-          authService.logout();
+          
+          if (!req.url.includes('/auth/login')) {
+             alertService.error('Sua sessão expirou. Por favor, logue-se novamente.');
+             authService.logout();
+          }
         }
       }
+      
       return throwError(() => error);
     })
-  );;
+  );
 };

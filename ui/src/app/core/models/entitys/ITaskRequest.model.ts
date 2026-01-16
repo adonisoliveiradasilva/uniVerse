@@ -6,7 +6,6 @@ export interface ITask {
     taskType: string;
     startDate: string;
     endDate: string;
-    finished: boolean;
 }
 
 export interface ITaskRequest {

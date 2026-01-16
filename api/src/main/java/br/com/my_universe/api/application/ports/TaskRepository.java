@@ -2,6 +2,7 @@ package br.com.my_universe.api.application.ports;
 
 import br.com.my_universe.api.domain.Task;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,6 @@ public interface TaskRepository {
     boolean hasTimeConflict(String studentEmail, LocalDateTime start, LocalDateTime end, Integer excludeTaskId);
     
     List<Task> findByMonth(String studentEmail, LocalDateTime startOfMonth, LocalDateTime endOfMonth);
+
+    Optional<OffsetDateTime> findFirstTaskDateBySubject(String subjectCode, String studentEmail);
 }

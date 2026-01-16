@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,8 @@ public class JdbcTaskRepository implements TaskRepository {
     @Override
     public Task save(Task task) {
         String sql = """
-            INSERT INTO tb_tasks (student_email, subject_code, title, description, task_type, start_date, end_date, finished)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO tb_tasks (student_email, subject_code, title, description, task_type, start_date, end_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             RETURNING id
         """;
 
@@ -36,8 +37,7 @@ public class JdbcTaskRepository implements TaskRepository {
             task.getDescription(),
             task.getTaskType().name(),
             task.getStartDate(),
-            task.getEndDate(),
-            task.getFinished() != null ? task.getFinished() : false
+            task.getEndDate()
         );
 
         task.setId(id);
@@ -54,7 +54,6 @@ public class JdbcTaskRepository implements TaskRepository {
                 task_type = ?, 
                 start_date = ?, 
                 end_date = ?, 
-                finished = ?,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
         """;
@@ -66,7 +65,6 @@ public class JdbcTaskRepository implements TaskRepository {
             task.getTaskType().name(),
             task.getStartDate(),
             task.getEndDate(),
-            task.getFinished(),
             task.getId()
         );
     }
@@ -142,8 +140,25 @@ public class JdbcTaskRepository implements TaskRepository {
                 task.setEndDate(rs.getTimestamp("end_date").toLocalDateTime());
             }
             
-            task.setFinished(rs.getBoolean("finished"));
             return task;
+        }
+    }
+
+    @Override
+    public Optional<OffsetDateTime> findFirstTaskDateBySubject(String subjectCode, String studentEmail) {
+        String sql = """
+            SELECT start_date 
+            FROM tb_tasks 
+            WHERE subject_code = ? 
+            AND student_email = ? 
+            LIMIT 1
+        """;
+
+        try {
+            OffsetDateTime date = jdbcTemplate.queryForObject(sql, OffsetDateTime.class, subjectCode, studentEmail);
+            return Optional.ofNullable(date);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
     }
 }
