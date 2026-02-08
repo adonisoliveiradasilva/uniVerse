@@ -32,7 +32,7 @@ export class PagePeriods implements OnInit {
     { key: 'grade', label: 'Nota', type: TableTdType.Text },
     { key: 'absences', label: 'Faltas', type: TableTdType.Text },
   ];
-  _headers = ['Nome', 'Status', 'Nota', 'Faltas'];
+  _headers = ['Código', 'Status', 'Nota', 'Faltas'];
 
   ngOnInit() {
     this._rows$ = this.periodService.currentPeriodSubjects$.pipe(
